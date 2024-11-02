@@ -1,54 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil Użytkownika</title>
-  <link rel="stylesheet" href="/css/style.css"/>
-  <script src="https://kit.fontawesome.com/5d00a39fca.js" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="outer-container">
-  <nav class="top-nav">
-    <div class="logo">=DreamCar=</div>
-    <ul>
-      <li><a href='/static'><i class="fa-solid fa-car"></i>Strona główna</a></li>
-      <li><a href='/favourites'><i class="fa-solid fa-heart"></i>Ulubione</a></li>
-      <li class="user-button"><a href='/login'><i class="fa-solid fa-user"></i>Profil</a></li>
-    </ul>
-  </nav>
+<div class="profile-container"> 
+  <section class="profile-info">
+    <img src="user.jpg" class="profile-img">
+    <div class="user-details">
+      <h2>Jan Kowalski</h2>
+      <p>jan.kowalski@example.com</p>
+      <p>+48 123 456 789</p>
+    </div>
+  </section>
 
-  <main class="profile-container">
-    <section class="profile-info">
-      <img src="user.jpg" class="profile-img">
-      <div class="user-details">
-        <h2>Jan Kowalski</h2>
-        <p>jan.kowalski@example.com</p>
-        <p>+48 123 456 789</p>
-      </div>
-    </section>
+  <section class="active-offers">
+    <div class="active-offers-header">
+      <h3>Twoje aktywne ogłoszenia</h3>
+      <a href="new-offer.html" class="add-offer-btn" onclick="navigateTo('new-offer')">+ Dodaj nowe ogłoszenie</a>
+    </div>
 
-    <section class="active-offers">
-      <div class="active-offers-header">
-        <h3>Twoje aktywne ogłoszenia</h3>
-        <a href="new-offer.html" class="add-offer-btn">+ Dodaj nowe ogłoszenie</a>
-      </div>
-
-      <div class="user-offer-list">
-        <a href="offer-details.html" class="offer-link">
-          <article class="offer">
-            <img src="car.jpg" alt="Samochód 1" class="offer-img">
-            <div class="offer-details">
-              <h4>Audi A4 2.0 TDI</h4>
-              <p>Rocznik: 2018, Przebieg: 60 000 km</p>
-              <p class="price"><span>85 000</span> PLN</p>
-            </div>
-            <div class="offer-actions">
-              <a href="edit-offer.html" class="edit-btn">Edytuj</a>
-              <a href="delete.html" class="delete-btn">Usun</a>
-            </div>
-          </article>
-        </a>
+    <div class="user-offer-list">
+      <a href="offer-details.html" class="offer-link" onclick="navigateTo('offer-details')">
         <article class="offer">
           <img src="car.jpg" alt="Samochód 1" class="offer-img">
           <div class="offer-details">
@@ -57,18 +24,26 @@
             <p class="price"><span>85 000</span> PLN</p>
           </div>
           <div class="offer-actions">
-            <a href="edit.html" class="edit-btn">Edytuj</a>
+            <a href="edit-offer.html" class="edit-btn">Edytuj</a>
             <a href="delete.html" class="delete-btn">Usun</a>
           </div>
         </article>
-        <!-- Więcej ogłoszeń... -->
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    Designed by Robert Kania | non-commercialy | 2024
-  </footer>
-</div>
-</body>
-</html>
+      </a>       
+      <a href="offer-details.html" class="offer-link" onclick="navigateTo('offer-details')">
+        <article class="offer">
+          <img src="car.jpg" alt="Samochód 1" class="offer-img">
+          <div class="offer-details">
+            <h4>Audi A4 2.0 TDI</h4>
+            <p>Rocznik: 2018, Przebieg: 60 000 km</p>
+            <p class="price"><span>85 000</span> PLN</p>
+          </div>
+          <div class="offer-actions">
+            <a href="edit-offer.html" class="edit-btn">Edytuj</a>
+            <a href="delete.html" class="delete-btn">Usun</a>
+          </div>
+        </article>
+      </a>
+      <!-- Więcej ogłoszeń... -->
+    </div>
+  </section>
+</div> 

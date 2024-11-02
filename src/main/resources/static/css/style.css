@@ -75,7 +75,7 @@ body {
 
 /* MAIN***********************************************************/
 
-main {
+main.general-offer-list {
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -652,7 +652,7 @@ main {
 
 /* OFFER-DETAILS */
 .offer-details-container {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
