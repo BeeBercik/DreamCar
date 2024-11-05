@@ -13,7 +13,7 @@ public class OfferController {
     @Autowired
     OfferRepository offerRepository;
 
-    @GetMapping("/users")
+    @GetMapping("/allOffers")
     public List<Offer> getAllOffers() {
         return this.offerRepository.findAll();
     }
