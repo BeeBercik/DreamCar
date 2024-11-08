@@ -1,12 +1,16 @@
 package com.dreamcar.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -23,5 +27,8 @@ public class User {
     private String email;
     private String phone;
     private Date add_date;
-    private int offers;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Offer> offers = new LinkedList<>();
 }

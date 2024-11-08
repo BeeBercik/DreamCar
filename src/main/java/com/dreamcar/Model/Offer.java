@@ -20,6 +20,7 @@ public class Offer {
 
     private String title;
     private String description;
+    private String brand;
     private int mileage;
     private int year;
     private int price;
