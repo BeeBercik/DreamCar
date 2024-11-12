@@ -66,4 +66,8 @@ class UI {
             <p class="offer-date">Dodano: <span>${offer.add_date}</span></p>
         </div>`
     }
+
+    static displayRegisterMessage(status) {
+        
+    }
 }

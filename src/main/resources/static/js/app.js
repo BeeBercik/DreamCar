@@ -39,3 +39,22 @@ async function showOfferDetails(id) {
         document.getElementById('content').innerHTML = error.message;
     }
 }
+
+document.getElementById("register-form").addEventListener('submit', initUserRegister());
+
+async function initUserRegister(event) {
+    event.preventDefault();
+    try {
+        const login = document.getElementById('login').value;
+        const mail = document.getElementById('mail').value;
+        const password = document.getElementById('password').value;
+        const rep_password = document.getElementById('rep-password').value
+        const phone = document.getElementById('phone').value;
+
+        const userData = {login, mail, password, rep_password, phone};
+        
+        ApiService.registerUser(userData); 
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
+}
