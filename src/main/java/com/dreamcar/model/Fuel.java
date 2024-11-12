@@ -1,4 +1,4 @@
-package com.dreamcar.Model;
+package com.dreamcar.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,10 +10,12 @@ import lombok.ToString;
 @Setter @Getter
 @ToString
 @NoArgsConstructor
-@Table(name = "gear_boxes")
-public class GearBox {
+@Table(name = "fuels")
+public class Fuel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
 }
+

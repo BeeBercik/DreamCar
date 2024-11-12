@@ -1,6 +1,6 @@
 package com.dreamcar.repositories;
 
-import com.dreamcar.Model.Offer;
+import com.dreamcar.model.Offer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OfferRepository extends JpaRepository<Offer, Integer> {

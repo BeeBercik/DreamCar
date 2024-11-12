@@ -40,9 +40,7 @@ async function showOfferDetails(id) {
     }
 }
 
-document.getElementById("register-form").addEventListener('submit', initUserRegister());
-
-async function initUserRegister(event) {
+document.getElementById("register-form").addEventListener('submit', async function initUserRegister(event) {
     event.preventDefault();
     try {
         const login = document.getElementById('login').value;
@@ -53,8 +51,8 @@ async function initUserRegister(event) {
 
         const userData = {login, mail, password, rep_password, phone};
         
-        ApiService.registerUser(userData); 
+        await ApiService.registerUser(userData); 
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }
-}
+});

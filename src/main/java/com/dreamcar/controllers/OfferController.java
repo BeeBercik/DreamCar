@@ -1,6 +1,6 @@
 package com.dreamcar.controllers;
 
-import com.dreamcar.Model.Offer;
+import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

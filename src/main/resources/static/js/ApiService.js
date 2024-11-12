@@ -22,9 +22,14 @@ class ApiService {
             headers: {'Content-type': 'application/JSON'},
             body: JSON.stringify(userData)
         });
-        
-        if(!respone) throw new error("Some problems with user register");
-        const data = await respone.json();
-        // ...
+
+        const message = await respone.text(); 
+        const form_div_message = document.getElementById('form-message');
+        if(!respone) {
+            form_div_message.classList.add('incorrect-data');
+            form_div_message.innerHTML = message;
+        } else {
+            form_div_message.innerHTML = message;
+        }
     }
 }

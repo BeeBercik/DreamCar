@@ -1,4 +1,4 @@
-package com.dreamcar.Model;
+package com.dreamcar.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
