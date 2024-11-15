@@ -18,8 +18,12 @@ public class UserController {
 
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
+        try {
+            userService.registerUser(user);
 
-        return userService.registerUser(user);
+            return ResponseEntity.ok("User registered successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-
 }
