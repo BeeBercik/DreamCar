@@ -27,6 +27,8 @@ public class User {
     private String phone;
     private Date add_date;
 
+    // zapobiega serializacji bo JSJON mapuje na encje Usera i probuje polaczyc z nim jego oferty, aby np. wyswietlich ich dane w widoku
+    // a my nie chcemy mie takiego pola/kolumny  wtabeli - ta wlasciwosc sluzy do wskazania na relacje oraz operowanie na ofertach powiazaych z userem np getOffers
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Offer> offers = new LinkedList<>();

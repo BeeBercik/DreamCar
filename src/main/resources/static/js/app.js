@@ -1,8 +1,7 @@
 navigateTo('index');
 
-async function navigateTo(page) {
+async function navigateTo(page, registered = false, message = null) {
     const content_div = document.getElementById('content');
-    const index_div = document.getElementsByTagName('html');
 
     try {
         const response = await fetch(`../${page}.html`);
@@ -12,10 +11,18 @@ async function navigateTo(page) {
         const data = await response.text();
 
         if(page === "index") {
-            index_div[0].innerHTML = data;
+            // spring sam wczyt adomyslnie index
             loadAllOffers();
         } else {
             content_div.innerHTML = data;
+        }
+        if(page === "register") {
+            document.getElementById("register-form").addEventListener('submit', initUserRegister);
+        }
+        if(page === 'login' && registered) {
+            const form_div_message = document.getElementById('form-message');
+            form_div_message.classList.add('successfull-register');
+            form_div_message.innerHTML = message;
         }
     } catch (error) {
         content_div.innerHTML = `<h2>${error.message}!</h2>`;
@@ -40,19 +47,24 @@ async function showOfferDetails(id) {
     }
 }
 
-document.getElementById("register-form").addEventListener('submit', async function initUserRegister(event) {
+async function initUserRegister(event) {
     event.preventDefault();
     try {
         const login = document.getElementById('login').value;
-        const mail = document.getElementById('mail').value;
+        const email = document.getElementById('mail').value;
         const password = document.getElementById('password').value;
         const rep_password = document.getElementById('rep-password').value
         const phone = document.getElementById('phone').value;
 
-        const userData = {login, mail, password, rep_password, phone};
-        
+        const userData = {
+            login: login,
+            email: email,
+            password: password,
+            rep_password: rep_password,
+            phone: phone
+        };
         await ApiService.registerUser(userData); 
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }
-});
+}

@@ -225,6 +225,7 @@ main.general-offer-list {
 .incorrect-data {
     width: 100%;
     padding: 10px 0;
+    margin-bottom: 10px;
     text-align: center;
     color: white;
     background-color: red;
@@ -235,6 +236,7 @@ main.general-offer-list {
 .successfull-register {
     width: 100%;
     padding: 10px 0;
+    margin-bottom: 10px;
     text-align: center;
     color: white;
     background-color: #4CAF50;

@@ -25,11 +25,11 @@ class ApiService {
 
         const message = await respone.text(); 
         const form_div_message = document.getElementById('form-message');
-        if(!respone) {
+        if(!respone.ok) {
             form_div_message.classList.add('incorrect-data');
             form_div_message.innerHTML = message;
         } else {
-            form_div_message.innerHTML = message;
+            navigateTo('login', true, message);
         }
     }
 }
