@@ -1,12 +1,13 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.UserDTO;
+import com.dreamcar.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserValidatior {
 
-    public void validate(UserDTO userDTO) {
+    public void validateRegistration(UserDTO userDTO) {
         if(userDTO.getLogin() == null || userDTO.getLogin().trim().isEmpty() ||
                 userDTO.getPassword() == null || userDTO.getPassword().trim().isEmpty() ||
                 userDTO.getRep_password() == null || userDTO.getRep_password().trim().isEmpty() ||
@@ -25,6 +26,13 @@ public class UserValidatior {
         }
         if(!userDTO.getPassword().equals(userDTO.getRep_password())) {
             throw new IllegalArgumentException("Passwords do not match");
+        }
+    }
+
+    public void validateLogin(User user) {
+        if(user.getLogin() == null || user.getLogin().trim().isEmpty() ||
+        user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Incorrect data");
         }
     }
 }

@@ -1,6 +1,6 @@
 navigateTo('index');
 
-async function navigateTo(page, registered = false, message = null) {
+async function navigateTo(page, flag = false, message = null) {
     const content_div = document.getElementById('content');
 
     try {
@@ -19,10 +19,13 @@ async function navigateTo(page, registered = false, message = null) {
         if(page === "register") {
             document.getElementById("register-form").addEventListener('submit', initUserRegister);
         }
-        if(page === 'login' && registered) {
+        if(page === 'login' && flag) {
             const form_div_message = document.getElementById('form-message');
             form_div_message.classList.add('successfull-register');
             form_div_message.innerHTML = message;
+        }
+        if(page === "login") {
+            document.getElementById('login-form').addEventListener('submit', initUserLogin);
         }
     } catch (error) {
         content_div.innerHTML = `<h2>${error.message}!</h2>`;
@@ -65,6 +68,22 @@ async function initUserRegister(event) {
         };
         await ApiService.registerUser(userData); 
     } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
+}
+
+async function initUserLogin(event) {
+    event.preventDefault();
+    try {
+        const login = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        
+        const userData = {
+            login: login,
+            password: password
+        }
+        await ApiService.loginUser(userData);
+    } catch (error) {
         document.getElementById('content').innerHTML = error.message;
     }
 }
