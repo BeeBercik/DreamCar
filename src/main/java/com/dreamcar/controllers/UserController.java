@@ -1,6 +1,6 @@
 package com.dreamcar.controllers;
 
-import com.dreamcar.model.User;
+import com.dreamcar.dto.UserDTO;
 import com.dreamcar.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         try {
-            userService.registerUser(user);
+            userService.registerUser(userDTO);
 
             return ResponseEntity.ok("User registered successfully");
         } catch (IllegalArgumentException e) {

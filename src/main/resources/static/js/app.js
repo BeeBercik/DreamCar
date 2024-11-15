@@ -51,9 +51,9 @@ async function initUserRegister(event) {
     event.preventDefault();
     try {
         const login = document.getElementById('login').value;
-        const email = document.getElementById('mail').value;
+        const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const rep_password = document.getElementById('rep-password').value
+        const rep_password = document.getElementById('rep_password').value
         const phone = document.getElementById('phone').value;
 
         const userData = {
