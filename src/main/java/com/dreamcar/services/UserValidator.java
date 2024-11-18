@@ -5,7 +5,7 @@ import com.dreamcar.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserValidatior {
+public class UserValidator {
 
     public void validateRegistration(UserDTO userDTO) {
         if(userDTO.getLogin() == null || userDTO.getLogin().trim().isEmpty() ||

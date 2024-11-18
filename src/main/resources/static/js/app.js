@@ -1,13 +1,14 @@
 navigateTo('index');
 
-async function navigateTo(page, flag = false, message = null) {
+window.addEventListener('DOMContentLoaded', ApiService.checkIfUserLoggedIn);
+
+async function navigateTo(page, flag = false, data = null) {
+    ApiService.checkIfUserLoggedIn();
     const content_div = document.getElementById('content');
 
     try {
         const response = await fetch(`../${page}.html`);
-
         if(!response.ok) throw new error("Page not found!");
-
         const data = await response.text();
 
         if(page === "index") {
@@ -22,7 +23,7 @@ async function navigateTo(page, flag = false, message = null) {
         if(page === 'login' && flag) {
             const form_div_message = document.getElementById('form-message');
             form_div_message.classList.add('successfull-register');
-            form_div_message.innerHTML = message;
+            form_div_message.innerHTML = data;
         }
         if(page === "login") {
             document.getElementById('login-form').addEventListener('submit', initUserLogin);

@@ -41,15 +41,27 @@ class ApiService {
         });
 
         if(response.ok) {
-            const user = await response.json();
-            navigateTo('index', true, user);
+            navigateTo('index');
             console.log('zalogowano')
-            console.log(user);
         } else {
             const message = await response.text();
             const form_div_message = document.getElementById('form-message');
             form_div_message.classList.add('incorrect-data');
             form_div_message.innerHTML = message;
         }
+    }
+
+    static async checkIfUserLoggedIn() {
+        const response = await fetch("/api/isUserLoggedIn");
+        if(response.ok) UI.updateUiForUser(); 
+        else UI.updateUiForGuest();
+    }
+
+    static async getLoggedUser() {
+        const response = await fetch("/api/isUserLoggedIn");
+        if(response.ok) {
+            const user = await response.json();
+            return user;
+        } else return null;
     }
 }

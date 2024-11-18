@@ -5,21 +5,21 @@ import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 public class UserService {
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    UserValidatior userValidatior;
+    UserValidator userValidator;
 
     public void registerUser(UserDTO userDTO) {
-        userValidatior.validateRegistration(userDTO);
+        userValidator.validateRegistration(userDTO);
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
@@ -37,8 +37,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public ResponseEntity<?> loginUser(User user) {
-        this.userValidatior.validateLogin(user);
+    public UserDTO loginUser(User user) {
+        this.userValidator.validateLogin(user);
 
         if(userRepository.existsByLogin(user.getLogin().trim())) {
             User dbuser = userRepository.findByLogin(user.getLogin());
@@ -47,7 +47,7 @@ public class UserService {
                         dbuser.getLogin(), dbuser.getEmail(),
                         dbuser.getPhone(), dbuser.getAdd_date());
 
-                return ResponseEntity.ok(userDTO);
+                return userDTO;
             } else throw new IllegalArgumentException("Wrong password");
         } else throw new IllegalArgumentException("Login does not exist");
     }

@@ -3,12 +3,10 @@ package com.dreamcar.controllers;
 import com.dreamcar.dto.UserDTO;
 import com.dreamcar.model.User;
 import com.dreamcar.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -29,11 +27,22 @@ public class UserController {
     }
 
     @PostMapping("/loginUser")
-    public ResponseEntity<?> loginUser(@RequestBody User user) {
+    public ResponseEntity<?> loginUser(@RequestBody User user, HttpSession session) {
         try {
-            return this.userService.loginUser(user);
+            UserDTO userDTO = this.userService.loginUser(user);
+            session.setAttribute("user", userDTO);
+            return ResponseEntity.ok("User logged in");
         } catch(IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/isUserLoggedIn")
+    public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.badRequest().body("Not logged in");
     }
 }

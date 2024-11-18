@@ -67,7 +67,13 @@ class UI {
         </div>`
     }
 
-    static displayRegisterMessage(status) {
-        
+    static updateUiForUser() {
+        document.getElementById('user-button').style.display = 'none';
+        document.getElementById('profile-button').style.display = 'block';
+    }
+
+    static updateUiForGuest() {
+        document.getElementById('user-button').style.display = 'block';
+        document.getElementById('profile-button').style.display = 'none';
     }
 }
