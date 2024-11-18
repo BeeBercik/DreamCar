@@ -64,4 +64,10 @@ class ApiService {
             return user;
         } else return null;
     }
+
+    static async logoutUser() {
+        const response = await fetch('/api/logoutUser');
+        if(!response) throw new error("Some problems with logging out..");
+        if(response.ok) navigateTo('index');
+    }
 }

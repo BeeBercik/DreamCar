@@ -45,4 +45,11 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("Not logged in");
     }
+
+    @GetMapping("/logoutUser")
+    public ResponseEntity<?> logoutUser(HttpSession session) {
+        session.invalidate();
+
+        return ResponseEntity.ok("User logged out");
+    }
 }

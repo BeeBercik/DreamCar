@@ -88,3 +88,11 @@ async function initUserLogin(event) {
         document.getElementById('content').innerHTML = error.message;
     }
 }
+
+async function logoutUser() {
+    try {
+        await ApiService.logoutUser();
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
+}
