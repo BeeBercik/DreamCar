@@ -70,4 +70,21 @@ class ApiService {
         if(!response) throw new error("Some problems with logging out..");
         if(response.ok) navigateTo('index');
     }
+
+    static async addNewOffer(offerData) {
+        console.log(offerData);
+        
+        const response = await fetch('/api/addNewOffer', {
+            method: 'POST',
+            headers: {'Content-type': 'application/JSON'},
+            body: JSON.stringify(offerData)
+        });
+
+        if(response.ok) {
+            console.log('dodano nowa oferta');
+        } else {
+            console.log('dodawanie oferty nie powiodlo sie');
+            console.log(await response.text());
+        }
+    }
 }

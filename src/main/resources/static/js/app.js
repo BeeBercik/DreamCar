@@ -28,11 +28,15 @@ async function navigateTo(page, registered = false, data = null) {
                     form_div_message.innerHTML = data;
                 }
                 break;
+            case 'new-offer':
+                document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
+                break;
             default: 
                 break;
         }
     } catch (error) {
         content_div.innerHTML = `<h2>${error.message}!</h2>`;
+        console.log(error);
     }
 }
 
@@ -95,6 +99,37 @@ async function initUserLogin(event) {
 async function logoutUser() {
     try {
         await ApiService.logoutUser();
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
+}
+
+async function initAddNewOffer(event) {
+    event.preventDefault();
+    try {
+        const user = await ApiService.getLoggedUser();
+        if(user === null) throw new error("User not logged in");
+
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const brand = document.getElementById('brand').value;
+        const mileage = document.getElementById('mileage').value;
+        const gearbox = document.getElementById('gearbox').value;
+        const fuel = document.getElementById('fuel').value;
+        const price = document.getElementById('price').value;
+
+        const offerData = {
+            title: title,
+            description: description,
+            brand: brand,
+            mileage: mileage,
+            user: user.id,
+            gearbox: gearbox,
+            fuel: fuel,
+            price: price
+        }
+
+        await ApiService.addNewOffer(offerData);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }

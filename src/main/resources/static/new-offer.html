@@ -1,6 +1,6 @@
 <div class="add-offer-container">
     <h2>Dodaj nowe ogłoszenie</h2>
-    <form action="/static" method="POST">
+    <form id="new-offer-form">
         <div class="form-group">
             <label for="title">Tytuł:</label>
             <input type="text" id="title" name="title" required>
@@ -15,6 +15,10 @@
             <label for="brand">Marka:</label>
             <input type="text" id="brand" name="brand" required>
         </div>
+        <div class="form-group">
+            <label for="year">Rok produkcji:</label>
+            <input type="number" id="year" name="year" required>
+        </div>
 
         <div class="form-group">
             <label for="mileage">Przebieg (km):</label>
@@ -22,20 +26,19 @@
         </div>
 
         <div class="form-group">
-            <label for="transmission">Rodzaj skrzyni biegów:</label>
-            <select id="transmission" name="transmission" required>
-                <option value="manual">Manualna</option>
-                <option value="automatic">Automatyczna</option>
+            <label for="gearbox">Rodzaj skrzyni biegów:</label>
+            <select id="gearbox" name="gearbox" required>
+                <option value="2">Manualna</option>
+                <option value="1">Automatyczna</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="fuel">Rodzaj paliwa:</label>
             <select id="fuel" name="fuel" required>
-                <option value="petrol">Benzyna</option>
-                <option value="diesel">Diesel</option>
-                <option value="electric">Elektryczny</option>
-                <option value="hybrid">Hybrydowy</option>
+                <option value="1">Benzyna</option>
+                <option value="2">Diesel</option>
+                <option value="3">LPG</option>
             </select>
         </div>
 
