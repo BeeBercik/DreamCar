@@ -2,7 +2,7 @@ navigateTo('index');
 
 window.addEventListener('DOMContentLoaded', ApiService.checkIfUserLoggedIn);
 
-async function navigateTo(page, flag = false, data = null) {
+async function navigateTo(page, registered = false, data = null) {
     ApiService.checkIfUserLoggedIn();
     const content_div = document.getElementById('content');
 
@@ -11,22 +11,25 @@ async function navigateTo(page, flag = false, data = null) {
         if(!response.ok) throw new error("Page not found!");
         const data = await response.text();
 
-        if(page === "index") {
-            // spring sam wczyt adomyslnie index
-            loadAllOffers();
-        } else {
-            content_div.innerHTML = data;
-        }
-        if(page === "register") {
-            document.getElementById("register-form").addEventListener('submit', initUserRegister);
-        }
-        if(page === 'login' && flag) {
-            const form_div_message = document.getElementById('form-message');
-            form_div_message.classList.add('successfull-register');
-            form_div_message.innerHTML = data;
-        }
-        if(page === "login") {
-            document.getElementById('login-form').addEventListener('submit', initUserLogin);
+        content_div.innerHTML = data;
+        switch(page) {
+            case 'index':
+                loadAllOffers();
+                break;
+            case 'register':
+                document.getElementById("register-form").addEventListener('submit', initUserRegister);
+                break;
+            case 'login':
+                document.getElementById('login-form').addEventListener('submit', initUserLogin);
+
+                if(registered) {
+                    const form_div_message = document.getElementById('form-message');
+                    form_div_message.classList.add('successfull-register');
+                    form_div_message.innerHTML = data;
+                }
+                break;
+            default: 
+                break;
         }
     } catch (error) {
         content_div.innerHTML = `<h2>${error.message}!</h2>`;
