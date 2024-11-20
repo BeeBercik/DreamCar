@@ -24,13 +24,8 @@ class ApiService {
         });
 
         const message = await respone.text(); 
-        if(!respone.ok) {
-            const form_div_message = document.getElementById('form-message');
-            form_div_message.classList.add('incorrect-data');
-            form_div_message.innerHTML = message;
-        } else {
-            navigateTo('login', true, message);
-        }
+        if(respone.ok) navigateTo('login', true, message);
+        else UI.showIncorrectRegisterMessage(message);
     }
 
     static async loginUser(userData) {
@@ -40,14 +35,10 @@ class ApiService {
             body: JSON.stringify(userData)
         });
 
-        if(response.ok) {
-            navigateTo('index');
-            console.log('zalogowano')
-        } else {
+        if(response.ok) navigateTo('index');
+        else {
             const message = await response.text();
-            const form_div_message = document.getElementById('form-message');
-            form_div_message.classList.add('incorrect-data');
-            form_div_message.innerHTML = message;
+            UI.showIncorrectLoginMessage(message);
         }
     }
 
@@ -72,19 +63,19 @@ class ApiService {
     }
 
     static async addNewOffer(offerData) {
-        console.log(offerData);
-        
         const response = await fetch('/api/addNewOffer', {
             method: 'POST',
             headers: {'Content-type': 'application/JSON'},
             body: JSON.stringify(offerData)
         });
 
+        const message = await response.text();
         if(response.ok) {
             console.log('dodano nowa oferta');
+            navigateTo('user-profile', true, message);
         } else {
-            console.log('dodawanie oferty nie powiodlo sie');
-            console.log(await response.text());
+            const message = await response.text();
+            UI.showIncorrectAddingNewOfferMessage(message);
         }
     }
 }

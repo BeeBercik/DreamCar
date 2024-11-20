@@ -2,7 +2,7 @@ navigateTo('index');
 
 window.addEventListener('DOMContentLoaded', ApiService.checkIfUserLoggedIn);
 
-async function navigateTo(page, registered = false, data = null) {
+async function navigateTo(page, registered = false, message = null) {
     ApiService.checkIfUserLoggedIn();
     const content_div = document.getElementById('content');
 
@@ -22,11 +22,7 @@ async function navigateTo(page, registered = false, data = null) {
             case 'login':
                 document.getElementById('login-form').addEventListener('submit', initUserLogin);
 
-                if(registered) {
-                    const form_div_message = document.getElementById('form-message');
-                    form_div_message.classList.add('successfull-register');
-                    form_div_message.innerHTML = data;
-                }
+                if(registered) UI.showSuccessfullRegisterMessage(message);
                 break;
             case 'new-offer':
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);

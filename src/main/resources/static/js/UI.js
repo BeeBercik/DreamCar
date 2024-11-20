@@ -76,4 +76,28 @@ class UI {
         document.getElementById('user-button').style.display = 'block';
         document.getElementById('profile-button').style.display = 'none';
     }
+
+    static showIncorrectRegisterMessage(message) {
+        const form_div_message = document.getElementById('register-form-message');
+        form_div_message.classList.add('incorrect-data');
+        form_div_message.innerHTML = message;
+    }
+
+    static showIncorrectLoginMessage(message) {
+        const form_div_message = document.getElementById('login-form-message');
+        form_div_message.classList.add('incorrect-data');
+        form_div_message.innerHTML = message;
+    }
+
+    static showIncorrectAddingNewOfferMessage(message) {
+        const form_div_message = document.getElementById('new-offer-form-message');
+        form_div_message.classList.add('incorrect-data');
+        form_div_message.innerHTML = message;
+    }
+
+    static showSuccessfullRegisterMessage(message) {
+        const form_div_message = document.getElementById('login-form-message');
+        form_div_message.classList.add('successfull-register');
+        form_div_message.innerHTML = message;
+    }
 }
