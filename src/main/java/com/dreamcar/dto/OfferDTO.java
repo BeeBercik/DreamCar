@@ -11,11 +11,11 @@ public class OfferDTO {
     private String title;
     private String description;
     private String brand;
-    private int mileage;
-    private int year;
-    private int price;
+    private Integer mileage;
+    private Integer year;
+    private Integer price;
     private Date add_date;
-    private int user;
-    private int fuel;
-    private int gearbox;
+    private Integer user;
+    private Integer fuel;
+    private Integer gearbox;
 }

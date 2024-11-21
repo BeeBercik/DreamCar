@@ -112,6 +112,7 @@ async function initAddNewOffer(event) {
         const mileage = document.getElementById('mileage').value;
         const gearbox = document.getElementById('gearbox').value;
         const fuel = document.getElementById('fuel').value;
+        const year = document.getElementById('year').value;
         const price = document.getElementById('price').value;
 
         const offerData = {
@@ -119,14 +120,16 @@ async function initAddNewOffer(event) {
             description: description,
             brand: brand,
             mileage: mileage,
+            year: year,
+            price: price,
             user: user.id,
             gearbox: gearbox,
-            fuel: fuel,
-            price: price
+            fuel: fuel
         }
 
         await ApiService.addNewOffer(offerData);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
+        console.log(error);
     }
 }

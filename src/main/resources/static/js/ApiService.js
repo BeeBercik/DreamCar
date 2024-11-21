@@ -73,9 +73,6 @@ class ApiService {
         if(response.ok) {
             console.log('dodano nowa oferta');
             navigateTo('user-profile', true, message);
-        } else {
-            const message = await response.text();
-            UI.showIncorrectAddingNewOfferMessage(message);
-        }
+        } else  UI.showIncorrectAddingNewOfferMessage(message);
     }
 }

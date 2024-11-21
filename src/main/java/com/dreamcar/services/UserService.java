@@ -4,7 +4,6 @@ import com.dreamcar.dto.UserDTO;
 import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,7 +18,7 @@ public class UserService {
     UserValidator userValidator;
 
     public void registerUser(UserDTO userDTO) {
-        userValidator.validateRegistration(userDTO);
+        userValidator.validateUserRegistration(userDTO);
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Email already exists");

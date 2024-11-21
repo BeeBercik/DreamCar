@@ -24,15 +24,6 @@ public class OfferController {
     @Autowired
     OfferService offerService;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    FuelRepository fuelRepository;
-
-    @Autowired
-    GearboxRepository gearboxRepository;
-
     @GetMapping("/allOffers")
     public List<Offer> getAllOffers() {
         return this.offerRepository.findAll();
@@ -46,25 +37,14 @@ public class OfferController {
     @PostMapping("/addNewOffer")
     public ResponseEntity<?> addNewOffer(@RequestBody OfferDTO offerDTO) {
         try {
-//            validate new offer form data
 //            z js zwracamy np fule jako int id, a mapuje na offer gdzie fuel to obiekt
 //            z formualrza zwracalo fuel itd name zamiast id
 //            daj logike do service i stworz validate dla pol ;)
-            Offer offer = new Offer();
-            offer.setTitle(offerDTO.getTitle());
-            offer.setDescription(offerDTO.getDescription());
-            offer.setBrand(offerDTO.getBrand());
-            offer.setMileage(offerDTO.getMileage());
-            offer.setPrice(offerDTO.getPrice());
-            offer.setAdd_date(new Date());
 
-            offer.setUser(this.userRepository.findById(offerDTO.getUser()).get());
-            offer.setFuel(this.fuelRepository.findById(offerDTO.getFuel()).get());
-            offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).get());
+            this.offerService.addNewOffer(offerDTO);
 
-            this.offerRepository.save(offer);
             return ResponseEntity.ok("New offer added");
-        } catch(Exception e) {
+        } catch(IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

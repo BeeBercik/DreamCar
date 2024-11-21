@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserValidator {
 
-    public void validateRegistration(UserDTO userDTO) {
+    public void validateUserRegistration(UserDTO userDTO) {
         if(userDTO.getLogin() == null || userDTO.getLogin().trim().isEmpty() ||
                 userDTO.getPassword() == null || userDTO.getPassword().trim().isEmpty() ||
                 userDTO.getRep_password() == null || userDTO.getRep_password().trim().isEmpty() ||
