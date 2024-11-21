@@ -44,16 +44,10 @@ class ApiService {
 
     static async checkIfUserLoggedIn() {
         const response = await fetch("/api/isUserLoggedIn");
-        if(response.ok) UI.updateUiForUser(); 
-        else UI.updateUiForGuest();
-    }
-
-    static async getLoggedUser() {
-        const response = await fetch("/api/isUserLoggedIn");
         if(response.ok) {
-            const user = await response.json();
-            return user;
-        } else return null;
+            UI.updateUiForUser(); 
+            return await response.json();
+        } else UI.updateUiForGuest();
     }
 
     static async logoutUser() {
@@ -71,7 +65,6 @@ class ApiService {
 
         const message = await response.text();
         if(response.ok) {
-            console.log('dodano nowa oferta');
             navigateTo('user-profile', true, message);
         } else  UI.showIncorrectAddingNewOfferMessage(message);
     }

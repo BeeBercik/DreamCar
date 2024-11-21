@@ -28,10 +28,7 @@ class UI {
     }
 
     static displayOfferDetails(offer) {
-        const content_div = document.getElementById('content');
-        content_div.innerHTML = '';
-
-        content_div.innerHTML = `
+        document.getElementById('content').innerHTML = `
         <div class="offer-details-container">
             <div class="offer-content">
                 <div class="offer-image">
@@ -99,5 +96,33 @@ class UI {
         const form_div_message = document.getElementById('login-form-message');
         form_div_message.classList.add('successfull-register');
         form_div_message.innerHTML = message;
+    }
+
+    static generateUserProfile(user) {
+        document.getElementById('content').innerHTML = 
+        `<div class="profile-container"> 
+        <section class="profile-info">
+            <img src="/img/user.jpg" class="profile-img">
+            <div class="user-details">
+            <h2>${user.login}</h2>
+            <p>E-mail: ${user.email}</p>
+            <p>Tel.: ${user.phone}</p>
+            </div>
+        </section>
+
+        <section class="active-offers">
+            <div class="active-offers-header">
+            <h3>Twoje aktywne ogłoszenia</h3>
+            <a href="#" class="add-offer-btn" onclick="navigateTo('new-offer')">+ Dodaj nowe ogłoszenie</a>
+            </div>
+
+            <div class="user-offer-list">
+            
+            </div>
+        </section>
+        <div class="logout-container">
+            <button class="logout-btn" id="logout-btn" onclick="logoutUser()">Wyloguj się</button>
+        </div>
+        </div>`
     }
 }

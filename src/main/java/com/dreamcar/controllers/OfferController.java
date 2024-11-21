@@ -37,10 +37,6 @@ public class OfferController {
     @PostMapping("/addNewOffer")
     public ResponseEntity<?> addNewOffer(@RequestBody OfferDTO offerDTO) {
         try {
-//            z js zwracamy np fule jako int id, a mapuje na offer gdzie fuel to obiekt
-//            z formualrza zwracalo fuel itd name zamiast id
-//            daj logike do service i stworz validate dla pol ;)
-
             this.offerService.addNewOffer(offerDTO);
 
             return ResponseEntity.ok("New offer added");

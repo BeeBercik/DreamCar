@@ -133,3 +133,8 @@ async function initAddNewOffer(event) {
         console.log(error);
     }
 }
+
+async function initUserProfile() {
+    const user = await ApiService.checkIfUserLoggedIn();
+    UI.generateUserProfile(user);
+}

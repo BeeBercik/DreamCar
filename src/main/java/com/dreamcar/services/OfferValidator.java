@@ -4,15 +4,6 @@ import com.dreamcar.dto.OfferDTO;
 
 public class OfferValidator {
     static void validateNewOffer(OfferDTO offerDTO) {
-//        title: title,
-//                description: description,
-//                brand: brand,
-//                mileage: mileage,
-//                year: year,
-//                price: price,
-//                user: user.id,
-//                gearbox: gearbox,
-//                fuel: fuel
         if(offerDTO.getTitle() == null || offerDTO.getTitle().trim().isEmpty() ||
         offerDTO.getDescription() == null || offerDTO.getDescription().trim().isEmpty() ||
         offerDTO.getBrand() == null || offerDTO.getBrand().trim().isEmpty() ||
