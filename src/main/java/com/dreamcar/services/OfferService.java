@@ -1,6 +1,7 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.OfferDTO;
+import com.dreamcar.dto.UserDTO;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.FuelRepository;
 import com.dreamcar.repositories.GearboxRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OfferService {

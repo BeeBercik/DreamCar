@@ -50,6 +50,23 @@ class ApiService {
         } else UI.updateUiForGuest();
     }
 
+    static async getLoggedUser() {
+        const response = await fetch("/api/isUserLoggedIn");
+        if(response.ok) return await response.json();
+        else navigateTo('login');
+    }
+
+    static async loadUserOffers() {
+        const response = await fetch("/api/getUserOffers");
+        if(response.ok) {
+            const offers = await response.json();
+            UI.loadUserOffers(offers);
+        } else {
+            console.log('nie udalo sie wyswietlic ofert usera');
+            console.log(await response.text())
+        };
+    }
+
     static async logoutUser() {
         const response = await fetch('/api/logoutUser');
         if(!response) throw new error("Some problems with logging out..");

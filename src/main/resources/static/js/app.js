@@ -136,5 +136,7 @@ async function initAddNewOffer(event) {
 
 async function initUserProfile() {
     const user = await ApiService.checkIfUserLoggedIn();
+    console.log(user);
     UI.generateUserProfile(user);
+    await ApiService.loadUserOffers();
 }

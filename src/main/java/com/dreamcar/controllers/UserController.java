@@ -1,19 +1,26 @@
 package com.dreamcar.controllers;
 
 import com.dreamcar.dto.UserDTO;
+import com.dreamcar.model.Offer;
 import com.dreamcar.model.User;
+import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -51,5 +58,16 @@ public class UserController {
         session.invalidate();
 
         return ResponseEntity.ok("User logged out");
+    }
+
+    @GetMapping("/getUserOffers")
+    public ResponseEntity<?> getUserOffers(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO != null) {
+            User user = this.userRepository.findById(userDTO.getId()).get();
+            List<Offer> userOffers = user.getOffers();
+
+            return ResponseEntity.ok(userOffers);
+        } else return ResponseEntity.badRequest().body("User not logged in");
     }
 }

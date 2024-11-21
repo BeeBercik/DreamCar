@@ -116,7 +116,7 @@ class UI {
             <a href="#" class="add-offer-btn" onclick="navigateTo('new-offer')">+ Dodaj nowe ogłoszenie</a>
             </div>
 
-            <div class="user-offer-list">
+            <div class="user-offer-list" id="user-offer-list">
             
             </div>
         </section>
@@ -124,5 +124,27 @@ class UI {
             <button class="logout-btn" id="logout-btn" onclick="logoutUser()">Wyloguj się</button>
         </div>
         </div>`
+    }
+
+    static loadUserOffers(offers) {
+        const userOffersDiv = document.getElementById('user-offer-list');
+        offers.forEach(offer => {
+            const userOfferArticle = document.createElement('article');
+            userOfferArticle.innerHTML = ` <a href="#" class="offer-link" onclick="showOfferDetails(${offer.id})">
+                <article class="offer">
+                <img src="/img/car.jpg" alt="Samochód 1" class="offer-img">
+                <div class="offer-details">
+                    <h4>${offer.title}</h4>
+                    <p>Rocznik: ${offer.year}, Przebieg: ${offer.mileage} km</p>
+                    <p class="price"><span>${offer.price}</span> PLN</p>
+                </div>
+                <div class="offer-actions">
+                    <a href="#" class="edit-btn" onclick="showOfferDetails(${offer.id})">Edytuj</a>
+                    <a href="delete.html" class="delete-btn">Usun</a>
+                </div>
+                </article>
+            </a>`
+            userOffersDiv.append(userOfferArticle);
+        }); 
     }
 }
