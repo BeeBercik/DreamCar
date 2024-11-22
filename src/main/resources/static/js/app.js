@@ -1,4 +1,5 @@
-navigateTo('index');
+ApiService.checkIfUserLoggedIn();
+loadAllOffers();
 
 window.addEventListener('DOMContentLoaded', ApiService.checkIfUserLoggedIn);
 
@@ -11,7 +12,8 @@ async function navigateTo(page, registered = false, message = null) {
         if(!response.ok) throw new error("Page not found!");
         const data = await response.text();
 
-        content_div.innerHTML = data;
+        content_div.innerHTML = '';
+        if(page !== 'index') content_div.innerHTML = data;
         switch(page) {
             case 'index':
                 loadAllOffers();
@@ -104,7 +106,6 @@ async function initAddNewOffer(event) {
     event.preventDefault();
     try {
         const user = await ApiService.getLoggedUser();
-        if(user === null) throw new error("User not logged in");
 
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
@@ -130,13 +131,15 @@ async function initAddNewOffer(event) {
         await ApiService.addNewOffer(offerData);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
-        console.log(error);
     }
 }
 
 async function initUserProfile() {
-    const user = await ApiService.checkIfUserLoggedIn();
-    console.log(user);
-    UI.generateUserProfile(user);
-    await ApiService.loadUserOffers();
+    try {
+        const user = await ApiService.getLoggedUser();
+        UI.generateUserProfile(user);
+        await ApiService.getUserOffers();
+    } catch (error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
 }

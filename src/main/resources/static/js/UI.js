@@ -2,7 +2,6 @@
 class UI {
     static displayAllOffers(offers) {
         const content_div = document.getElementById('content');
-        content_div.innerHTML = '';
 
         offers.forEach(offer => {
             const offerArticle = document.createElement('article');

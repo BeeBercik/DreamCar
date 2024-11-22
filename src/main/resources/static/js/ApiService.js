@@ -2,18 +2,16 @@
 class ApiService {
     static async getAllOffers() {
         const response = await fetch("/api/allOffers");
-        if(!response) throw new error("Some problems with loading offers..");
-        const offers = await response.json();
+        if(!response.ok) throw new error("Some problems with loading offers.."); 
         
-        return offers;
+        return await response.json();
     }
 
     static async getOfferDetails(id) {
         const response = await fetch("/api/offerDetails/" + id);
-        if(!response) throw new error("Some problems with offer details..");
-        const offer = await response.json();
+        if(!response.ok) throw new error("Some problems with offer details..");
         
-        return offer;
+        return await response.json();;
     }
 
     static async registerUser(userData) {
@@ -42,6 +40,12 @@ class ApiService {
         }
     }
 
+    static async logoutUser() {
+        const response = await fetch('/api/logoutUser');
+        if(!response.ok) throw new error("Some problems with logging out..");
+        navigateTo('index');
+    }
+
     static async checkIfUserLoggedIn() {
         const response = await fetch("/api/isUserLoggedIn");
         if(response.ok) {
@@ -53,24 +57,21 @@ class ApiService {
     static async getLoggedUser() {
         const response = await fetch("/api/isUserLoggedIn");
         if(response.ok) return await response.json();
-        else navigateTo('login');
+        else {
+            alert('Session expired. Log in again');
+            navigateTo('login');
+        }
     }
 
-    static async loadUserOffers() {
+    static async getUserOffers() {
         const response = await fetch("/api/getUserOffers");
         if(response.ok) {
             const offers = await response.json();
             UI.loadUserOffers(offers);
         } else {
-            console.log('nie udalo sie wyswietlic ofert usera');
-            console.log(await response.text())
+            alert('Session expired. Log in again');
+            navigateTo('login');
         };
-    }
-
-    static async logoutUser() {
-        const response = await fetch('/api/logoutUser');
-        if(!response) throw new error("Some problems with logging out..");
-        if(response.ok) navigateTo('index');
     }
 
     static async addNewOffer(offerData) {
@@ -81,8 +82,8 @@ class ApiService {
         });
 
         const message = await response.text();
-        if(response.ok) {
+        if(response.ok)
             navigateTo('user-profile', true, message);
-        } else  UI.showIncorrectAddingNewOfferMessage(message);
+        else  UI.showIncorrectAddingNewOfferMessage(message);
     }
 }
