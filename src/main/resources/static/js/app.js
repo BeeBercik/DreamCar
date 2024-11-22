@@ -26,9 +26,16 @@ async function navigateTo(page, registered = false, message = null) {
 
                 if(registered) UI.showSuccessfullRegisterMessage(message);
                 break;
+            case 'user-profile':
+                const user = await ApiService.getLoggedUser();
+                UI.generateUserProfile(user);
+                await ApiService.getUserOffers();
+                break;
             case 'new-offer':
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
                 break;
+            case 'edit-offer':
+                document.getElementById('new-offer-form').addEventListener('submit', initEditOffer);
             default: 
                 break;
         }
@@ -107,39 +114,55 @@ async function initAddNewOffer(event) {
     try {
         const user = await ApiService.getLoggedUser();
 
-        const title = document.getElementById('title').value;
-        const description = document.getElementById('description').value;
-        const brand = document.getElementById('brand').value;
-        const mileage = document.getElementById('mileage').value;
-        const gearbox = document.getElementById('gearbox').value;
-        const fuel = document.getElementById('fuel').value;
-        const year = document.getElementById('year').value;
-        const price = document.getElementById('price').value;
-
-        const offerData = {
-            title: title,
-            description: description,
-            brand: brand,
-            mileage: mileage,
-            year: year,
-            price: price,
-            user: user.id,
-            gearbox: gearbox,
-            fuel: fuel
-        }
-
-        await ApiService.addNewOffer(offerData);
+        await ApiService.addNewOffer(getOfferData(user));
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }
 }
 
-async function initUserProfile() {
+async function initEditOffer(offerId, event) {
+    event.preventDefault();
     try {
         const user = await ApiService.getLoggedUser();
-        UI.generateUserProfile(user);
-        await ApiService.getUserOffers();
+
+        await ApiService.editUserOffer(offerId, getOfferData(user));
+    } catch (error) {
+        document.getElementById('content').innerHTML = error.message;
+        console.log(error);
+    }
+}
+
+async function initDisplayOfferToEdit(id) {
+    try {
+        const offer = await ApiService.getOffer(id);
+        
+        UI.generateUserOfferToEdit(offer);
     } catch (error) {
         document.getElementById('content').innerHTML = error.message;
     }
+}
+
+function getOfferData(user) {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const brand = document.getElementById('brand').value;
+    const mileage = document.getElementById('mileage').value;
+    const gearbox = document.getElementById('gearbox').value;
+    const fuel = document.getElementById('fuel').value;
+    const year = document.getElementById('year').value;
+    const price = document.getElementById('price').value;
+
+    const offerData = {
+        title: title,
+        description: description,
+        brand: brand,
+        mileage: mileage,
+        year: year,
+        price: price,
+        user: user.id,
+        gearbox: gearbox,
+        fuel: fuel
+    }
+    
+    return offerData;
 }

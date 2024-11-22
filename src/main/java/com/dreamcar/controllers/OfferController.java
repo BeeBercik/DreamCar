@@ -1,19 +1,24 @@
 package com.dreamcar.controllers;
 
 import com.dreamcar.dto.OfferDTO;
+import com.dreamcar.dto.UserDTO;
 import com.dreamcar.model.Fuel;
 import com.dreamcar.model.Offer;
+import com.dreamcar.model.User;
 import com.dreamcar.repositories.FuelRepository;
 import com.dreamcar.repositories.GearboxRepository;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.OfferService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -43,5 +48,23 @@ public class OfferController {
         } catch(IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/editUserOffer/{id}")
+    public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO ) {
+        try {
+            this.offerService.editUserOffer(offerId, offerDTO);
+
+            return ResponseEntity.ok("Offer successfully edited");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getOffer/{id}")
+    public ResponseEntity<?> getOffer(@PathVariable("id") int offerId) {
+        Optional<Offer> offer = this.offerRepository.findById(offerId);
+        if(offer.isPresent()) return ResponseEntity.ok(offer.get());
+        else return ResponseEntity.badRequest().body("Offer not found");
     }
 }

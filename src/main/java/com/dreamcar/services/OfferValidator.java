@@ -3,7 +3,7 @@ package com.dreamcar.services;
 import com.dreamcar.dto.OfferDTO;
 
 public class OfferValidator {
-    static void validateNewOffer(OfferDTO offerDTO) {
+    static void validateOffer(OfferDTO offerDTO) {
         if(offerDTO.getTitle() == null || offerDTO.getTitle().trim().isEmpty() ||
         offerDTO.getDescription() == null || offerDTO.getDescription().trim().isEmpty() ||
         offerDTO.getBrand() == null || offerDTO.getBrand().trim().isEmpty() ||

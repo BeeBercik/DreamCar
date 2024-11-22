@@ -56,11 +56,9 @@ class ApiService {
 
     static async getLoggedUser() {
         const response = await fetch("/api/isUserLoggedIn");
-        if(response.ok) return await response.json();
-        else {
-            alert('Session expired. Log in again');
-            navigateTo('login');
-        }
+        if(!response.ok) throw new error(await response.text());
+        
+        return await response.json();
     }
 
     static async getUserOffers() {
@@ -81,9 +79,25 @@ class ApiService {
             body: JSON.stringify(offerData)
         });
 
-        const message = await response.text();
-        if(response.ok)
-            navigateTo('user-profile', true, message);
-        else  UI.showIncorrectAddingNewOfferMessage(message);
+        if(response.ok) navigateTo('user-profile');
+        else UI.showIncorrectOfferFormMessage(await response.text());
+    }
+
+    static async editUserOffer(id, offerData) {
+        const response = await fetch("/api/editUserOffer/" + id, {
+            method: 'POST',
+            headers: {'Content-type': 'application/JSON'},
+            body: JSON.stringify(offerData)
+        });
+
+        if(response.ok) navigateTo('user-profile');
+        else UI.showIncorrectOfferFormMessage(await response.text());   
+    }
+
+    static async getOffer(id) {
+        const response = await fetch("/api/getOffer/" + id);
+        if(!response.ok) throw new error(await response.text());
+
+        return await response.json();
     }
 }

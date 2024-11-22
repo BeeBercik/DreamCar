@@ -85,8 +85,8 @@ class UI {
         form_div_message.innerHTML = message;
     }
 
-    static showIncorrectAddingNewOfferMessage(message) {
-        const form_div_message = document.getElementById('new-offer-form-message');
+    static showIncorrectOfferFormMessage(message) {
+        const form_div_message = document.getElementById('offer-form-message');
         form_div_message.classList.add('incorrect-data');
         form_div_message.innerHTML = message;
     }
@@ -98,31 +98,9 @@ class UI {
     }
 
     static generateUserProfile(user) {
-        document.getElementById('content').innerHTML = 
-        `<div class="profile-container"> 
-        <section class="profile-info">
-            <img src="/img/user.jpg" class="profile-img">
-            <div class="user-details">
-            <h2>${user.login}</h2>
-            <p>E-mail: ${user.email}</p>
-            <p>Tel.: ${user.phone}</p>
-            </div>
-        </section>
-
-        <section class="active-offers">
-            <div class="active-offers-header">
-            <h3>Twoje aktywne ogłoszenia</h3>
-            <a href="#" class="add-offer-btn" onclick="navigateTo('new-offer')">+ Dodaj nowe ogłoszenie</a>
-            </div>
-
-            <div class="user-offer-list" id="user-offer-list">
-            
-            </div>
-        </section>
-        <div class="logout-container">
-            <button class="logout-btn" id="logout-btn" onclick="logoutUser()">Wyloguj się</button>
-        </div>
-        </div>`
+        document.getElementById('user-login').innerHTML = user.login;
+        document.getElementById('user-email').innerHTML = user.email;
+        document.getElementById('user-phone').innerHTML = user.phone;
     }
 
     static loadUserOffers(offers) {
@@ -138,7 +116,7 @@ class UI {
                     <p class="price"><span>${offer.price}</span> PLN</p>
                 </div>
                 <div class="offer-actions">
-                    <a href="#" class="edit-btn" onclick="showOfferDetails(${offer.id})">Edytuj</a>
+                    <a href="#" class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</a>
                     <a href="delete.html" class="delete-btn">Usun</a>
                 </div>
                 </article>
@@ -146,4 +124,52 @@ class UI {
             userOffersDiv.append(userOfferArticle);
         }); 
     }
+
+    static generateUserOfferToEdit(offer) {
+        document.getElementById('content').innerHTML = `
+        <div class="edit-offer-container">
+        <div id="offer-form-message"></div>
+        <h2>Edytuj Ogłoszenie</h2>
+        <form class="edit-offer-form" id="edit-offer-form">
+            <label for="title">Tytuł</label>
+            <input type="text" id="title" name="title" required value="${offer.title}"/>
+
+            <label for="description">Opis</label>
+            <textarea id="description" name="description" rows="4" required >${offer.description}</textarea>
+
+            <label for="brand">Marka</label>
+            <input type="text" id="brand" name="brand" required value="${offer.brand}"/>
+
+            <div class="form-group">
+            <label for="year">Rok produkcji:</label>
+            <input type="number" id="year" name="year" value="${offer.year}">
+            </div>
+
+            <label for="mileage">Przebieg (km)</label>
+            <input type="number" id="mileage" name="mileage" required value="${offer.mileage}"/>
+
+            <label for="gearbox">Skrzynia biegów</label>
+            <select id="gearbox" name="gearbox" required>
+                <option value="1">Automatyczna</option>
+                <option value="2">Manualna</option>
+            </select>
+
+            <label for="fuel">Rodzaj paliwa</label>
+            <select id="fuel" name="fuel" required>
+                <option value="1">Benzyna</option>
+                <option value="2">Diesel</option>
+                <option value="3">LPG</option>
+                
+            </select>
+
+            <label for="price">Cena (PLN)</label>
+            <input type="number" id="price" name="price" required value="${offer.price}"/>
+
+            <button type="submit" onclick="initEditOffer(${offer.id}, event)">Zapisz zmiany</button>
+        </form>
+        </div>
+`
+        document.getElementById('fuel').value = offer.fuel.id;
+        document.getElementById('gearbox').value = offer.gearbox.id;
+   }
 }
