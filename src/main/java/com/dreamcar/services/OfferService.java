@@ -1,7 +1,9 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.OfferDTO;
+import com.dreamcar.dto.UserDTO;
 import com.dreamcar.model.Offer;
+import com.dreamcar.model.User;
 import com.dreamcar.repositories.FuelRepository;
 import com.dreamcar.repositories.GearboxRepository;
 import com.dreamcar.repositories.OfferRepository;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Service
 public class OfferService {
@@ -60,5 +63,15 @@ public class OfferService {
         offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).get());
 
         this.offerRepository.save(offer);
+    }
+
+    public void deleteUserOffer(int offerId, UserDTO userDTO) {
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+
+        if(offer.getUser().getId() != user.getId()) {
+            throw new NoSuchElementException("You dont have offer with such id");
+        }
+        this.offerRepository.delete(offer);
     }
 }

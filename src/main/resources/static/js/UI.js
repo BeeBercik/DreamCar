@@ -117,7 +117,7 @@ class UI {
                 </div>
                 <div class="offer-actions">
                     <a href="#" class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</a>
-                    <a href="delete.html" class="delete-btn">Usun</a>
+                    <a href="#" onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</a>
                 </div>
                 </article>
             </a>`

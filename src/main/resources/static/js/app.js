@@ -9,7 +9,7 @@ async function navigateTo(page, registered = false, message = null) {
 
     try {
         const response = await fetch(`../${page}.html`);
-        if(!response.ok) throw new error("Page not found!");
+        if(!response.ok) throw new Error("Page not found!");
         const data = await response.text();
 
         content_div.innerHTML = '';
@@ -139,6 +139,16 @@ async function initDisplayOfferToEdit(id) {
         UI.generateUserOfferToEdit(offer);
     } catch (error) {
         document.getElementById('content').innerHTML = error.message;
+    }
+}
+
+async function initDeleteOffer(id) {
+    try {
+        ApiService.getLoggedUser();
+        await ApiService.deleteOffer(id);
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+        console.log(error);
     }
 }
 

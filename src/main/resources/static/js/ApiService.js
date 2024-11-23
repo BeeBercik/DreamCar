@@ -2,14 +2,14 @@
 class ApiService {
     static async getAllOffers() {
         const response = await fetch("/api/allOffers");
-        if(!response.ok) throw new error("Some problems with loading offers.."); 
+        if(!response.ok) throw new Error("Some problems with loading offers.."); 
         
         return await response.json();
     }
 
     static async getOfferDetails(id) {
         const response = await fetch("/api/offerDetails/" + id);
-        if(!response.ok) throw new error("Some problems with offer details..");
+        if(!response.ok) throw new Error("Some problems with offer details..");
         
         return await response.json();;
     }
@@ -42,7 +42,7 @@ class ApiService {
 
     static async logoutUser() {
         const response = await fetch('/api/logoutUser');
-        if(!response.ok) throw new error("Some problems with logging out..");
+        if(!response.ok) throw new Error("Some problems with logging out..");
         navigateTo('index');
     }
 
@@ -56,7 +56,7 @@ class ApiService {
 
     static async getLoggedUser() {
         const response = await fetch("/api/isUserLoggedIn");
-        if(!response.ok) throw new error(await response.text());
+        if(!response.ok) throw new Error(await response.text());
         
         return await response.json();
     }
@@ -96,8 +96,15 @@ class ApiService {
 
     static async getOffer(id) {
         const response = await fetch("/api/getOffer/" + id);
-        if(!response.ok) throw new error(await response.text());
+        if(!response.ok) throw new Error(await response.text());
 
         return await response.json();
+    }
+
+    static async deleteOffer(id) {
+        const response = await fetch("/api/deleteOffer/" + id);
+        console.log(response);
+        if(!response.ok) throw new Error(await response.text());
+        else navigateTo('user-profile');
     }
 }

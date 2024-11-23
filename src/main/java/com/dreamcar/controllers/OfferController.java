@@ -67,4 +67,15 @@ public class OfferController {
         if(offer.isPresent()) return ResponseEntity.ok(offer.get());
         else return ResponseEntity.badRequest().body("Offer not found");
     }
+
+    @GetMapping("/deleteOffer/{id}")
+    public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
+        try {
+            UserDTO userDTO = (UserDTO) session.getAttribute("user");
+            this.offerService.deleteUserOffer(offerId, userDTO);
+            return ResponseEntity.ok("Offer successfully deleted");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
