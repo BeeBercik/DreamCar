@@ -107,4 +107,18 @@ class ApiService {
         if(!response.ok) throw new Error(await response.text());
         else navigateTo('user-profile');
     }
+
+    static async getFavourites() {
+        const response = await fetch('/api/getFavouriteUserOffers');
+
+        if(!response.ok) {
+            const message = await response.text();
+            if(message == 'You are not logged in')
+                UI.displayNotLoggedInMessagesInFavourites();
+            else if(message == 'You dont have any favourite offer')
+                UI.displayLackOfFavouriteOffersMessage();
+            return;
+        }
+        UI.displayFavourites(await response.json());
+    }
 }

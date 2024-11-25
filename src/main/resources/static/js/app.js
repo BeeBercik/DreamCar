@@ -36,6 +36,10 @@ async function navigateTo(page, registered = false, message = null) {
                 break;
             case 'edit-offer':
                 document.getElementById('new-offer-form').addEventListener('submit', initEditOffer);
+                break;
+            case 'favourites':
+                initLoadFavourites();
+                break;
             default: 
                 break;
         }
@@ -148,7 +152,6 @@ async function initDeleteOffer(id) {
         await ApiService.deleteOffer(id);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
-        console.log(error);
     }
 }
 
@@ -176,3 +179,12 @@ function getOfferData(user) {
     
     return offerData;
 }
+
+async function initLoadFavourites() {
+    try {
+        await ApiService.getFavourites();
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+    }
+}
+

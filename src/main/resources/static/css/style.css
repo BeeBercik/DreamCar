@@ -638,6 +638,21 @@ background-color: #c9302c;
     background-color: #C70039;
 }
 
+/* FAVOURITES - NO FAVOURITE OFFERS *********************** */
+
+.no-favourites-message {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.no-favourites-message p {
+    margin-bottom: 15px;
+    margin-top: 25px;
+    color: #007bff;
+}
+
 /* FAVOURITES - NOT-LOGGED-IN************************************* */
 
 .not-logged-in-container {

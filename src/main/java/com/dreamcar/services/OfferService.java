@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 public class OfferService {
@@ -73,5 +75,13 @@ public class OfferService {
             throw new NoSuchElementException("You dont have offer with such id");
         }
         this.offerRepository.delete(offer);
+    }
+
+    public Set<Offer> getUserFavouriteOffers(UserDTO userDTO) {
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        Set<Offer> favourites = user.getFavourites();
+        if(favourites.isEmpty()) throw new NoSuchElementException("You dont have any favourite offer");
+
+        return favourites;
     }
 }

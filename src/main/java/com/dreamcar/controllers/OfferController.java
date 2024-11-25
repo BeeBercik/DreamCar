@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -72,8 +69,23 @@ public class OfferController {
     public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
         try {
             UserDTO userDTO = (UserDTO) session.getAttribute("user");
+            if(userDTO == null)
+                return ResponseEntity.badRequest().body("You are not logged in");
             this.offerService.deleteUserOffer(offerId, userDTO);
+
             return ResponseEntity.ok("Offer successfully deleted");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getFavouriteUserOffers")
+    public ResponseEntity<?> getFavourites(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
+        try {
+            Set<Offer> favourites = this.offerService.getUserFavouriteOffers(userDTO);
+            return ResponseEntity.ok(favourites);
         } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

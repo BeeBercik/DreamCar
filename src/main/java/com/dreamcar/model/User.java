@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -32,4 +30,12 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Offer> offers = new LinkedList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "favourite_offers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id")
+    )
+    private Set<Offer> favourites = new HashSet<>();
 }

@@ -58,7 +58,7 @@ class UI {
                 <p>e-mail: ${offer.user.email}</p>
                 <p>telefon: ${offer.user.phone}</p>
             </div>
-            <button class="add-to-favorites">Dodaj do ulubionych</button>
+            <button class="add-to-favorites" onclick="initAddToFavourites(${offer.id})">Dodaj do ulubionych</button>
             <p class="offer-date">Dodano: <span>${offer.add_date}</span></p>
         </div>`
     }
@@ -171,5 +171,21 @@ class UI {
 `
         document.getElementById('fuel').value = offer.fuel.id;
         document.getElementById('gearbox').value = offer.gearbox.id;
+   }
+
+   static displayNotLoggedInMessagesInFavourites() {
+        document.getElementById('content').innerHTML = `<div class="not-logged-in-container">
+                <h2>Nie jesteś zalogowany</h2>
+                <p>Aby dodać oferty do ulubionych, musisz być zalogowany.</p>
+                <a href="#" class="login-btn" onclick="navigateTo('login')">Zaloguj się</a>
+            </div>`;
+   }
+
+   static displayLackOfFavouriteOffersMessage() {
+        document.getElementById('content').innerHTML = `<div class="favourites-container" id="favourites-container">
+        <h2>Ulubione Oferty</h2>
+        <div class="no-favourites-message">
+        <p>You dont have any favourite offer yet.</p>
+        </div></div>`;
    }
 }

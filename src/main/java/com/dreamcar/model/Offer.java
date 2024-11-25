@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter @Getter
@@ -37,4 +39,7 @@ public class Offer {
     @ManyToOne
     @JoinColumn(name = "gearbox_id")
     private GearBox gearbox;
+
+    @ManyToMany(mappedBy = "favourites")
+    private Set<User> favourite_by_users = new HashSet<>();
 }
