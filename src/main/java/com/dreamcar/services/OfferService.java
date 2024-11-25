@@ -74,6 +74,11 @@ public class OfferService {
         if(offer.getUser().getId() != user.getId()) {
             throw new NoSuchElementException("You dont have offer with such id");
         }
+
+        Set<User> fav_offer_users = offer.getFavourite_by_users();
+        for(User u : fav_offer_users) {
+            u.getFavourites().remove(offer);
+        }
         this.offerRepository.delete(offer);
     }
 
