@@ -781,6 +781,21 @@ background-color: #c9302c;
     background-color: #43a047;
 }
 
+.remove-from-favorites {
+    margin-top: 50px;
+    padding: 10px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-from-favorites:hover {
+    background-color: #c9302c;
+}
+
 .offer-details-container {
     position: relative;
 }

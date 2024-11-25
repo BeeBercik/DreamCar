@@ -102,4 +102,31 @@ public class OfferController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/isOfferInFavourites/{id}")
+    public ResponseEntity<?> isOfferInFavourites(@PathVariable("id") int offerId, HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
+
+        try {
+            if(this.offerService.checkIfOfferIsInFavourites(offerId, userDTO))
+                return ResponseEntity.ok(true);
+            else throw new NoSuchElementException("Offer is not in favourites");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/removeFromFavourites/{id}")
+    public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
+        try {
+            this.offerService.removeFromFavourites(offerId, userDTO);
+
+            return ResponseEntity.ok("Offer successfully removed from the favourites");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

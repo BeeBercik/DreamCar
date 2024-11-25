@@ -93,4 +93,21 @@ public class OfferService {
         // hibernate wie, ze user byl pobrany z bazy wiec go modyfikuje a nie zapisuje jako nowy
         this.userRepository.save(user);
     }
+
+    public boolean checkIfOfferIsInFavourites(int offerId, UserDTO userDTO) {
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+
+        return user.getFavourites().contains(offer);
+    }
+
+    public void removeFromFavourites(int offerId, UserDTO userDTO) {
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        Offer offer = this.offerRepository.findById(offerId).get();
+
+        if(!user.getFavourites().contains(offer)) throw new NoSuchElementException("You dont have favourite offer with such id");
+
+        user.getFavourites().remove(offer);
+        this.userRepository.save(user);
+    }
 }

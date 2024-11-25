@@ -26,7 +26,7 @@ class UI {
             });
     }
 
-    static displayOfferDetails(offer) {
+    static async displayOfferDetails(offer) {
         document.getElementById('content').innerHTML = `
         <div class="offer-details-container">
             <div class="offer-content">
@@ -58,9 +58,11 @@ class UI {
                 <p>e-mail: ${offer.user.email}</p>
                 <p>telefon: ${offer.user.phone}</p>
             </div>
-            <button class="add-to-favorites" onclick="initAddToFavourites(${offer.id})">Dodaj do ulubionych</button>
-            <p class="offer-date">Dodano: <span>${offer.add_date}</span></p>
+           
+            <button class="add-to-favorites" id="toggleFavouriteBtn">Dodaj do ulubionych</button> 
         </div>`
+
+        await ApiService.toggleFavouriteBtn(offer.id);
     }
 
     static updateUiForUser() {
@@ -205,5 +207,19 @@ class UI {
 
             document.getElementById('user-favourite-list').appendChild(favOfferArticle);
         });
+    }
+
+    static updateToggleFavouriteBtn(id, result) {
+        const favouriteToggleBtn = document.getElementById('toggleFavouriteBtn');
+
+        if(result) {
+            favouriteToggleBtn.className = "remove-from-favorites";
+            favouriteToggleBtn.innerHTML = 'Usun z ulubionych';
+            favouriteToggleBtn.onclick = () => initRemoveFromFavourites(id);
+        } else {
+            favouriteToggleBtn.className = "add-to-favorites";
+            favouriteToggleBtn.innerHTML = 'Dodaj do ulubionych';
+            favouriteToggleBtn.onclick = () => initAddToFavourites(id);
+        }
     }
 }

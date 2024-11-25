@@ -193,6 +193,13 @@ async function initAddToFavourites(id) {
         await ApiService.addToFavourites(id);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
-        console.log(error.message);
+    }
+}
+
+async function initRemoveFromFavourites(id) {
+    try {
+        await ApiService.removeFromFavourites(id);
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
     }
 }

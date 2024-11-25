@@ -126,6 +126,25 @@ class ApiService {
         const response = await fetch("/api/addToFavourites/" + id);
 
         if(!response.ok) throw new Error(await response.text())
-        console.log('Added to favourites!');
+        UI.updateToggleFavouriteBtn(id, true);
+    }
+
+    static async removeFromFavourites(id) {
+        const response = await fetch("/api/removeFromFavourites/" + id);
+
+        if(!response.ok) throw new Error(await response.text());
+        UI.updateToggleFavouriteBtn(id, false);
+    }
+
+    static async isOfferInFavourites(id) {
+        const response = await fetch("/api/isOfferInFavourites/" + id);
+
+        if(response.ok) return true;
+        else return false;
+    }
+
+    static async toggleFavouriteBtn(id) {
+        const result = await ApiService.isOfferInFavourites(id);
+        UI.updateToggleFavouriteBtn(id, result);
     }
 }
