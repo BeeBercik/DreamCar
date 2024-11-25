@@ -188,3 +188,11 @@ async function initLoadFavourites() {
     }
 }
 
+async function initAddToFavourites(id) {
+    try {
+        await ApiService.addToFavourites(id);
+    } catch(error) {
+        document.getElementById('content').innerHTML = error.message;
+        console.log(error.message);
+    }
+}

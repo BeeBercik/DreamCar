@@ -1,5 +1,6 @@
 package com.dreamcar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,5 +42,6 @@ public class Offer {
     private GearBox gearbox;
 
     @ManyToMany(mappedBy = "favourites")
+    @JsonIgnore
     private Set<User> favourite_by_users = new HashSet<>();
 }

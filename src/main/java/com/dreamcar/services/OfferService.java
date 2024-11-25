@@ -84,4 +84,13 @@ public class OfferService {
 
         return favourites;
     }
+
+    public void addToFavourites(int offerId, UserDTO userDTO) {
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+
+        user.getFavourites().add(offer);
+        // hibernate wie, ze user byl pobrany z bazy wiec go modyfikuje a nie zapisuje jako nowy
+        this.userRepository.save(user);
+    }
 }

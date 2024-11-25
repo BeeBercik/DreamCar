@@ -121,4 +121,11 @@ class ApiService {
         }
         UI.displayFavourites(await response.json());
     }
+
+    static async addToFavourites(id) {
+        const response = await fetch("/api/addToFavourites/" + id);
+
+        if(!response.ok) throw new Error(await response.text())
+        console.log('Added to favourites!');
+    }
 }

@@ -79,6 +79,18 @@ public class OfferController {
         }
     }
 
+    @GetMapping("addToFavourites/{id}")
+    public ResponseEntity<?> addToFavourites(@PathVariable("id") int offerId, HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
+        try {
+            this.offerService.addToFavourites(offerId, userDTO);
+            return ResponseEntity.ok("Offer successfully added to the favourites");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/getFavouriteUserOffers")
     public ResponseEntity<?> getFavourites(HttpSession session) {
         UserDTO userDTO = (UserDTO) session.getAttribute("user");

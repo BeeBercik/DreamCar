@@ -37,5 +37,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "offer_id")
     )
+    @JsonIgnore
     private Set<Offer> favourites = new HashSet<>();
 }

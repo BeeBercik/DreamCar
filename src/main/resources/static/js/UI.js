@@ -188,4 +188,22 @@ class UI {
         <p>You dont have any favourite offer yet.</p>
         </div></div>`;
    }
+
+   static displayFavourites(offers) {
+        offers.forEach(offer => {
+            const favOfferArticle = document.createElement('article');
+            favOfferArticle.classList.add("favourite-offer");
+
+            favOfferArticle.innerHTML = `
+            <img src="/img/car.jpg" class="favourite-offer-img">
+            <div class="favourite-offer-details">
+                <h4>${offer.title}</h4>
+                <p>Rocznik: ${offer.year}, Przebieg: ${offer.mileage} km</p>
+                <p class="price"><span>${offer.price}</span> PLN</p>
+            </div>
+            <button class="remove-favourite-btn" onclick="removeFromFavourites(${offer.id})>Usuń</button>`
+
+            document.getElementById('user-favourite-list').appendChild(favOfferArticle);
+        });
+    }
 }
