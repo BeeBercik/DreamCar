@@ -8,21 +8,24 @@ import com.dreamcar.repositories.FuelRepository;
 import com.dreamcar.repositories.GearboxRepository;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.repositories.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
 public class OfferService {
     @Autowired
-    OfferRepository offerRepository;
+    UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
+
+    @Autowired
+    OfferRepository offerRepository;
 
     @Autowired
     FuelRepository fuelRepository;
@@ -30,10 +33,11 @@ public class OfferService {
     @Autowired
     GearboxRepository gearboxRepository;
 
-    public void addNewOffer(OfferDTO offerDTO) {
+    public void addNewOffer(OfferDTO offerDTO, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
         OfferValidator.validateOffer(offerDTO);
-        Offer offer = new Offer();
 
+        Offer offer = new Offer();
         offer.setTitle(offerDTO.getTitle());
         offer.setDescription(offerDTO.getDescription());
         offer.setBrand(offerDTO.getBrand());
@@ -42,17 +46,18 @@ public class OfferService {
         offer.setYear(offerDTO.getYear());
         offer.setAdd_date(new Date());
 
-        offer.setUser(this.userRepository.findById(offerDTO.getUser()).get());
-        offer.setFuel(this.fuelRepository.findById(offerDTO.getFuel()).get());
-        offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).get());
+        offer.setUser(user);
+        offer.setFuel(this.fuelRepository.findById(offerDTO.getFuel()).orElseThrow(() -> new NoSuchElementException("No fuel with such id")));
+        offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id")));
 
         this.offerRepository.save(offer);
     }
 
-    public void editUserOffer(int offerId, OfferDTO offerDTO) {
+    public void editUserOffer(int offerId, OfferDTO offerDTO, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
         OfferValidator.validateOffer(offerDTO);
-        Offer offer = this.offerRepository.findById(offerId).get();
 
+        Offer offer = this.offerRepository.findById(offerId).get();
         offer.setTitle(offerDTO.getTitle());
         offer.setDescription(offerDTO.getDescription());
         offer.setBrand(offerDTO.getBrand());
@@ -60,38 +65,37 @@ public class OfferService {
         offer.setPrice(offerDTO.getPrice());
         offer.setYear(offerDTO.getYear());
 
-        offer.setUser(this.userRepository.findById(offerDTO.getUser()).get());
-        offer.setFuel(this.fuelRepository.findById(offerDTO.getFuel()).get());
-        offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).get());
+        offer.setUser(user);
+        offer.setFuel(this.fuelRepository.findById(offerDTO.getFuel()).orElseThrow(() -> new NoSuchElementException("No fuel with such id")));
+        offer.setGearbox(this.gearboxRepository.findById(offerDTO.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id")));;
 
         this.offerRepository.save(offer);
     }
 
-    public void deleteUserOffer(int offerId, UserDTO userDTO) {
-        User user = this.userRepository.findById(userDTO.getId()).get();
+    public void deleteUserOffer(int offerId, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        if(offer.getUser().getId() != user.getId()) {
+        if(!user.getOffers().contains(offer)) {
             throw new NoSuchElementException("You dont have offer with such id");
         }
 
         Set<User> fav_offer_users = offer.getFavourite_by_users();
-        for(User u : fav_offer_users) {
-            u.getFavourites().remove(offer);
+        for(User favUser : fav_offer_users) {
+            favUser.getFavourites().remove(offer);
         }
+
         this.offerRepository.delete(offer);
     }
 
-    public Set<Offer> getUserFavouriteOffers(UserDTO userDTO) {
-        User user = this.userRepository.findById(userDTO.getId()).get();
-        Set<Offer> favourites = user.getFavourites();
-        if(favourites.isEmpty()) throw new NoSuchElementException("You dont have any favourite offer");
+    public Set<Offer> getUserFavouriteOffers(HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
 
-        return favourites;
+        return user.getFavourites();
     }
 
-    public void addToFavourites(int offerId, UserDTO userDTO) {
-        User user = this.userRepository.findById(userDTO.getId()).get();
+    public void addToFavourites(int offerId, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         user.getFavourites().add(offer);
@@ -99,16 +103,16 @@ public class OfferService {
         this.userRepository.save(user);
     }
 
-    public boolean checkIfOfferIsInFavourites(int offerId, UserDTO userDTO) {
-        User user = this.userRepository.findById(userDTO.getId()).get();
+    public boolean checkIfOfferIsInFavourites(int offerId, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         return user.getFavourites().contains(offer);
     }
 
-    public void removeFromFavourites(int offerId, UserDTO userDTO) {
-        User user = this.userRepository.findById(userDTO.getId()).get();
-        Offer offer = this.offerRepository.findById(offerId).get();
+    public void removeFromFavourites(int offerId, HttpSession session) {
+        User user = this.userService.getLoggedUser(session);
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         if(!user.getFavourites().contains(offer)) throw new NoSuchElementException("You dont have favourite offer with such id");
 

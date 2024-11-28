@@ -1,6 +1,7 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.OfferDTO;
+import com.dreamcar.exceptions.IncorrectOfferDataException;
 
 public class OfferValidator {
     static void validateOffer(OfferDTO offerDTO) {
@@ -10,17 +11,17 @@ public class OfferValidator {
         offerDTO.getMileage()  == null || offerDTO.getYear() == null ||
         offerDTO.getPrice() == null || offerDTO.getFuel() == null ||
         offerDTO.getGearbox() == null) {
-            throw new IllegalArgumentException("Invalid data");
+            throw new IncorrectOfferDataException("Invalid data");
         }
 
         if(offerDTO.getYear() <= 1885) {
-            throw new IllegalArgumentException("Year must be greater than 1885");
+            throw new IncorrectOfferDataException("Year must be greater than 1885");
         }
         if(offerDTO.getPrice() <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
+            throw new IncorrectOfferDataException("Price must be greater than 0");
         }
         if(offerDTO.getTitle().length() < 5) {
-            throw new IllegalArgumentException("Title must be at least 5 characters");
+            throw new IncorrectOfferDataException("Title must be at least 5 characters");
         }
     }
 }

@@ -42,7 +42,7 @@ class ApiService {
 
     static async logoutUser() {
         const response = await fetch('/api/logoutUser');
-        if(!response.ok) throw new Error("Some problems with logging out..");
+        if(!response.ok) throw new Error(await response.text());
         navigateTo('index');
     }
 
@@ -54,22 +54,11 @@ class ApiService {
         } else UI.updateUiForGuest();
     }
 
-    static async getLoggedUser() {
-        const response = await fetch("/api/isUserLoggedIn");
-        if(!response.ok) throw new Error(await response.text());
-        
-        return await response.json();
-    }
-
     static async getUserOffers() {
         const response = await fetch("/api/getUserOffers");
-        if(response.ok) {
-            const offers = await response.json();
-            UI.loadUserOffers(offers);
-        } else {
-            alert('Session expired. Log in again');
-            navigateTo('login');
-        };
+        if(!response.ok) throw new Error(await response.text()); 
+        const offers = await response.json();
+        UI.loadUserOffers(offers);
     }
 
     static async addNewOffer(offerData) {
@@ -79,8 +68,13 @@ class ApiService {
             body: JSON.stringify(offerData)
         });
 
-        if(response.ok) navigateTo('user-profile');
-        else UI.showIncorrectOfferFormMessage(await response.text());
+        if(response.ok)  {
+            alert('Dodano oferte!');
+            navigateTo('user-profile');
+        } else if(response.status === 401 ||
+                    response.status === 404) { 
+            throw new Error(await response.text()); 
+        } else UI.showIncorrectOfferFormMessage(await response.text());
     }
 
     static async editUserOffer(id, offerData) {
@@ -90,42 +84,48 @@ class ApiService {
             body: JSON.stringify(offerData)
         });
 
-        if(response.ok) navigateTo('user-profile');
-        else UI.showIncorrectOfferFormMessage(await response.text());   
+        if(response.ok) {
+            alert('Pomyslnie dodano oferte.');
+            navigateTo('user-profile');
+        } else if(response.status === 403 ||
+                    response.status === 404) {
+            throw new Error(await response.text());
+        } else UI.showIncorrectOfferFormMessage(await response.text());   
     }
 
-    static async getOffer(id) {
+    static async displayOfferToEdit(id) {
         const response = await fetch("/api/getOffer/" + id);
         if(!response.ok) throw new Error(await response.text());
 
-        return await response.json();
+        UI.generateUserOfferToEdit(await response.json());
     }
 
     static async deleteOffer(id) {
         const response = await fetch("/api/deleteOffer/" + id);
         console.log(response);
         if(!response.ok) throw new Error(await response.text());
-        else navigateTo('user-profile');
+        else {
+            alert('Pomyslnie usunieto oferte.');
+            navigateTo('user-profile');
+        }
     }
 
     static async getFavourites() {
         const response = await fetch('/api/getFavouriteUserOffers');
 
-        if(!response.ok) {
-            const message = await response.text();
-            if(message == 'You are not logged in')
-                UI.displayNotLoggedInMessagesInFavourites();
-            else if(message == 'You dont have any favourite offer')
-                UI.displayLackOfFavouriteOffersMessage();
-            return;
-        }
-        UI.displayFavourites(await response.json());
+        if(response.ok) 
+            UI.displayFavourites(await response.json());
+        else if(response.status === 401)
+            UI.displayNotLoggedInMessagesInFavourites();
+        else if((await response.json().length === 0))
+            UI.displayLackOfFavouriteOffersMessage();
     }
 
     static async addToFavourites(id) {
         const response = await fetch("/api/addToFavourites/" + id);
 
         if(!response.ok) throw new Error(await response.text())
+        alert("Oferta dodana do ulubionych");
         UI.updateToggleFavouriteBtn(id, true);
     }
 
@@ -133,6 +133,7 @@ class ApiService {
         const response = await fetch("/api/removeFromFavourites/" + id);
 
         if(!response.ok) throw new Error(await response.text());
+        alert("Oferta usunieta do ulubionych");
         UI.updateToggleFavouriteBtn(id, false);
     }
 

@@ -1,13 +1,16 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.UserDTO;
+import com.dreamcar.exceptions.IncorrectLoginDataException;
+import com.dreamcar.exceptions.IncorrectRegisterDataException;
+import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class UserService {
@@ -22,10 +25,10 @@ public class UserService {
         userValidator.validateUserRegistration(userDTO);
 
         if(userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new IncorrectRegisterDataException("Email already exists");
         }
         if(userRepository.existsByLogin(userDTO.getLogin())) {
-            throw new IllegalArgumentException("Login already exists");
+            throw new IncorrectRegisterDataException("Login already exists");
         }
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -43,12 +46,17 @@ public class UserService {
         if(userRepository.existsByLogin(user.getLogin().trim())) {
             User dbuser = userRepository.findByLogin(user.getLogin());
             if(dbuser.getPassword().equals(user.getPassword().trim())) {
-                UserDTO userDTO = new UserDTO(dbuser.getId(),
+                return new UserDTO(dbuser.getId(),
                         dbuser.getLogin(), dbuser.getEmail(),
                         dbuser.getPhone(), dbuser.getAdd_date());
+            } else throw new IncorrectLoginDataException("Wrong password");
+        } else throw new IncorrectLoginDataException("Login does not exist");
+    }
 
-                return userDTO;
-            } else throw new IllegalArgumentException("Wrong password");
-        } else throw new IllegalArgumentException("Login does not exist");
+    public User getLoggedUser(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("user");
+        if(userDTO == null) throw new UserNotLoggedInException("User not logged in");
+
+        return this.userRepository.findById(userDTO.getId()).orElseThrow(() -> new UserNotLoggedInException("User not logged in"));
     }
 }

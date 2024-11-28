@@ -2,16 +2,15 @@ package com.dreamcar.controllers;
 
 import com.dreamcar.dto.OfferDTO;
 import com.dreamcar.dto.UserDTO;
-import com.dreamcar.model.Fuel;
+import com.dreamcar.exceptions.IncorrectOfferDataException;
+import com.dreamcar.exceptions.IncorrectRegisterDataException;
+import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
-import com.dreamcar.model.User;
-import com.dreamcar.repositories.FuelRepository;
-import com.dreamcar.repositories.GearboxRepository;
 import com.dreamcar.repositories.OfferRepository;
-import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.OfferService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,23 +36,29 @@ public class OfferController {
     }
 
     @PostMapping("/addNewOffer")
-    public ResponseEntity<?> addNewOffer(@RequestBody OfferDTO offerDTO) {
+    public ResponseEntity<?> addNewOffer(@RequestBody OfferDTO offerDTO, HttpSession session) {
         try {
-            this.offerService.addNewOffer(offerDTO);
-
+            this.offerService.addNewOffer(offerDTO, session);
             return ResponseEntity.ok("New offer added");
-        } catch(IllegalArgumentException e) {
+        } catch(UserNotLoggedInException e){ // rozne kody aby dla 401 i 404 blad a 400 tylko kommunikat
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch(IncorrectOfferDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/editUserOffer/{id}")
-    public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO ) {
+    public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO, HttpSession session) {
         try {
-            this.offerService.editUserOffer(offerId, offerDTO);
-
+            this.offerService.editUserOffer(offerId, offerDTO, session);
             return ResponseEntity.ok("Offer successfully edited");
-        } catch (IllegalArgumentException e) {
+        } catch(UserNotLoggedInException e) { // rozne kody aby dla 401 i 404 blad a 400 tylko kommunikat
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch(IncorrectOfferDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -62,18 +67,16 @@ public class OfferController {
     public ResponseEntity<?> getOffer(@PathVariable("id") int offerId) {
         Optional<Offer> offer = this.offerRepository.findById(offerId);
         if(offer.isPresent()) return ResponseEntity.ok(offer.get());
-        else return ResponseEntity.badRequest().body("Offer not found");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Offer not found");
     }
 
     @GetMapping("/deleteOffer/{id}")
     public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
         try {
-            UserDTO userDTO = (UserDTO) session.getAttribute("user");
-            if(userDTO == null)
-                return ResponseEntity.badRequest().body("You are not logged in");
-            this.offerService.deleteUserOffer(offerId, userDTO);
-
+            this.offerService.deleteUserOffer(offerId, session);
             return ResponseEntity.ok("Offer successfully deleted");
+        } catch(UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -81,52 +84,47 @@ public class OfferController {
 
     @GetMapping("addToFavourites/{id}")
     public ResponseEntity<?> addToFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
         try {
-            this.offerService.addToFavourites(offerId, userDTO);
+            this.offerService.addToFavourites(offerId, session);
             return ResponseEntity.ok("Offer successfully added to the favourites");
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/getFavouriteUserOffers")
-    public ResponseEntity<?> getFavourites(HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
-        try {
-            Set<Offer> favourites = this.offerService.getUserFavouriteOffers(userDTO);
-            return ResponseEntity.ok(favourites);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/isOfferInFavourites/{id}")
-    public ResponseEntity<?> isOfferInFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
-
-        try {
-            if(this.offerService.checkIfOfferIsInFavourites(offerId, userDTO))
-                return ResponseEntity.ok(true);
-            else throw new NoSuchElementException("Offer is not in favourites");
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @GetMapping("/removeFromFavourites/{id}")
     public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO == null) return ResponseEntity.badRequest().body("You are not logged in");
         try {
-            this.offerService.removeFromFavourites(offerId, userDTO);
-
+            this.offerService.removeFromFavourites(offerId, session);
             return ResponseEntity.ok("Offer successfully removed from the favourites");
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getFavouriteUserOffers")
+    public ResponseEntity<?> getFavourites(HttpSession session) {
+        try {
+            Set<Offer> favourites = this.offerService.getUserFavouriteOffers(session);
+
+            return ResponseEntity.ok(favourites);
+        } catch(UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/isOfferInFavourites/{id}")
+    public ResponseEntity<?> isOfferInFavourites(@PathVariable("id") int offerId, HttpSession session) {
+        try {
+            if(this.offerService.checkIfOfferIsInFavourites(offerId, session))
+                return ResponseEntity.ok(true);
+            else throw new NoSuchElementException("Offer is not in favourites");
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

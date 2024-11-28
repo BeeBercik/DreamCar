@@ -35,7 +35,7 @@ async function navigateTo(page, registered = false, message = null) {
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
                 break;
             case 'edit-offer':
-                document.getElementById('new-offer-form').addEventListener('submit', initEditOffer);
+                document.getElementById('edit-offer-form').addEventListener('submit', initEditOffer);
                 break;
             case 'favourites':
                 initLoadFavourites();
@@ -116,9 +116,7 @@ async function logoutUser() {
 async function initAddNewOffer(event) {
     event.preventDefault();
     try {
-        const user = await ApiService.getLoggedUser();
-
-        await ApiService.addNewOffer(getOfferData(user));
+        await ApiService.addNewOffer(getOfferData());
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }
@@ -127,20 +125,15 @@ async function initAddNewOffer(event) {
 async function initEditOffer(offerId, event) {
     event.preventDefault();
     try {
-        const user = await ApiService.getLoggedUser();
-
-        await ApiService.editUserOffer(offerId, getOfferData(user));
+        await ApiService.editUserOffer(offerId, getOfferData());
     } catch (error) {
         document.getElementById('content').innerHTML = error.message;
-        console.log(error);
     }
 }
 
 async function initDisplayOfferToEdit(id) {
     try {
-        const offer = await ApiService.getOffer(id);
-        
-        UI.generateUserOfferToEdit(offer);
+        const offer = await ApiService.displayOfferToEdit(id);
     } catch (error) {
         document.getElementById('content').innerHTML = error.message;
     }
@@ -148,14 +141,13 @@ async function initDisplayOfferToEdit(id) {
 
 async function initDeleteOffer(id) {
     try {
-        ApiService.getLoggedUser();
         await ApiService.deleteOffer(id);
     } catch(error) {
         document.getElementById('content').innerHTML = error.message;
     }
 }
 
-function getOfferData(user) {
+function getOfferData() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const brand = document.getElementById('brand').value;
@@ -172,7 +164,6 @@ function getOfferData(user) {
         mileage: mileage,
         year: year,
         price: price,
-        user: user.id,
         gearbox: gearbox,
         fuel: fuel
     }

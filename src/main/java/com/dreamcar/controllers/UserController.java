@@ -1,13 +1,15 @@
 package com.dreamcar.controllers;
 
 import com.dreamcar.dto.UserDTO;
+import com.dreamcar.exceptions.IncorrectLoginDataException;
+import com.dreamcar.exceptions.IncorrectRegisterDataException;
+import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
 import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +29,8 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         try {
             this.userService.registerUser(userDTO);
-
             return ResponseEntity.ok("User registered successfully");
-        } catch (IllegalArgumentException e) {
+        } catch (IncorrectRegisterDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -39,36 +40,34 @@ public class UserController {
         try {
             UserDTO userDTO = this.userService.loginUser(user);
             session.setAttribute("user", userDTO);
+
             return ResponseEntity.ok("User logged in");
-        } catch(IllegalArgumentException e) {
+        } catch(IncorrectLoginDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/isUserLoggedIn")
-    public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO != null) {
-            return ResponseEntity.ok(userDTO);
-        }
-        return ResponseEntity.badRequest().body("Not logged in");
-    }
-
     @GetMapping("/logoutUser")
     public ResponseEntity<?> logoutUser(HttpSession session) {
-        session.invalidate();
+        try {
+            this.userService.getLoggedUser(session);
+            session.invalidate();
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         return ResponseEntity.ok("User logged out");
     }
 
     @GetMapping("/getUserOffers")
     public ResponseEntity<?> getUserOffers(HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO != null) {
-            User user = this.userRepository.findById(userDTO.getId()).get();
+        try {
+            User user = this.userService.getLoggedUser(session);
             List<Offer> userOffers = user.getOffers();
 
             return ResponseEntity.ok(userOffers);
-        } else return ResponseEntity.badRequest().body("User not logged in");
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
