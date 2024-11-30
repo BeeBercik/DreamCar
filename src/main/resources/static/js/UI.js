@@ -6,22 +6,22 @@ class UI {
         offers.forEach(offer => {
             const offerArticle = document.createElement('article');
             offerArticle.classList.add('offer');
+            offerArticle.setAttribute('onclick', `showOfferDetails(${offer.id})`);
+
             offerArticle.innerHTML = `
-                <a href="#" onclick="showOfferDetails(${offer.id})">
-                    <div class="img">
-                        <img src="/img/car.jpg" alt="">
-                    </div>
-                    <div class="details">
-                        <h2>${offer.title}</h2>
-                        <ul>
-                        <li>${offer.gearbox.name}</li>
-                        <li>${offer.fuel.name}</li>
-                        <li>${offer.mileage}</li>
-                        <li>${offer.year}</li>
-                        </ul>
-                        <p class="price"><span>${offer.price}</span>pln</p>
-                    </div>
-                </a>`;
+                <div class="img">
+                    <img src="/img/car.jpg" alt="">
+                </div>
+                <div class="details">
+                    <h2>${offer.title}</h2>
+                    <ul>
+                        <li><i class="fa-solid fa-road"></i>${offer.mileage}</li>
+                        <li><i class="fa-solid fa-gear"></i>${offer.gearbox.name}</li>
+                        <li><i class="fa-solid fa-gas-pump"></i>${offer.fuel.name}</li>
+                        <li><i class="fa-solid fa-calendar-days"></i>${offer.year}</li>
+                    </ul>
+                    <p class="price"><span>${offer.price}</span>pln</p>
+                </div>`;
                 content_div.appendChild(offerArticle);
             });
     }
@@ -107,22 +107,23 @@ class UI {
 
     static loadUserOffers(offers) {
         const userOffersDiv = document.getElementById('user-offer-list');
+
         offers.forEach(offer => {
             const userOfferArticle = document.createElement('article');
-            userOfferArticle.innerHTML = ` <a href="#" class="offer-link" onclick="showOfferDetails(${offer.id})">
-                <article class="offer">
+            userOfferArticle.classList.add('offer');
+            userOfferArticle.setAttribute('onclick', `showOfferDetails(${offer.id})`);
+
+            userOfferArticle.innerHTML = `
                 <img src="/img/car.jpg" alt="Samochód 1" class="offer-img">
                 <div class="offer-details">
                     <h4>${offer.title}</h4>
-                    <p>Rocznik: ${offer.year}, Przebieg: ${offer.mileage} km</p>
                     <p class="price"><span>${offer.price}</span> PLN</p>
                 </div>
                 <div class="offer-actions">
-                    <a href="#" class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</a>
-                    <a href="#" onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</a>
-                </div>
-                </article>
-            </a>`
+                    <p class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</p>
+                    <p onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</p>
+                </div>`;
+
             userOffersDiv.append(userOfferArticle);
         }); 
     }
@@ -199,12 +200,18 @@ class UI {
         favouriteOffers.forEach(offer => {
             const favOfferArticle = document.createElement('article');
             favOfferArticle.classList.add("favourite-offer");
+            favOfferArticle.setAttribute('onclick', `showOfferDetails(${offer.id})`);
 
             favOfferArticle.innerHTML = `
             <img src="/img/car.jpg" class="favourite-offer-img">
             <div class="favourite-offer-details">
                 <h4>${offer.title}</h4>
-                <p>Rocznik: ${offer.year}, Przebieg: ${offer.mileage} km</p>
+                <ul>
+                    <li><i class="fa-solid fa-road"></i>${offer.mileage}</li>
+                    <li><i class="fa-solid fa-gear"></i>${offer.gearbox.name}</li>
+                    <li><i class="fa-solid fa-gas-pump"></i>${offer.fuel.name}</li>
+                    <li><i class="fa-solid fa-calendar-days"></i>${offer.year}</li>
+                </ul>
                 <p class="price"><span>${offer.price}</span> PLN</p>
             </div>
             <button class="remove-favourite-btn" onclick="removeFromFavourites(${offer.id})>Usuń</button>`
