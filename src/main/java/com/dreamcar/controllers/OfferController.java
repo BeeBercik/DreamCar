@@ -1,9 +1,7 @@
 package com.dreamcar.controllers;
 
 import com.dreamcar.dto.OfferDTO;
-import com.dreamcar.dto.UserDTO;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
-import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
@@ -31,8 +29,13 @@ public class OfferController {
     }
 
     @GetMapping("/offerDetails/{id}")
-    public Offer getOfferDetails(@PathVariable("id") int offerId) {
-        return this.offerRepository.findById(offerId).get();
+    public ResponseEntity<?> getOfferDetails(@PathVariable("id") int offerId) {
+        try {
+            Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+            return ResponseEntity.ok(offer);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/addNewOffer")
@@ -40,7 +43,7 @@ public class OfferController {
         try {
             this.offerService.addNewOffer(offerDTO, session);
             return ResponseEntity.ok("New offer added");
-        } catch(UserNotLoggedInException e){ // rozne kody aby dla 401 i 404 blad a 400 tylko kommunikat
+        } catch(UserNotLoggedInException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch(NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

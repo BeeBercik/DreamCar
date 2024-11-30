@@ -9,6 +9,7 @@ import com.dreamcar.repositories.GearboxRepository;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class OfferService {
         User user = this.userService.getLoggedUser(session);
         OfferValidator.validateOffer(offerDTO);
 
-        Offer offer = this.offerRepository.findById(offerId).get();
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("No offer with such id"));
         offer.setTitle(offerDTO.getTitle());
         offer.setDescription(offerDTO.getDescription());
         offer.setBrand(offerDTO.getBrand());
@@ -72,13 +73,13 @@ public class OfferService {
         this.offerRepository.save(offer);
     }
 
+
     public void deleteUserOffer(int offerId, HttpSession session) {
         User user = this.userService.getLoggedUser(session);
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        if(!user.getOffers().contains(offer)) {
-            throw new NoSuchElementException("You dont have offer with such id");
-        }
+        // warunek uwzglednia 0 niespleniony nieprzepuszcza ALE gdy spelniony to tez
+//        if(!user.getOffers().contains(offer)) throw new NoSuchElementException("You dont have offer with such id");
 
         Set<User> fav_offer_users = offer.getFavourite_by_users();
         for(User favUser : fav_offer_users) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Component
 public class UserService {
@@ -57,6 +58,6 @@ public class UserService {
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
         if(userDTO == null) throw new UserNotLoggedInException("User not logged in");
 
-        return this.userRepository.findById(userDTO.getId()).orElseThrow(() -> new UserNotLoggedInException("User not logged in"));
+        return this.userRepository.findById(userDTO.getId()).orElseThrow(() -> new NoSuchElementException("User with such id does not exist"));
     }
 }

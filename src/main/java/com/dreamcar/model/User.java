@@ -29,6 +29,7 @@ public class User {
     // a my nie chcemy mie takiego pola/kolumny  wtabeli - ta wlasciwosc sluzy do wskazania na relacje oraz operowanie na ofertach powiazaych z userem np getOffers
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Offer> offers = new LinkedList<>();
 
     @ManyToMany
@@ -38,5 +39,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "offer_id")
     )
     @JsonIgnore
+    @ToString.Exclude
     private Set<Offer> favourites = new HashSet<>();
 }

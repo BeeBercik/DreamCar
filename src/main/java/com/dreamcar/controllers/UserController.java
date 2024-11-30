@@ -10,6 +10,7 @@ import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,6 +69,16 @@ public class UserController {
             return ResponseEntity.ok(userOffers);
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getLoggedUser")
+    public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
+        try {
+           User user = this.userService.getLoggedUser(session);
+           return ResponseEntity.ok(user);
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 }

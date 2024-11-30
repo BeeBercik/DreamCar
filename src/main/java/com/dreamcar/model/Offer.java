@@ -43,5 +43,6 @@ public class Offer {
 
     @ManyToMany(mappedBy = "favourites")
     @JsonIgnore
+    @ToString.Exclude
     private Set<User> favourite_by_users = new HashSet<>();
 }

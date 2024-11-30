@@ -191,8 +191,12 @@ class UI {
         </div></div>`;
    }
 
-   static displayFavourites(offers) {
-        offers.forEach(offer => {
+   static displayFavourites(favouriteOffers) {
+        if(favouriteOffers.length == 0) {
+            UI.displayLackOfFavouriteOffersMessage();
+            return;
+        }
+        favouriteOffers.forEach(offer => {
             const favOfferArticle = document.createElement('article');
             favOfferArticle.classList.add("favourite-offer");
 

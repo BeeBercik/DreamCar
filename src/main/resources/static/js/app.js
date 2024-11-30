@@ -1,13 +1,14 @@
-ApiService.checkIfUserLoggedIn();
+ApiService.getLoggedUser();
 loadAllOffers();
 
-window.addEventListener('DOMContentLoaded', ApiService.checkIfUserLoggedIn);
+window.addEventListener('DOMContentLoaded', ApiService.getLoggedUser);
 
 async function navigateTo(page, registered = false, message = null) {
-    ApiService.checkIfUserLoggedIn();
-    const content_div = document.getElementById('content');
-
+    
     try {
+        const user = await ApiService.getLoggedUser();
+        const content_div = document.getElementById('content');
+        
         const response = await fetch(`../${page}.html`);
         if(!response.ok) throw new Error("Page not found!");
         const data = await response.text();
@@ -27,7 +28,6 @@ async function navigateTo(page, registered = false, message = null) {
                 if(registered) UI.showSuccessfullRegisterMessage(message);
                 break;
             case 'user-profile':
-                const user = await ApiService.getLoggedUser();
                 UI.generateUserProfile(user);
                 await ApiService.getUserOffers();
                 break;

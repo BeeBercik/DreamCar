@@ -46,8 +46,8 @@ class ApiService {
         navigateTo('index');
     }
 
-    static async checkIfUserLoggedIn() {
-        const response = await fetch("/api/isUserLoggedIn");
+    static async getLoggedUser() {
+        const response = await fetch("/api/getLoggedUser");
         if(response.ok) {
             UI.updateUiForUser(); 
             return await response.json();
@@ -85,7 +85,7 @@ class ApiService {
         });
 
         if(response.ok) {
-            alert('Pomyslnie dodano oferte.');
+            alert('Pomyslnie edytowano oferte.');
             navigateTo('user-profile');
         } else if(response.status === 403 ||
                     response.status === 404) {
@@ -104,21 +104,18 @@ class ApiService {
         const response = await fetch("/api/deleteOffer/" + id);
         console.log(response);
         if(!response.ok) throw new Error(await response.text());
-        else {
-            alert('Pomyslnie usunieto oferte.');
-            navigateTo('user-profile');
-        }
+        alert('Pomyslnie usunieto oferte.');
+        navigateTo('user-profile');
     }
 
     static async getFavourites() {
         const response = await fetch('/api/getFavouriteUserOffers');
 
+        const favouriteOffers = await response.json();
         if(response.ok) 
-            UI.displayFavourites(await response.json());
+            UI.displayFavourites(favouriteOffers);
         else if(response.status === 401)
             UI.displayNotLoggedInMessagesInFavourites();
-        else if((await response.json().length === 0))
-            UI.displayLackOfFavouriteOffersMessage();
     }
 
     static async addToFavourites(id) {
@@ -133,7 +130,7 @@ class ApiService {
         const response = await fetch("/api/removeFromFavourites/" + id);
 
         if(!response.ok) throw new Error(await response.text());
-        alert("Oferta usunieta do ulubionych");
+        alert("Oferta usunieta z ulubionych");
         UI.updateToggleFavouriteBtn(id, false);
     }
 
