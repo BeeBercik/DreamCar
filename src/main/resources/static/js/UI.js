@@ -37,11 +37,11 @@ class UI {
                     <h1>${offer.title}</h1>
                     <p class="price">${offer.price} PLN</p>
                     <div class="offer-details">
-                        <p><strong>Marka: </strong> ${offer.brand}</p>
-                        <p><strong>Rocznik: </strong>${offer.year}</p>
-                        <p><strong>Przebieg: </strong>${offer.mileage} km</p>
-                        <p><strong>Skrzynia biegów: </strong>${offer.gearbox.name}</p>
-                        <p><strong>Rodzaj paliwa: </strong>${offer.fuel.name}</p>
+                        <p><span>Marka: </span>${offer.brand}</p>
+                        <p><span>Rocznik: </span>${offer.year}</p>
+                        <p><span>Przebieg: </span>${offer.mileage} km</p>
+                        <p><span>Skrzynia biegów: </span>${offer.gearbox.name}</p>
+                        <p><span>Rodzaj paliwa: </span>${offer.fuel.name}</p>
                     </div>
                 </div>
             </div>
@@ -93,11 +93,11 @@ class UI {
         form_div_message.innerHTML = message;
     }
 
-    static showSuccessfullRegisterMessage(message) {
-        const form_div_message = document.getElementById('login-form-message');
-        form_div_message.classList.add('successfull-register');
-        form_div_message.innerHTML = message;
-    }
+    // static showSuccessfullRegisterMessage(message) {
+    //     const form_div_message = document.getElementById('login-form-message');
+    //     form_div_message.classList.add('successfull-register');
+    //     form_div_message.innerHTML = message;
+    // }
 
     static generateUserProfile(user) {
         document.getElementById('user-login').innerHTML = user.login;
@@ -117,11 +117,11 @@ class UI {
                 <img src="/img/car.jpg" alt="Samochód 1" class="offer-img">
                 <div class="offer-details">
                     <h4>${offer.title}</h4>
-                    <p class="price"><span>${offer.price}</span> PLN</p>
+                    <p class="price"><span>${offer.price}</span> pln</p>
                 </div>
                 <div class="offer-actions">
-                    <p class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</p>
-                    <p onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</p>
+                    <button class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</button>
+                    <button onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</button>
                 </div>`;
 
             userOffersDiv.append(userOfferArticle);
@@ -180,7 +180,7 @@ class UI {
         document.getElementById('content').innerHTML = `<div class="not-logged-in-container">
                 <h2>Nie jesteś zalogowany</h2>
                 <p>Aby dodać oferty do ulubionych, musisz być zalogowany.</p>
-                <a href="#" class="login-btn" onclick="navigateTo('login')">Zaloguj się</a>
+                <button class="login-btn" onclick="navigateTo('login')">Zaloguj się</button>
             </div>`;
    }
 
@@ -212,9 +212,8 @@ class UI {
                     <li><i class="fa-solid fa-gas-pump"></i>${offer.fuel.name}</li>
                     <li><i class="fa-solid fa-calendar-days"></i>${offer.year}</li>
                 </ul>
-                <p class="price"><span>${offer.price}</span> PLN</p>
-            </div>
-            <button class="remove-favourite-btn" onclick="removeFromFavourites(${offer.id})>Usuń</button>`
+                <p class="price"><span>${offer.price}</span> pln</p>
+            </div>`;
 
             document.getElementById('user-favourite-list').appendChild(favOfferArticle);
         });
@@ -232,5 +231,30 @@ class UI {
             favouriteToggleBtn.innerHTML = 'Dodaj do ulubionych';
             favouriteToggleBtn.onclick = () => initAddToFavourites(id);
         }
+    }
+
+    static showMessageUnderTheHeader(successfull, message) {
+        const previousMessage = document.querySelector('.message-bar');
+        if(document.querySelector('.message-bar')) {
+            previousMessage.remove();
+        }
+        
+        const header = document.querySelector('header');
+        const messageBar = document.createElement('div');
+        messageBar.classList.add('message-bar');
+        messageBar.textContent = message;
+
+        if(successfull) messageBar.classList.add('success');
+        else messageBar.classList.add('fail');
+
+        header.insertAdjacentElement('afterend', messageBar);
+
+        setTimeout(() => { messageBar.remove() }, 3500);
+    }
+
+    static displayCriticalAppError() {
+        document.getElementById('content').innerHTML = `
+        <div class="criticalAppError">
+        Error! Please try again later</div>`;
     }
 }

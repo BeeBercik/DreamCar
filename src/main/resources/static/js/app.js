@@ -3,8 +3,7 @@ loadAllOffers();
 
 window.addEventListener('DOMContentLoaded', ApiService.getLoggedUser);
 
-async function navigateTo(page, registered = false, message = null) {
-    
+async function navigateTo(page, flag = false, message = '') {
     try {
         const user = await ApiService.getLoggedUser();
         const content_div = document.getElementById('content');
@@ -17,17 +16,18 @@ async function navigateTo(page, registered = false, message = null) {
         if(page !== 'index') content_div.innerHTML = data;
         switch(page) {
             case 'index':
+                if(flag) UI.showMessageUnderTheHeader(true, message);
                 loadAllOffers();
                 break;
             case 'register':
                 document.getElementById("register-form").addEventListener('submit', initUserRegister);
                 break;
             case 'login':
+                if(flag) UI.showMessageUnderTheHeader(true, message);
                 document.getElementById('login-form').addEventListener('submit', initUserLogin);
-
-                if(registered) UI.showSuccessfullRegisterMessage(message);
                 break;
             case 'user-profile':
+                if(flag) UI.showMessageUnderTheHeader(true, message);
                 UI.generateUserProfile(user);
                 await ApiService.getUserOffers();
                 break;
@@ -44,7 +44,7 @@ async function navigateTo(page, registered = false, message = null) {
                 break;
         }
     } catch (error) {
-        content_div.innerHTML = `<h2>${error.message}!</h2>`;
+        UI.displayCriticalAppError();
         console.log(error);
     }
 }
@@ -54,7 +54,8 @@ async function loadAllOffers() {
         const offers = await ApiService.getAllOffers();
         UI.displayAllOffers(offers);
     } catch(error) {
-        document.getElementById("content").innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -63,7 +64,8 @@ async function showOfferDetails(id) {
         const offer = await ApiService.getOfferDetails(id);
         UI.displayOfferDetails(offer);
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -85,7 +87,8 @@ async function initUserRegister(event) {
         };
         await ApiService.registerUser(userData); 
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -101,7 +104,8 @@ async function initUserLogin(event) {
         }
         await ApiService.loginUser(userData);
     } catch (error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -109,7 +113,8 @@ async function logoutUser() {
     try {
         await ApiService.logoutUser();
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -118,7 +123,8 @@ async function initAddNewOffer(event) {
     try {
         await ApiService.addNewOffer(getOfferData());
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -127,7 +133,8 @@ async function initEditOffer(offerId, event) {
     try {
         await ApiService.editUserOffer(offerId, getOfferData());
     } catch (error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -135,7 +142,8 @@ async function initDisplayOfferToEdit(id) {
     try {
         const offer = await ApiService.displayOfferToEdit(id);
     } catch (error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -143,7 +151,8 @@ async function initDeleteOffer(id) {
     try {
         await ApiService.deleteOffer(id);
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -175,7 +184,8 @@ async function initLoadFavourites() {
     try {
         await ApiService.getFavourites();
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -183,7 +193,8 @@ async function initAddToFavourites(id) {
     try {
         await ApiService.addToFavourites(id);
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }
 
@@ -191,6 +202,7 @@ async function initRemoveFromFavourites(id) {
     try {
         await ApiService.removeFromFavourites(id);
     } catch(error) {
-        document.getElementById('content').innerHTML = error.message;
+        UI.displayCriticalAppError();
+        console.log(error);
     }
 }

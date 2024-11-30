@@ -15,14 +15,14 @@ class ApiService {
     }
 
     static async registerUser(userData) {
-        const respone = await fetch("/api/registerUser", {
+        const response = await fetch("/api/registerUser", {
             method: 'POST',
             headers: {'Content-type': 'application/JSON'},
             body: JSON.stringify(userData)
         });
 
-        const message = await respone.text(); 
-        if(respone.ok) navigateTo('login', true, message);
+        const message = await response.text(); 
+        if(response.ok) navigateTo('login', true, message);
         else UI.showIncorrectRegisterMessage(message);
     }
 
@@ -32,18 +32,16 @@ class ApiService {
             headers: {'Content-type': 'application/JSON'},
             body: JSON.stringify(userData)
         });
-
-        if(response.ok) navigateTo('index');
-        else {
-            const message = await response.text();
-            UI.showIncorrectLoginMessage(message);
-        }
+        
+        const message = await response.text();
+        if(response.ok) navigateTo('index', true, message);
+        else UI.showIncorrectLoginMessage(message);
     }
 
     static async logoutUser() {
         const response = await fetch('/api/logoutUser');
         if(!response.ok) throw new Error(await response.text());
-        navigateTo('index');
+        navigateTo('index', true, await response.text());
     }
 
     static async getLoggedUser() {
@@ -69,8 +67,7 @@ class ApiService {
         });
 
         if(response.ok)  {
-            alert('Dodano oferte!');
-            navigateTo('user-profile');
+            navigateTo('user-profile', true, await response.text());
         } else if(response.status === 401 ||
                     response.status === 404) { 
             throw new Error(await response.text()); 
@@ -85,8 +82,7 @@ class ApiService {
         });
 
         if(response.ok) {
-            alert('Pomyslnie edytowano oferte.');
-            navigateTo('user-profile');
+            navigateTo('user-profile', true, await response.text());
         } else if(response.status === 403 ||
                     response.status === 404) {
             throw new Error(await response.text());
@@ -102,35 +98,39 @@ class ApiService {
 
     static async deleteOffer(id) {
         const response = await fetch("/api/deleteOffer/" + id);
-        console.log(response);
-        if(!response.ok) throw new Error(await response.text());
-        alert('Pomyslnie usunieto oferte.');
-        navigateTo('user-profile');
+
+        const message = await response.text();
+        if(!response.ok) throw new Error(message);
+        UI.showMessageUnderTheHeader(true, message);
     }
 
     static async getFavourites() {
         const response = await fetch('/api/getFavouriteUserOffers');
 
-        const favouriteOffers = await response.json();
-        if(response.ok) 
+        if(response.ok) {
+            const favouriteOffers = await response.json();
             UI.displayFavourites(favouriteOffers);
-        else if(response.status === 401)
+        } else if(response.status === 401)
             UI.displayNotLoggedInMessagesInFavourites();
     }
 
     static async addToFavourites(id) {
         const response = await fetch("/api/addToFavourites/" + id);
 
-        if(!response.ok) throw new Error(await response.text())
-        alert("Oferta dodana do ulubionych");
-        UI.updateToggleFavouriteBtn(id, true);
+        const message = await response.text();
+        if(!response.ok) UI.showMessageUnderTheHeader(false, message);
+        else {
+            UI.showMessageUnderTheHeader(true, message)
+            UI.updateToggleFavouriteBtn(id, true);
+        }
     }
 
     static async removeFromFavourites(id) {
         const response = await fetch("/api/removeFromFavourites/" + id);
 
-        if(!response.ok) throw new Error(await response.text());
-        alert("Oferta usunieta z ulubionych");
+        const message = await response.text();
+        if(!response.ok) throw new Error(message);
+        UI.showMessageUnderTheHeader(true, message)
         UI.updateToggleFavouriteBtn(id, false);
     }
 

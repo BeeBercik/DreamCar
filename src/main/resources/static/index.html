@@ -9,15 +9,17 @@
 </head>
 <body>
 <div class="outer-container">
-    <nav class="top-nav">
-        <div class="logo">=DreamCar=</div>
-        <ul>
-            <li><a href='#' onclick="navigateTo('index')"><i class="fa-solid fa-car"></i>Strona główna</a></li>
-            <li><a href='#' onclick="navigateTo('favourites')"><i class="fa-solid fa-heart"></i>Ulubione</a></li>
-            <li class="user-button" id="user-button"><a href='#' onclick="navigateTo('login')"><i class="fa-solid fa-user"></i>Zaloguj</a></li>
-            <li class="user-button" id="profile-button" style="display: none;"><a href='#' onclick="navigateTo('user-profile')"><i class="fa-solid fa-user"></i>Profil</a></li>
-        </ul>
-    </nav>
+    <header>
+        <nav class="top-nav">
+            <div class="logo">=DreamCar=</div>
+            <ul>
+                <li onclick="navigateTo('index')"><i class="fa-solid fa-car"></i>Strona główna</li>
+                <li onclick="navigateTo('favourites')"><i class="fa-solid fa-heart"></i>Ulubione</li>
+                <li class="user-button" id="user-button" onclick="navigateTo('login')"><i class="fa-solid fa-user"></i>Zaloguj</li>
+                <li class="user-button" id="profile-button" style="display: none;" onclick="navigateTo('user-profile')"><i class="fa-solid fa-user"></i>Profil</li>
+            </ul>
+        </nav>
+    </header>
 
     <main class='general-offer-list'>
         <div id="content">

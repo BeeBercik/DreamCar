@@ -56,8 +56,8 @@ public class OfferController {
     public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO, HttpSession session) {
         try {
             this.offerService.editUserOffer(offerId, offerDTO, session);
-            return ResponseEntity.ok("Offer successfully edited");
-        } catch(UserNotLoggedInException e) { // rozne kody aby dla 401 i 404 blad a 400 tylko kommunikat
+            return ResponseEntity.ok("Offer edited");
+        } catch(UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -77,7 +77,7 @@ public class OfferController {
     public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.deleteUserOffer(offerId, session);
-            return ResponseEntity.ok("Offer successfully deleted");
+            return ResponseEntity.ok("Offer deleted");
         } catch(UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (NoSuchElementException e) {
@@ -89,7 +89,7 @@ public class OfferController {
     public ResponseEntity<?> addToFavourites(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.addToFavourites(offerId, session);
-            return ResponseEntity.ok("Offer successfully added to the favourites");
+            return ResponseEntity.ok("Added to the favourites");
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch(NoSuchElementException e) {
@@ -101,7 +101,7 @@ public class OfferController {
     public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.removeFromFavourites(offerId, session);
-            return ResponseEntity.ok("Offer successfully removed from the favourites");
+            return ResponseEntity.ok("Removed from the favourites");
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch(NoSuchElementException e) {

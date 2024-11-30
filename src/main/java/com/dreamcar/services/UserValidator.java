@@ -1,6 +1,7 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.UserDTO;
+import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.model.User;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,6 @@ public class UserValidator {
     public void validateLogin(User user) {
         if(user.getLogin() == null || user.getLogin().trim().isEmpty() ||
             user.getPassword() == null || user.getPassword().trim().isEmpty())
-            throw new IncorrectRegisterDataException("Incorrect data");
+            throw new IncorrectLoginDataException("Incorrect data");
     }
 }
