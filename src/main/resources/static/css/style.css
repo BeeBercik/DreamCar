@@ -156,11 +156,11 @@ main.general-offer-list {
     margin-top: 20px;
     list-style: none;
     padding: 0; 
-    cursor: auto;
 }
 
 .offer ul li {
     margin-right: 15px;
+    cursor: auto;
 }
 
 .offer .details .price {

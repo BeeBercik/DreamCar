@@ -8,6 +8,7 @@ import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -33,7 +34,8 @@ public class UserService {
         }
         User user = new User();
         user.setLogin(userDTO.getLogin());
-        user.setPassword(userDTO.getPassword());
+        String hashedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
+        user.setPassword(hashedPassword);
         user.setEmail(userDTO.getEmail());
         user.setPhone(userDTO.getPhone());
         user.setAdd_date(new Date());
@@ -46,7 +48,7 @@ public class UserService {
 
         if(userRepository.existsByLogin(user.getLogin().trim())) {
             User dbuser = userRepository.findByLogin(user.getLogin());
-            if(dbuser.getPassword().equals(user.getPassword().trim())) {
+            if(BCrypt.checkpw(user.getPassword(), dbuser.getPassword().trim())) {
                 return new UserDTO(dbuser.getId(),
                         dbuser.getLogin(), dbuser.getEmail(),
                         dbuser.getPhone(), dbuser.getAdd_date());
