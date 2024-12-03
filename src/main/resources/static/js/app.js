@@ -35,6 +35,7 @@ async function navigateTo(page, flag = false, message = '') {
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
                 await initShowBrands();
                 await initShowFuels();
+                await initShowGearboxes();
                 break;
             case 'favourites':
                 initLoadFavourites();
@@ -220,6 +221,15 @@ async function initShowBrands(offer = null) {
 async function initShowFuels(offer = null) {
     try {
         await ApiService.showFuels(offer);
+    } catch(error) {
+        UI.displayCriticalAppError();
+        console.log(error);
+    }
+}
+
+async function initShowGearboxes(offer = null) {
+    try {
+        await ApiService.showGearboxes(offer);
     } catch(error) {
         UI.displayCriticalAppError();
         console.log(error);

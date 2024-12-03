@@ -42,7 +42,7 @@ public class Offer {
 
     @ManyToOne
     @JoinColumn(name = "gearbox_id")
-    private GearBox gearbox;
+    private Gearbox gearbox;
 
     @ManyToMany(mappedBy = "favourites")
     @JsonIgnore

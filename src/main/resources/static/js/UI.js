@@ -149,9 +149,7 @@ class UI {
             <input type="number" id="mileage" name="mileage" required value="${offer.mileage}"/>
 
             <label for="gearbox">Skrzynia biegów</label>
-            <select id="gearbox" name="gearbox" required>
-                <option value="1">Automatyczna</option>
-                <option value="2">Manualna</option>
+            <select id="gearbox" name="gearbox">
             </select>
 
             <label for="fuel">Rodzaj paliwa</label>
@@ -167,7 +165,7 @@ class UI {
 `
         initShowBrands(offer);
         initShowFuels(offer);
-        document.getElementById('gearbox').value = offer.gearbox.id;
+        initShowGearboxes(offer);
    }
 
    static displayNotLoggedInMessagesInFavourites() {
@@ -276,6 +274,21 @@ class UI {
             option.value = fuel.id;
 
             if(offer != null && offer.fuel.id == fuel.id)
+                 option.selected = true;
+
+            select.appendChild(option);
+        })
+    }
+
+    static showGearboxes(gearboxes, offer = null) {
+        const select = document.getElementById('gearbox');
+
+        gearboxes.forEach(gearbox => {
+            const option = document.createElement('option');
+            option.textContent = gearbox.name;
+            option.value = gearbox.id;
+
+            if(offer != null && offer.gearbox.id == gearbox.id)
                  option.selected = true;
 
             select.appendChild(option);

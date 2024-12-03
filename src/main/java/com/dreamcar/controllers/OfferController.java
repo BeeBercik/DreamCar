@@ -5,6 +5,7 @@ import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Brand;
 import com.dreamcar.model.Fuel;
+import com.dreamcar.model.Gearbox;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
@@ -149,6 +150,18 @@ public class OfferController {
     public ResponseEntity<?> getFuels(HttpSession session) {
         try {
             List<Fuel> fuels = this.offerService.getFuels(session);
+            return ResponseEntity.ok(fuels);
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getGearboxes")
+    public ResponseEntity<?> getGearboxes(HttpSession session) {
+        try {
+            List<Gearbox> fuels = this.offerService.getGearboxes(session);
             return ResponseEntity.ok(fuels);
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

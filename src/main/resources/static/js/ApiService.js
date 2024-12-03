@@ -102,6 +102,7 @@ class ApiService {
         const message = await response.text();
         if(!response.ok) throw new Error(message);
         UI.showMessageUnderTheHeader(true, message);
+        navigateTo('user-profile');
     }
 
     static async getFavourites() {
@@ -160,5 +161,13 @@ class ApiService {
 
         if(offerToEdit != null) UI.showFuels(await response.json(), offerToEdit);
         else UI.showFuels(await response.json());
+    }
+
+    static async showGearboxes(offerToEdit = null) {
+        const response = await fetch('/api/getGearboxes');
+        if(!response.ok) throw new Error(await response.text);
+
+        if(offerToEdit != null) UI.showGearboxes(await response.json(), offerToEdit);
+        else UI.showGearboxes(await response.json());
     }
 }

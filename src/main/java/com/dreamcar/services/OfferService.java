@@ -1,10 +1,7 @@
 package com.dreamcar.services;
 
 import com.dreamcar.dto.OfferDTO;
-import com.dreamcar.model.Brand;
-import com.dreamcar.model.Fuel;
-import com.dreamcar.model.Offer;
-import com.dreamcar.model.User;
+import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,5 +132,11 @@ public class OfferService {
         this.userService.getLoggedUser(session);
 
         return this.fuelRepository.findAllByOrderByNameAsc();
+    }
+
+    public List<Gearbox> getGearboxes(HttpSession session) {
+        this.userService.getLoggedUser(session);
+
+        return this.gearboxRepository.findAllByOrderByNameAsc();
     }
 }

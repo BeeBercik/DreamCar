@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Table(name = "gear_boxes")
 @ToString
-public class GearBox {
+public class Gearbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
