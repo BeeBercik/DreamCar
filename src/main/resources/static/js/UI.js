@@ -114,8 +114,8 @@ class UI {
                     <p class="price"><span>${offer.price}</span> pln</p>
                 </div>
                 <div class="offer-actions">
-                    <button class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id})">Edytuj</button>
-                    <button onclick="initDeleteOffer(${offer.id})" class="delete-btn">Usun</button>
+                    <button class="edit-btn" onclick="initDisplayOfferToEdit(${offer.id}, event)">Edytuj</button>
+                    <button onclick="initDeleteOffer(${offer.id}, event)" class="delete-btn">Usun</button>
                 </div>`;
 
             userOffersDiv.append(userOfferArticle);
@@ -155,10 +155,7 @@ class UI {
             </select>
 
             <label for="fuel">Rodzaj paliwa</label>
-            <select id="fuel" name="fuel" required>
-                <option value="1">Benzyna</option>
-                <option value="2">Diesel</option>
-                <option value="3">LPG</option>
+            <select id="fuel" name="fuel">
             </select>
 
             <label for="price">Cena (PLN)</label>
@@ -168,9 +165,9 @@ class UI {
         </form>
         </div>
 `
-        document.getElementById('fuel').value = offer.fuel.id;
+        initShowBrands(offer);
+        initShowFuels(offer);
         document.getElementById('gearbox').value = offer.gearbox.id;
-        ApiService.showBrands(offer);
    }
 
    static displayNotLoggedInMessagesInFavourites() {
@@ -264,6 +261,21 @@ class UI {
             option.value = brand.id;
 
             if(offer != null && offer.brand.id == brand.id)
+                 option.selected = true;
+
+            select.appendChild(option);
+        })
+    }
+
+    static showFuels(fuels, offer = null) {
+        const select = document.getElementById('fuel');
+
+        fuels.forEach(fuel => {
+            const option = document.createElement('option');
+            option.textContent = fuel.name;
+            option.value = fuel.id;
+
+            if(offer != null && offer.fuel.id == fuel.id)
                  option.selected = true;
 
             select.appendChild(option);

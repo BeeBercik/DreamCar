@@ -153,4 +153,12 @@ class ApiService {
         if(offerToEdit != null) UI.showBrands(await response.json(), offerToEdit);
         else UI.showBrands(await response.json());
     }
+
+    static async showFuels(offerToEdit = null) {
+        const response = await fetch('/api/getFuels');
+        if(!response.ok) throw new Error(await response.text);
+
+        if(offerToEdit != null) UI.showFuels(await response.json(), offerToEdit);
+        else UI.showFuels(await response.json());
+    }
 }

@@ -2,6 +2,7 @@ package com.dreamcar.services;
 
 import com.dreamcar.dto.OfferDTO;
 import com.dreamcar.model.Brand;
+import com.dreamcar.model.Fuel;
 import com.dreamcar.model.Offer;
 import com.dreamcar.model.User;
 import com.dreamcar.repositories.*;
@@ -128,5 +129,11 @@ public class OfferService {
         this.userService.getLoggedUser(session);
 
         return this.brandRepository.findAllByOrderByNameAsc();
+    }
+
+    public List<Fuel> getFuels(HttpSession session) {
+        this.userService.getLoggedUser(session);
+
+        return this.fuelRepository.findAllByOrderByNameAsc();
     }
 }

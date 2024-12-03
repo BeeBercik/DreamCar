@@ -32,8 +32,9 @@ async function navigateTo(page, flag = false, message = '') {
                 await ApiService.getUserOffers();
                 break;
             case 'new-offer':
-                await initShowBrands();
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
+                await initShowBrands();
+                await initShowFuels();
                 break;
             case 'favourites':
                 initLoadFavourites();
@@ -136,7 +137,8 @@ async function initEditOffer(offerId, event) {
     }
 }
 
-async function initDisplayOfferToEdit(id) {
+async function initDisplayOfferToEdit(id, event) {
+    event.stopPropagation();
     try {
         const offer = await ApiService.displayOfferToEdit(id);
     } catch (error) {
@@ -145,7 +147,8 @@ async function initDisplayOfferToEdit(id) {
     }
 }
 
-async function initDeleteOffer(id) {
+async function initDeleteOffer(id, event) {
+    event.stopPropagation();
     try {
         await ApiService.deleteOffer(id);
     } catch(error) {
@@ -205,9 +208,18 @@ async function initRemoveFromFavourites(id) {
     }
 }
 
-async function initShowBrands() {
+async function initShowBrands(offer = null) {
     try {
-        await ApiService.showBrands();
+        await ApiService.showBrands(offer);
+    } catch(error) {
+        UI.displayCriticalAppError();
+        console.log(error);
+    }
+}
+
+async function initShowFuels(offer = null) {
+    try {
+        await ApiService.showFuels(offer);
     } catch(error) {
         UI.displayCriticalAppError();
         console.log(error);
