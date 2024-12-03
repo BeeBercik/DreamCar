@@ -32,10 +32,8 @@ async function navigateTo(page, flag = false, message = '') {
                 await ApiService.getUserOffers();
                 break;
             case 'new-offer':
+                await initShowBrands();
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
-                break;
-            case 'edit-offer':
-                document.getElementById('edit-offer-form').addEventListener('submit', initEditOffer);
                 break;
             case 'favourites':
                 initLoadFavourites();
@@ -201,6 +199,15 @@ async function initAddToFavourites(id) {
 async function initRemoveFromFavourites(id) {
     try {
         await ApiService.removeFromFavourites(id);
+    } catch(error) {
+        UI.displayCriticalAppError();
+        console.log(error);
+    }
+}
+
+async function initShowBrands() {
+    try {
+        await ApiService.showBrands();
     } catch(error) {
         UI.displayCriticalAppError();
         console.log(error);

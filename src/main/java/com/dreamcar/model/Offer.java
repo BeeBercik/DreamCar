@@ -14,8 +14,8 @@ import java.util.Set;
 @Entity
 @Setter @Getter
 @NoArgsConstructor
-@ToString
 @Table(name = "offers")
+@ToString
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,6 @@ public class Offer {
 
     private String title;
     private String description;
-    private String brand;
     private Integer mileage;
     private Integer year;
     private Integer price;
@@ -36,6 +35,10 @@ public class Offer {
     @ManyToOne
     @JoinColumn(name = "fuel_id")
     private Fuel fuel;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     @ManyToOne
     @JoinColumn(name = "gearbox_id")

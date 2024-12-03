@@ -37,7 +37,7 @@ class UI {
                     <h1>${offer.title}</h1>
                     <p class="price">${offer.price} PLN</p>
                     <div class="offer-details">
-                        <p><span>Marka: </span>${offer.brand}</p>
+                        <p><span>Marka: </span>${offer.brand.name}</p>
                         <p><span>Rocznik: </span>${offer.year}</p>
                         <p><span>Przebieg: </span>${offer.mileage} km</p>
                         <p><span>Skrzynia biegów: </span>${offer.gearbox.name}</p>
@@ -93,12 +93,6 @@ class UI {
         form_div_message.innerHTML = message;
     }
 
-    // static showSuccessfullRegisterMessage(message) {
-    //     const form_div_message = document.getElementById('login-form-message');
-    //     form_div_message.classList.add('successfull-register');
-    //     form_div_message.innerHTML = message;
-    // }
-
     static generateUserProfile(user) {
         document.getElementById('user-login').innerHTML = user.login;
         document.getElementById('user-email').innerHTML = user.email;
@@ -140,8 +134,11 @@ class UI {
             <label for="description">Opis</label>
             <textarea id="description" name="description" rows="4" required >${offer.description}</textarea>
 
-            <label for="brand">Marka</label>
-            <input type="text" id="brand" name="brand" required value="${offer.brand}"/>
+            <div class="form-group">
+                <label for="brand">Marka:</label>
+                <select id="brand" name="brand">
+                </select>
+            </div>
 
             <div class="form-group">
             <label for="year">Rok produkcji:</label>
@@ -162,7 +159,6 @@ class UI {
                 <option value="1">Benzyna</option>
                 <option value="2">Diesel</option>
                 <option value="3">LPG</option>
-                
             </select>
 
             <label for="price">Cena (PLN)</label>
@@ -174,6 +170,7 @@ class UI {
 `
         document.getElementById('fuel').value = offer.fuel.id;
         document.getElementById('gearbox').value = offer.gearbox.id;
+        ApiService.showBrands(offer);
    }
 
    static displayNotLoggedInMessagesInFavourites() {
@@ -256,5 +253,20 @@ class UI {
         document.getElementById('content').innerHTML = `
         <div class="criticalAppError">
         Error! Please try again later</div>`;
+    }
+
+    static showBrands(brands, offer = null) {
+        const select = document.getElementById('brand');
+
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.textContent = brand.name;
+            option.value = brand.id;
+
+            if(offer != null && offer.brand.id == brand.id)
+                 option.selected = true;
+
+            select.appendChild(option);
+        })
     }
 }

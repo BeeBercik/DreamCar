@@ -8,14 +8,14 @@ import lombok.ToString;
 
 @Entity
 @Setter @Getter
-@ToString
 @NoArgsConstructor
 @Table(name = "fuels")
+@ToString
 public class Fuel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
 
+    private String name;
 }
 

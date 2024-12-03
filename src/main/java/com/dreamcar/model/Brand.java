@@ -7,11 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Setter @Getter
 @NoArgsConstructor
-@Table(name = "gear_boxes")
+@Getter @Setter
+@Table(name = "brands")
 @ToString
-public class GearBox {
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

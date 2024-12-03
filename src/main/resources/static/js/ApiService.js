@@ -145,4 +145,12 @@ class ApiService {
         const result = await ApiService.isOfferInFavourites(id);
         UI.updateToggleFavouriteBtn(id, result);
     }
+
+    static async showBrands(offerToEdit = null) {
+        const response = await fetch('/api/getBrands');
+        if(!response.ok) throw new Error(await response.text);
+
+        if(offerToEdit != null) UI.showBrands(await response.json(), offerToEdit);
+        else UI.showBrands(await response.json());
+    }
 }

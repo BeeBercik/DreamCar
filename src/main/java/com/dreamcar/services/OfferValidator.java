@@ -7,10 +7,8 @@ public class OfferValidator {
     static void validateOffer(OfferDTO offerDTO) {
         if(offerDTO.getTitle() == null || offerDTO.getTitle().trim().isEmpty() ||
         offerDTO.getDescription() == null || offerDTO.getDescription().trim().isEmpty() ||
-        offerDTO.getBrand() == null || offerDTO.getBrand().trim().isEmpty() ||
-        offerDTO.getMileage()  == null || offerDTO.getYear() == null ||
-        offerDTO.getPrice() == null || offerDTO.getFuel() == null ||
-        offerDTO.getGearbox() == null) {
+        offerDTO.getBrand() == null || offerDTO.getMileage()  == null || offerDTO.getYear() == null ||
+        offerDTO.getPrice() == null || offerDTO.getFuel() == null || offerDTO.getGearbox() == null) {
             throw new IncorrectOfferDataException("Invalid data");
         }
 

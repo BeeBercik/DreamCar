@@ -3,6 +3,7 @@ package com.dreamcar.controllers;
 import com.dreamcar.dto.OfferDTO;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
+import com.dreamcar.model.Brand;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
@@ -126,6 +127,18 @@ public class OfferController {
             if(this.offerService.checkIfOfferIsInFavourites(offerId, session))
                 return ResponseEntity.ok(true);
             else throw new NoSuchElementException("Offer is not in favourites");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getBrands")
+    public ResponseEntity<?> getBrands(HttpSession session) {
+        try {
+            List<Brand> brands = this.offerService.getBrands(session);
+            return ResponseEntity.ok(brands);
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

@@ -12,8 +12,8 @@ import java.util.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "users")
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
