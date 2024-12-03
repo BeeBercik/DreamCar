@@ -95,8 +95,8 @@ class UI {
 
     static generateUserProfile(user) {
         document.getElementById('user-login').innerHTML = user.login;
-        document.getElementById('user-email').innerHTML = user.email;
-        document.getElementById('user-phone').innerHTML = user.phone;
+        document.getElementById('user-email').innerHTML = "<i class='fa-solid fa-envelope'></i> " + user.email;
+        document.getElementById('user-phone').innerHTML = "<i class='fa-solid fa-phone'></i> " + user.phone;
     }
 
     static loadUserOffers(offers) {
@@ -122,7 +122,7 @@ class UI {
         }); 
     }
 
-    static generateUserOfferToEdit(offer) {
+    static async generateUserOfferToEdit(offer) {
         document.getElementById('content').innerHTML = `
         <div class="edit-offer-container">
         <div id="offer-form-message"></div>
@@ -163,9 +163,9 @@ class UI {
         </form>
         </div>
 `
-        initShowBrands(offer);
-        initShowFuels(offer);
-        initShowGearboxes(offer);
+        await initShowOptions("/api/getBrands", UI.showBrands, offer);
+        await initShowOptions("/api/getFuels", UI.showFuels, offer);
+        await initShowOptions("/api/getGearboxes", UI.showGearboxes, offer);
    }
 
    static displayNotLoggedInMessagesInFavourites() {
@@ -262,7 +262,7 @@ class UI {
                  option.selected = true;
 
             select.appendChild(option);
-        })
+        });
     }
 
     static showFuels(fuels, offer = null) {
@@ -277,7 +277,7 @@ class UI {
                  option.selected = true;
 
             select.appendChild(option);
-        })
+        });
     }
 
     static showGearboxes(gearboxes, offer = null) {
@@ -292,6 +292,6 @@ class UI {
                  option.selected = true;
 
             select.appendChild(option);
-        })
+        });
     }
 }

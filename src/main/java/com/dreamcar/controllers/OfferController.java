@@ -55,7 +55,7 @@ public class OfferController {
         }
     }
 
-    @PostMapping("/editUserOffer/{id}")
+    @PutMapping("/editUserOffer/{id}")
     public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO, HttpSession session) {
         try {
             this.offerService.editUserOffer(offerId, offerDTO, session);
@@ -76,7 +76,7 @@ public class OfferController {
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Offer not found");
     }
 
-    @GetMapping("/deleteOffer/{id}")
+    @DeleteMapping("/deleteOffer/{id}")
     public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.deleteUserOffer(offerId, session);
@@ -88,7 +88,7 @@ public class OfferController {
         }
     }
 
-    @GetMapping("addToFavourites/{id}")
+    @PutMapping("addToFavourites/{id}")
     public ResponseEntity<?> addToFavourites(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.addToFavourites(offerId, session);
@@ -100,7 +100,7 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/removeFromFavourites/{id}")
+    @DeleteMapping("/removeFromFavourites/{id}")
     public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
         try {
             this.offerService.removeFromFavourites(offerId, session);
@@ -134,38 +134,13 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/getBrands")
-    public ResponseEntity<?> getBrands(HttpSession session) {
+    @GetMapping("/{getWhat}")
+    public ResponseEntity<?> getOptions(@PathVariable("getWhat") String getWhat, HttpSession session) {
         try {
-            List<Brand> brands = this.offerService.getBrands(session);
-            return ResponseEntity.ok(brands);
-        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.ok(this.offerService.getOptions(getWhat, session));
+        } catch(UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/getFuels")
-    public ResponseEntity<?> getFuels(HttpSession session) {
-        try {
-            List<Fuel> fuels = this.offerService.getFuels(session);
-            return ResponseEntity.ok(fuels);
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/getGearboxes")
-    public ResponseEntity<?> getGearboxes(HttpSession session) {
-        try {
-            List<Gearbox> fuels = this.offerService.getGearboxes(session);
-            return ResponseEntity.ok(fuels);
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
+        } catch(NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

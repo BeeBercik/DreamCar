@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OfferService {
@@ -122,21 +119,18 @@ public class OfferService {
         this.userRepository.save(user);
     }
 
-    public List<Brand> getBrands(HttpSession session) {
+    public List<?> getOptions(String getWhat, HttpSession session) {
         this.userService.getLoggedUser(session);
 
-        return this.brandRepository.findAllByOrderByNameAsc();
-    }
-
-    public List<Fuel> getFuels(HttpSession session) {
-        this.userService.getLoggedUser(session);
-
-        return this.fuelRepository.findAllByOrderByNameAsc();
-    }
-
-    public List<Gearbox> getGearboxes(HttpSession session) {
-        this.userService.getLoggedUser(session);
-
-        return this.gearboxRepository.findAllByOrderByNameAsc();
+        switch(getWhat) {
+            case "getBrands":
+                return this.brandRepository.findAllByOrderByNameAsc();
+            case "getFuels":
+                return this.fuelRepository.findAllByOrderByNameAsc();
+            case "getGearboxes":
+                return this.gearboxRepository.findAllByOrderByNameAsc();
+            default:
+                 throw new NoSuchElementException();
+        }
     }
 }

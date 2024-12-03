@@ -48,7 +48,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/logoutUser")
+    @PostMapping("/logoutUser")
     public ResponseEntity<?> logoutUser(HttpSession session) {
         try {
             this.userService.getLoggedUser(session);

@@ -33,9 +33,9 @@ async function navigateTo(page, flag = false, message = '') {
                 break;
             case 'new-offer':
                 document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
-                await initShowBrands();
-                await initShowFuels();
-                await initShowGearboxes();
+                await initShowOptions("/api/getBrands", UI.showBrands);
+                await initShowOptions("/api/getFuels", UI.showFuels);
+                await initShowOptions("/api/getGearboxes", UI.showGearboxes);
                 break;
             case 'favourites':
                 initLoadFavourites();
@@ -209,27 +209,9 @@ async function initRemoveFromFavourites(id) {
     }
 }
 
-async function initShowBrands(offer = null) {
+async function initShowOptions(endpoint, uiMethod, offer = null) {
     try {
-        await ApiService.showBrands(offer);
-    } catch(error) {
-        UI.displayCriticalAppError();
-        console.log(error);
-    }
-}
-
-async function initShowFuels(offer = null) {
-    try {
-        await ApiService.showFuels(offer);
-    } catch(error) {
-        UI.displayCriticalAppError();
-        console.log(error);
-    }
-}
-
-async function initShowGearboxes(offer = null) {
-    try {
-        await ApiService.showGearboxes(offer);
+        await ApiService.fetchAndShowOptions(endpoint, uiMethod, offer);
     } catch(error) {
         UI.displayCriticalAppError();
         console.log(error);

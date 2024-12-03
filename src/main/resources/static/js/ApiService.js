@@ -9,7 +9,8 @@ class ApiService {
 
     static async getOfferDetails(id) {
         const response = await fetch("/api/offerDetails/" + id);
-        if(!response.ok) throw new Error("Some problems with offer details..");
+        if(!response.ok) 
+            throw new Error("Some problems with offer details..");
         
         return await response.json();;
     }
@@ -39,7 +40,10 @@ class ApiService {
     }
 
     static async logoutUser() {
-        const response = await fetch('/api/logoutUser');
+        const response = await fetch('/api/logoutUser', {
+            method: 'POST',
+            headers: {'Content-type': 'application/JSON'}
+        });
         if(!response.ok) throw new Error(await response.text());
         navigateTo('index', true, await response.text());
     }
@@ -76,7 +80,7 @@ class ApiService {
 
     static async editUserOffer(id, offerData) {
         const response = await fetch("/api/editUserOffer/" + id, {
-            method: 'POST',
+            method: 'PUT',
             headers: {'Content-type': 'application/JSON'},
             body: JSON.stringify(offerData)
         });
@@ -97,7 +101,9 @@ class ApiService {
     }
 
     static async deleteOffer(id) {
-        const response = await fetch("/api/deleteOffer/" + id);
+        const response = await fetch("/api/deleteOffer/" + id, {
+            method: 'DELETE'
+        });
 
         const message = await response.text();
         if(!response.ok) throw new Error(message);
@@ -116,7 +122,9 @@ class ApiService {
     }
 
     static async addToFavourites(id) {
-        const response = await fetch("/api/addToFavourites/" + id);
+        const response = await fetch("/api/addToFavourites/" + id, {
+            method: 'PUT'
+        });
 
         const message = await response.text();
         if(!response.ok) UI.showMessageUnderTheHeader(false, message);
@@ -127,7 +135,9 @@ class ApiService {
     }
 
     static async removeFromFavourites(id) {
-        const response = await fetch("/api/removeFromFavourites/" + id);
+        const response = await fetch("/api/removeFromFavourites/" + id, {
+            method: 'DELETE'
+        });
 
         const message = await response.text();
         if(!response.ok) throw new Error(message);
@@ -147,27 +157,10 @@ class ApiService {
         UI.updateToggleFavouriteBtn(id, result);
     }
 
-    static async showBrands(offerToEdit = null) {
-        const response = await fetch('/api/getBrands');
-        if(!response.ok) throw new Error(await response.text);
+    static async fetchAndShowOptions(endpoint, uiMethod, offer = null) {
+        const response = await fetch(endpoint);
 
-        if(offerToEdit != null) UI.showBrands(await response.json(), offerToEdit);
-        else UI.showBrands(await response.json());
-    }
-
-    static async showFuels(offerToEdit = null) {
-        const response = await fetch('/api/getFuels');
-        if(!response.ok) throw new Error(await response.text);
-
-        if(offerToEdit != null) UI.showFuels(await response.json(), offerToEdit);
-        else UI.showFuels(await response.json());
-    }
-
-    static async showGearboxes(offerToEdit = null) {
-        const response = await fetch('/api/getGearboxes');
-        if(!response.ok) throw new Error(await response.text);
-
-        if(offerToEdit != null) UI.showGearboxes(await response.json(), offerToEdit);
-        else UI.showGearboxes(await response.json());
+        if(!response.ok) throw new Error(await response.text());
+        uiMethod(await response.json(), offer);
     }
 }
