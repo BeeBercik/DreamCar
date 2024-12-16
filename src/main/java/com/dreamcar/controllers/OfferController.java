@@ -138,8 +138,6 @@ public class OfferController {
     public ResponseEntity<?> getOptions(@PathVariable("getWhat") String getWhat, HttpSession session) {
         try {
             return ResponseEntity.ok(this.offerService.getOptions(getWhat, session));
-        } catch(UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch(NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

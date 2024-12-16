@@ -22,6 +22,9 @@ async function navigateTo(page, flag = false, message = '') {
                 const response = await fetch("../filters.html");
                 if(!response.ok) throw new Error('Page not found');
                 content_div.innerHTML = await response.text();
+                await initShowOptions("/api/getBrands", UI.showBrands);
+                await initShowOptions("/api/getFuels", UI.showFuels);
+                await initShowOptions("/api/getGearboxes", UI.showGearboxes);
 
                 loadAllOffers();
                 break;

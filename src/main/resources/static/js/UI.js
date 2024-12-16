@@ -274,7 +274,7 @@ class UI {
             option.value = fuel.id;
 
             if(offer != null && offer.fuel.id == fuel.id)
-                 option.selected = true;
+                option.selected = true;
 
             select.appendChild(option);
         });
@@ -289,7 +289,7 @@ class UI {
             option.value = gearbox.id;
 
             if(offer != null && offer.gearbox.id == gearbox.id)
-                 option.selected = true;
+                option.selected = true;
 
             select.appendChild(option);
         });

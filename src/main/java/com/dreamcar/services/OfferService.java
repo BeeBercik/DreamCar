@@ -120,17 +120,12 @@ public class OfferService {
     }
 
     public List<?> getOptions(String getWhat, HttpSession session) {
-        this.userService.getLoggedUser(session);
+        return switch (getWhat) {
+            case "getBrands" -> this.brandRepository.findAllByOrderByNameAsc();
+            case "getFuels" -> this.fuelRepository.findAllByOrderByNameAsc();
+            case "getGearboxes" -> this.gearboxRepository.findAllByOrderByNameAsc();
+            default -> throw new NoSuchElementException();
+        };
 
-        switch(getWhat) {
-            case "getBrands":
-                return this.brandRepository.findAllByOrderByNameAsc();
-            case "getFuels":
-                return this.fuelRepository.findAllByOrderByNameAsc();
-            case "getGearboxes":
-                return this.gearboxRepository.findAllByOrderByNameAsc();
-            default:
-                 throw new NoSuchElementException();
-        }
     }
 }
