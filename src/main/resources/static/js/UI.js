@@ -255,7 +255,7 @@ class UI {
 
         brands.forEach(brand => {
             const option = document.createElement('option');
-            option.textContent = brand.name;
+            option.textContent = brand.name.charAt(0).toUpperCase() + brand.name.slice(1);
             option.value = brand.id;
 
             if(offer != null && offer.brand.id == brand.id)
@@ -270,7 +270,7 @@ class UI {
 
         fuels.forEach(fuel => {
             const option = document.createElement('option');
-            option.textContent = fuel.name;
+            option.textContent = fuel.name.charAt(0).toUpperCase() + fuel.name.slice(1);
             option.value = fuel.id;
 
             if(offer != null && offer.fuel.id == fuel.id)
@@ -285,7 +285,7 @@ class UI {
 
         gearboxes.forEach(gearbox => {
             const option = document.createElement('option');
-            option.textContent = gearbox.name;
+            option.textContent = gearbox.name.charAt(0).toUpperCase() + gearbox.name.slice(1);
             option.value = gearbox.id;
 
             if(offer != null && offer.gearbox.id == gearbox.id)

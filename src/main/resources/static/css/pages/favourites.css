@@ -1,0 +1,126 @@
+
+.favourites-container {
+    width: 70%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.favourites-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.user-favourite-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.favourite-offer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: 0.3s;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.favourite-offer:hover {
+    transform: scale(1.02);
+}
+
+.favourite-offer ul {
+    display: flex;
+    list-style: none;
+    padding: 0; 
+    margin-top: 10px;
+    cursor: auto;
+}
+
+.favourite-offer ul li {
+    margin-right: 15px;
+}
+
+.favourite-offer .price {
+    margin-top: 5px;
+}
+
+.favourite-offer-img {
+    width: 100px;
+    height: 80px;
+    margin-right: 20px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.favourite-offer-details h4 {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.favourite-offer-details .price span {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* FAVOURITES - NO FAVOURITE OFFERS *********************** */
+
+.no-favourites-message {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.no-favourites-message p {
+    margin-bottom: 15px;
+    margin-top: 25px;
+    color: #007bff;
+}
+
+/* FAVOURITES - NOT-LOGGED-IN************************************* */
+
+.not-logged-in-container {
+    width: 60%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.not-logged-in-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #FF5733;
+}
+
+.not-logged-in-container p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.login-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}

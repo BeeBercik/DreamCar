@@ -1,0 +1,166 @@
+
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  
+.logout-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+background-color: #c9302c;
+}
+
+.profile-container {
+    width: 60%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+}
+
+.user-details h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.user-details p {
+    margin: 5px 0;
+}
+
+.active-offers {
+    margin-top: 30px;
+}
+
+.active-offers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.active-offers-header h3 {
+    font-size: 20px;
+}
+
+.add-offer-btn {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.add-offer-btn:hover {
+    background-color: #43a047;
+}
+
+.user-offer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-offer-list .offer {
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: 0.3s;
+}
+
+.user-offer-list .offer:hover {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-offer-list article {
+    display: flex;
+}
+
+.user-offer-list .offer-img {
+    width: 100px;
+    height: 80px;
+    margin-right: 20px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.offer-details {
+    margin-top: 10px;
+}
+
+.user-offer-list .offer-details h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.user-offer-list .offer-details .price {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.user-offer-list .offer-details .price span {
+    font-weight: bold;
+}
+
+.user-offer-list .offer-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.user-offer-list .delete-btn {
+    color: rgba(255, 0, 0, 0.661);
+}
+
+.offer-actions button {
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+}
+
+.user-offer-list .offer-actions .edit-btn:hover {
+    color: #007bff;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.user-offer-list .offer-actions .delete-btn:hover {
+    transition: .3s;
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+}

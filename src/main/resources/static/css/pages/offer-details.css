@@ -1,0 +1,126 @@
+.offer-details-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.offer-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.offer-image {
+    flex: 1;
+    text-align: center;
+}
+
+.offer-img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+.offer-info {
+    flex: 2;
+    margin-left: 20px;
+}
+
+.offer-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.offer-details-container .price {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.offer-details-container .offer-details p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.offer-details-container .offer-details p span {
+    font-weight: bold;
+}
+
+.offer-description {
+    margin-top: 30px;
+}
+
+.offer-description h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.offer-description p {
+    font-size: 16px;
+}
+
+.offer-seller {
+    margin-top: 30px;
+}
+
+.offer-seller h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.offer-seller p {
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+
+.add-to-favorites {
+    margin-top: 50px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-favorites:hover {
+    background-color: #43a047;
+}
+
+.remove-from-favorites {
+    margin-top: 50px;
+    padding: 10px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-from-favorites:hover {
+    background-color: #c9302c;
+}
+
+.offer-details-container {
+    position: relative;
+}
+
+.offer-date {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 14px;
+    color: #666;
+    padding: 10px;
+}
+
+.separator {
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+}

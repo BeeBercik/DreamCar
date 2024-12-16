@@ -41,10 +41,10 @@ async function navigateTo(page, flag = false, message = '') {
                 await ApiService.getUserOffers();
                 break;
             case 'new-offer':
-                document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
                 await initShowOptions("/api/getBrands", UI.showBrands);
                 await initShowOptions("/api/getFuels", UI.showFuels);
                 await initShowOptions("/api/getGearboxes", UI.showGearboxes);
+                document.getElementById('new-offer-form').addEventListener('submit', initAddNewOffer);
                 break;
             case 'favourites':
                 initLoadFavourites();

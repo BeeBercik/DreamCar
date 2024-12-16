@@ -1,0 +1,36 @@
+/* in-form communicat */
+.incorrect-data {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* message-bar communicates */
+.successfull-register {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.criticalAppError {
+    margin: 20px auto;
+    padding: 15px 20px;
+    max-width: 600px;
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
