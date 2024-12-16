@@ -1,5 +1,6 @@
 ApiService.getLoggedUser();
-loadAllOffers();
+// loadAllOffers();
+navigateTo('index');
 
 window.addEventListener('DOMContentLoaded', ApiService.getLoggedUser);
 
@@ -17,6 +18,11 @@ async function navigateTo(page, flag = false, message = '') {
         switch(page) {
             case 'index':
                 if(flag) UI.showMessageUnderTheHeader(true, message);
+
+                const response = await fetch("../filters.html");
+                if(!response.ok) throw new Error('Page not found');
+                content_div.innerHTML = await response.text();
+
                 loadAllOffers();
                 break;
             case 'register':
