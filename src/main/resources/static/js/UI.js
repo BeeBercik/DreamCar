@@ -1,7 +1,13 @@
 
 class UI {
     static displayAllOffers(offers) {
-        const content_div = document.getElementById('content');
+        const allOffersSection = document.createElement('section');
+        allOffersSection.id = 'allOffers';
+
+        if(document.getElementById('allOffers')) 
+            allOffersSection.innerHTML = '';
+        else
+            document.getElementById('content').appendChild(allOffersSection);
 
         offers.forEach(offer => {
             const offerArticle = document.createElement('article');
@@ -22,8 +28,8 @@ class UI {
                     </ul>
                     <p class="price"><span>${offer.price}</span>pln</p>
                 </div>`;
-                content_div.appendChild(offerArticle);
-            });
+                allOffersSection.appendChild(offerArticle);
+        });
     }
 
     static async displayOfferDetails(offer) {

@@ -163,4 +163,16 @@ class ApiService {
         if(!response.ok) throw new Error(await response.text());
         uiMethod(await response.json(), offer);
     }
+
+    static async applyFilters(filters) {
+        const respone = await fetch("/api/applyFilters", {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(filters)
+        });
+
+        if(!respone.ok) throw new error(await respone.text());
+        UI.displayAllOffers(await response.json());
+        console.log(filters);
+    }
 }

@@ -27,6 +27,7 @@ async function navigateTo(page, flag = false, message = '') {
                 await initShowOptions("/api/getGearboxes", UI.showGearboxes);
 
                 loadAllOffers();
+                document.getElementById('filter-form').addEventListener('submit', initApplyFilters);
                 break;
             case 'register':
                 document.getElementById("register-form").addEventListener('submit', initUserRegister);
@@ -225,4 +226,37 @@ async function initShowOptions(endpoint, uiMethod, offer = null) {
         UI.displayCriticalAppError();
         console.log(error);
     }
+}
+
+async function initApplyFilters(event) {
+    event.preventDefault();
+
+    try {
+        const brand = document.getElementById('brand').value;
+        const fuel = document.getElementById('fuel').value;
+        const mileage_min = document.getElementById('mileage_min').value;
+        const mileage_max = document.getElementById('mileage_max').value;
+        const year_min = document.getElementById('year_min').value;
+        const year_max = document.getElementById('year_max').value;
+        const gearbox = document.getElementById('gearbox').value;
+        const price_min = document.getElementById('price_min').value;
+        const price_max = document.getElementById('price_max').value;
+
+        const filters = {
+            brand: brand,
+            fuel: fuel,
+            mileage_min: mileage_min,
+            mileage_max: mileage_max,
+            year_min: year_min,
+            year_max: year_max,
+            gearbox: gearbox,
+            price_min: price_min,
+            price_max: price_max
+        }
+
+        await ApiService.applyFilters(filters);
+    } catch(error) {
+        UI.displayCriticalAppError();
+        console.log(error);
+    } 
 }
