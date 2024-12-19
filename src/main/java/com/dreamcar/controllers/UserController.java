@@ -24,9 +24,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
-
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
         try {
@@ -59,18 +56,6 @@ public class UserController {
         }
 
         return ResponseEntity.ok("User logged out");
-    }
-
-    @GetMapping("/getUserOffers")
-    public ResponseEntity<?> getUserOffers(HttpSession session) {
-        try {
-            User user = this.userService.getLoggedUser(session);
-            List<Offer> userOffers = user.getOffers();
-
-            return ResponseEntity.ok(userOffers);
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @GetMapping("/getLoggedUser")

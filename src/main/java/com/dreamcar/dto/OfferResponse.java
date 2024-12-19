@@ -3,10 +3,7 @@ package com.dreamcar.dto;
 import com.dreamcar.model.Brand;
 import com.dreamcar.model.Fuel;
 import com.dreamcar.model.Gearbox;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -14,6 +11,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class OfferResponse {
     private int id;
     private String title;

@@ -165,14 +165,13 @@ class ApiService {
     }
 
     static async applyFilters(filters) {
-        const respone = await fetch("/api/applyFilters", {
+        const response = await fetch("/api/applyFilters", {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(filters)
         });
 
-        if(!respone.ok) throw new Error(await respone.text());
+        if(!response.ok) throw new Error(await respone.text());
         UI.displayAllOffers(await response.json());
-        console.log(filters);
     }
 }

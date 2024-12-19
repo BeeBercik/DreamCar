@@ -1,12 +1,15 @@
 package com.dreamcar.controllers;
 
+import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
+import com.dreamcar.model.User;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
+import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -24,11 +28,27 @@ public class OfferController {
     @Autowired
     OfferService offerService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/allOffers")
     public List<OfferResponse> getAllOffers() {
         return this.offerRepository.findAll().stream()
                 .map(this.offerService::convertOfferToResponse)
                 .toList();
+    }
+
+    @GetMapping("/getUserOffers")
+    public ResponseEntity<?> getUserOffers(HttpSession session) {
+        try {
+            User user = this.userService.getLoggedUser(session);
+
+            return ResponseEntity.ok(user.getOffers().stream()
+                            .map(offerService::convertOfferToResponse)
+                            .collect(Collectors.toList()));
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/offerDetails/{id}")
@@ -118,9 +138,7 @@ public class OfferController {
     @GetMapping("/getFavouriteUserOffers")
     public ResponseEntity<?> getFavourites(HttpSession session) {
         try {
-            Set<OfferResponse> favourites = this.offerService.getUserFavouriteOffers(session);
-
-            return ResponseEntity.ok(favourites);
+            return ResponseEntity.ok(this.offerService.getUserFavouriteOffers(session));
         } catch(UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
@@ -146,5 +164,10 @@ public class OfferController {
         } catch(NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @PostMapping("/applyFilters")
+    public ResponseEntity<?> applyFilters(@RequestBody FilterRequest filterRequest) {
+        return ResponseEntity.ok(this.offerService.getFilteredOffers(filterRequest));
     }
 }

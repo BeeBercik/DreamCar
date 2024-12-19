@@ -1,11 +1,16 @@
 package com.dreamcar.services;
 
+import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
+import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -85,11 +90,10 @@ public class OfferService {
     }
 
     public Set<OfferResponse> getUserFavouriteOffers(HttpSession session) {
-        User user = this.userService.getLoggedUser(session);
-
-        return user.getFavourites().stream()
-                .map(this::convertOfferToResponse)
-                .collect(Collectors.toSet());
+            User user = this.userService.getLoggedUser(session);
+            return user.getFavourites().stream()
+                    .map(this::convertOfferToResponse)
+                    .collect(Collectors.toSet());
     }
 
     public void addToFavourites(int offerId, HttpSession session) {
@@ -142,4 +146,26 @@ public class OfferService {
                 offer.getGearbox()
         );
     }
+
+    public List<OfferResponse> getFilteredOffers(FilterRequest filterRequest) {
+        return this.offerRepository.findAll().stream()
+                .filter(o -> filterRequest.getBrand() == 0 ||
+                        o.getBrand().getId() == filterRequest.getBrand())
+                .filter(o -> filterRequest.getFuel() == 0 ||
+                        o.getFuel().getId() == filterRequest.getFuel())
+                .filter(o -> filterRequest.getGearbox() == 0 ||
+                        o.getGearbox().getId() == filterRequest.getGearbox())
+                .filter(o -> o.getMileage() >= filterRequest.getMileage_min())
+                .filter(o -> filterRequest.getMileage_max() == 0 ||
+                        o.getMileage() <= filterRequest.getMileage_max())
+                .filter(o -> o.getPrice() >= filterRequest.getPrice_min())
+                .filter(o -> filterRequest.getPrice_max() == 0 ||
+                        o.getPrice() <= filterRequest.getPrice_max())
+                .filter(o -> o.getYear() >= filterRequest.getYear_min())
+                .filter(o -> filterRequest.getYear_max() == 0 ||
+                        o.getYear() <= filterRequest.getYear_max())
+                .map(this::convertOfferToResponse)
+                .collect(Collectors.toList());
+    }
+
 }

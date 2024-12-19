@@ -1,13 +1,14 @@
 
 class UI {
     static displayAllOffers(offers) {
-        const allOffersSection = document.createElement('section');
-        allOffersSection.id = 'allOffers';
+        let allOffersSection = document.getElementById('allOffers');
 
-        if(document.getElementById('allOffers')) 
-            allOffersSection.innerHTML = '';
-        else
+        if(!allOffersSection) {
+            allOffersSection = document.createElement('section');
+            allOffersSection.id = 'allOffers';
             document.getElementById('content').appendChild(allOffersSection);
+        } else
+            allOffersSection.innerHTML = '';
 
         offers.forEach(offer => {
             const offerArticle = document.createElement('article');
