@@ -1,6 +1,5 @@
 package com.dreamcar.controllers;
 
-import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
 import com.dreamcar.exceptions.IncorrectOfferDataException;

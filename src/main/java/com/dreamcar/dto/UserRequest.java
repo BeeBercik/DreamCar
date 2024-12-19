@@ -3,8 +3,6 @@ package com.dreamcar.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 public class UserRequest {
@@ -14,5 +12,4 @@ public class UserRequest {
     private String rep_password;
     private String email;
     private String phone;
-    private Date add_date;
 }

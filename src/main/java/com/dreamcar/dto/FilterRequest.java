@@ -1,13 +1,12 @@
 package com.dreamcar.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class FilterRequest {
-    private String brand;
+    private int brand;
     private int fuel;
     private int mileage_min;
     private int mileage_max;

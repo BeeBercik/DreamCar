@@ -35,19 +35,18 @@ public class OfferService {
         User user = this.userService.getLoggedUser(session);
         OfferValidator.validateOffer(offerRequest);
 
-        Offer offer = new Offer();
-        offer.setTitle(offerRequest.getTitle());
-        offer.setDescription(offerRequest.getDescription());
-        offer.setMileage(offerRequest.getMileage());
-        offer.setPrice(offerRequest.getPrice());
-        offer.setYear(offerRequest.getYear());
-        offer.setAdd_date(new Date());
-        offer.setUser(user);
-        offer.setFuel(this.fuelRepository.findById(offerRequest.getFuel()).orElseThrow(() -> new NoSuchElementException("No fuel with such id")));
-        offer.setBrand(this.brandRepository.findById(offerRequest.getBrand()).orElseThrow(() -> new NoSuchElementException("No brand with such id")));
-        offer.setGearbox(this.gearboxRepository.findById(offerRequest.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id")));
-
-        this.offerRepository.save(offer);
+        this.offerRepository.save(new Offer(
+                offerRequest.getTitle(),
+                offerRequest.getDescription(),
+                offerRequest.getMileage(),
+                offerRequest.getYear(),
+                offerRequest.getPrice(),
+                new Date(),
+                user,
+                this.fuelRepository.findById(offerRequest.getFuel()).orElseThrow(() -> new NoSuchElementException("No fuel with such id")),
+                this.brandRepository.findById(offerRequest.getBrand()).orElseThrow(() -> new NoSuchElementException("No brand with such id")),
+                this.gearboxRepository.findById(offerRequest.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id"))
+        ));
     }
 
     public void editUserOffer(int offerId, OfferRequest offerRequest, HttpSession session) {
@@ -98,7 +97,7 @@ public class OfferService {
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         user.getFavourites().add(offer);
-        // hibernate wie, ze user byl pobrany z bazy wiec go modyfikuje a nie zapisuje jako nowy
+        // hibernate wie, ze user byl pobrany z bazy - modyfikuje go
         this.userRepository.save(user);
     }
 
@@ -129,19 +128,18 @@ public class OfferService {
     }
 
     public OfferResponse convertOfferToResponse(Offer offer) {
-        OfferResponse offerResponse = new OfferResponse();
-        offerResponse.setId(offer.getId());
-        offerResponse.setTitle(offer.getTitle());
-        offerResponse.setDescription(offer.getDescription());
-        offerResponse.setMileage(offer.getMileage());
-        offerResponse.setPrice(offer.getPrice());
-        offerResponse.setYear(offer.getYear());
-
-        offerResponse.setUser(this.userService.convertUserToResponse(offer.getUser()));
-        offerResponse.setFuel(offer.getFuel());
-        offerResponse.setGearbox(offer.getGearbox());
-        offerResponse.setBrand(offer.getBrand());
-
-        return offerResponse;
+        return new OfferResponse(
+                offer.getId(),
+                offer.getTitle(),
+                offer.getDescription(),
+                offer.getMileage(),
+                offer.getYear(),
+                offer.getPrice(),
+                offer.getAdd_date(),
+                this.userService.convertUserToResponse(offer.getUser()),
+                offer.getFuel(),
+                offer.getBrand(),
+                offer.getGearbox()
+        );
     }
 }

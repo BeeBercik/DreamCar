@@ -2,10 +2,7 @@ package com.dreamcar.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Setter @Getter
+//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "offers")
 @ToString
@@ -48,4 +46,17 @@ public class Offer {
     @JsonIgnore
     @ToString.Exclude
     private Set<User> favourite_by_users = new HashSet<>();
+
+    public Offer(String title, String description, Integer mileage, Integer year, Integer price, Date add_date, User user, Fuel fuel, Brand brand, Gearbox gearbox) {
+        this.title = title;
+        this.description = description;
+        this.mileage = mileage;
+        this.year = year;
+        this.price = price;
+        this.add_date = add_date;
+        this.user = user;
+        this.fuel = fuel;
+        this.brand = brand;
+        this.gearbox = gearbox;
+    }
 }

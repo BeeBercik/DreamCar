@@ -3,7 +3,6 @@ package com.dreamcar.services;
 import com.dreamcar.dto.UserRequest;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
-import com.dreamcar.model.User;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -66,6 +66,7 @@ class UI {
             </div>
            
             <button class="add-to-favorites" id="toggleFavouriteBtn">Dodaj do ulubionych</button> 
+            <p class="offer-date">Dodano: <span>${offer.add_date}</span></p>
         </div>`
 
         await ApiService.toggleFavouriteBtn(offer.id);

@@ -26,10 +26,10 @@ public class User {
     private Date add_date;
 
     // zapobiega serializacji bo JSJON mapuje na encje Usera i probuje polaczyc z nim jego oferty, aby np. wyswietlich ich dane w widoku
-    // a my nie chcemy mie takiego pola/kolumny  wtabeli - ta wlasciwosc sluzy do wskazania na relacje oraz operowanie na ofertach powiazaych z userem np getOffers
+    // json nie zawiera tego pola offers w przekazywanym obiekcie na frontend
     @JsonIgnore
+    @ToString.Exclude // to pole nie bedzie uwzglednione w metodzie toString()
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude
     private List<Offer> offers = new LinkedList<>();
 
     @ManyToMany
@@ -38,7 +38,16 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "offer_id")
     )
+
     @JsonIgnore
     @ToString.Exclude
     private Set<Offer> favourites = new HashSet<>();
+
+    public User(String login, String password, String email, String phone, Date add_date) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.add_date = add_date;
+    }
 }

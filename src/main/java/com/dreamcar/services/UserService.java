@@ -33,15 +33,14 @@ public class UserService {
         if(userRepository.existsByLogin(userRequest.getLogin())) {
             throw new IncorrectRegisterDataException("Login already exists");
         }
-        User user = new User();
-        user.setLogin(userRequest.getLogin());
-        String hashedPassword = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
-        user.setPassword(hashedPassword);
-        user.setEmail(userRequest.getEmail());
-        user.setPhone(userRequest.getPhone());
-        user.setAdd_date(new Date());
 
-        userRepository.save(user);
+        userRepository.save(new User(
+                userRequest.getLogin(),
+                BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt()),
+                userRequest.getEmail(),
+                userRequest.getPhone(),
+                new Date()
+        ));
     }
 
     public UserResponse loginUser(UserRequest userRequest) {
@@ -50,9 +49,12 @@ public class UserService {
         if(userRepository.existsByLogin(userRequest.getLogin().trim())) {
             User dbuser = userRepository.findByLogin(userRequest.getLogin());
             if(BCrypt.checkpw(userRequest.getPassword(), dbuser.getPassword().trim())) {
-                return new UserResponse(dbuser.getId(),
-                        dbuser.getLogin(), dbuser.getEmail(),
-                        dbuser.getPhone(), dbuser.getAdd_date());
+                return new UserResponse(
+                        dbuser.getId(),
+                        dbuser.getLogin(),
+                        dbuser.getEmail(),
+                        dbuser.getPhone(),
+                        dbuser.getAdd_date());
             } else throw new IncorrectLoginDataException("Wrong password");
         } else throw new IncorrectLoginDataException("Login does not exist");
     }
