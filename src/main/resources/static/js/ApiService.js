@@ -171,7 +171,7 @@ class ApiService {
             body: JSON.stringify(filters)
         });
 
-        if(!respone.ok) throw new error(await respone.text());
+        if(!respone.ok) throw new Error(await respone.text());
         UI.displayAllOffers(await response.json());
         console.log(filters);
     }

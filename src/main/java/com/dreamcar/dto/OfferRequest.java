@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class OfferDTO {
+public class OfferRequest {
     private String title;
     private String description;
     private Integer mileage;

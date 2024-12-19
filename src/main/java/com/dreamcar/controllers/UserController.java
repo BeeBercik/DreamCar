@@ -1,6 +1,7 @@
 package com.dreamcar.controllers;
 
-import com.dreamcar.dto.UserDTO;
+import com.dreamcar.dto.UserRequest;
+import com.dreamcar.dto.UserResponse;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
@@ -27,9 +28,9 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
         try {
-            this.userService.registerUser(userDTO);
+            this.userService.registerUser(userRequest);
             return ResponseEntity.ok("User registered successfully");
         } catch (IncorrectRegisterDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -37,10 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/loginUser")
-    public ResponseEntity<?> loginUser(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<?> loginUser(@RequestBody UserRequest userRequest, HttpSession session) {
         try {
-            UserDTO userDTO = this.userService.loginUser(user);
-            session.setAttribute("user", userDTO);
+            UserResponse userResponse = this.userService.loginUser(userRequest);
+            session.setAttribute("user", userResponse);
 
             return ResponseEntity.ok("User logged in");
         } catch(IncorrectLoginDataException e) {

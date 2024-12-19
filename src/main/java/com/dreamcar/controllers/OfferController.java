@@ -1,11 +1,10 @@
 package com.dreamcar.controllers;
 
-import com.dreamcar.dto.OfferDTO;
+import com.dreamcar.dto.FilterRequest;
+import com.dreamcar.dto.OfferRequest;
+import com.dreamcar.dto.OfferResponse;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
-import com.dreamcar.model.Brand;
-import com.dreamcar.model.Fuel;
-import com.dreamcar.model.Gearbox;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
@@ -27,24 +26,27 @@ public class OfferController {
     OfferService offerService;
 
     @GetMapping("/allOffers")
-    public List<Offer> getAllOffers() {
-        return this.offerRepository.findAll();
+    public List<OfferResponse> getAllOffers() {
+        return this.offerRepository.findAll().stream()
+                .map(this.offerService::convertOfferToResponse)
+                .toList();
     }
 
     @GetMapping("/offerDetails/{id}")
     public ResponseEntity<?> getOfferDetails(@PathVariable("id") int offerId) {
         try {
             Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-            return ResponseEntity.ok(offer);
+
+            return ResponseEntity.ok(this.offerService.convertOfferToResponse(offer));
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping("/addNewOffer")
-    public ResponseEntity<?> addNewOffer(@RequestBody OfferDTO offerDTO, HttpSession session) {
+    public ResponseEntity<?> addNewOffer(@RequestBody OfferRequest offerRequest, HttpSession session) {
         try {
-            this.offerService.addNewOffer(offerDTO, session);
+            this.offerService.addNewOffer(offerRequest, session);
             return ResponseEntity.ok("New offer added");
         } catch(UserNotLoggedInException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -56,9 +58,9 @@ public class OfferController {
     }
 
     @PutMapping("/editUserOffer/{id}")
-    public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferDTO offerDTO, HttpSession session) {
+    public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferRequest offerRequest, HttpSession session) {
         try {
-            this.offerService.editUserOffer(offerId, offerDTO, session);
+            this.offerService.editUserOffer(offerId, offerRequest, session);
             return ResponseEntity.ok("Offer edited");
         } catch(UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -72,8 +74,10 @@ public class OfferController {
     @GetMapping("/getOffer/{id}")
     public ResponseEntity<?> getOffer(@PathVariable("id") int offerId) {
         Optional<Offer> offer = this.offerRepository.findById(offerId);
-        if(offer.isPresent()) return ResponseEntity.ok(offer.get());
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Offer not found");
+        if(offer.isPresent())
+            return ResponseEntity.ok(this.offerService.convertOfferToResponse(offer.get()));
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Offer not found");
     }
 
     @DeleteMapping("/deleteOffer/{id}")
@@ -115,7 +119,7 @@ public class OfferController {
     @GetMapping("/getFavouriteUserOffers")
     public ResponseEntity<?> getFavourites(HttpSession session) {
         try {
-            Set<Offer> favourites = this.offerService.getUserFavouriteOffers(session);
+            Set<OfferResponse> favourites = this.offerService.getUserFavouriteOffers(session);
 
             return ResponseEntity.ok(favourites);
         } catch(UserNotLoggedInException e) {
@@ -129,6 +133,8 @@ public class OfferController {
             if(this.offerService.checkIfOfferIsInFavourites(offerId, session))
                 return ResponseEntity.ok(true);
             else throw new NoSuchElementException("Offer is not in favourites");
+        } catch (UserNotLoggedInException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

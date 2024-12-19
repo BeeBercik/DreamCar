@@ -1,6 +1,7 @@
 package com.dreamcar.services;
 
-import com.dreamcar.dto.UserDTO;
+import com.dreamcar.dto.UserRequest;
+import com.dreamcar.dto.UserResponse;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
@@ -23,33 +24,33 @@ public class UserService {
     @Autowired
     UserValidator userValidator;
 
-    public void registerUser(UserDTO userDTO) {
-        userValidator.validateUserRegistration(userDTO);
+    public void registerUser(UserRequest userRequest) {
+        userValidator.validateUserRegistration(userRequest);
 
-        if(userRepository.existsByEmail(userDTO.getEmail())) {
+        if(userRepository.existsByEmail(userRequest.getEmail())) {
             throw new IncorrectRegisterDataException("Email already exists");
         }
-        if(userRepository.existsByLogin(userDTO.getLogin())) {
+        if(userRepository.existsByLogin(userRequest.getLogin())) {
             throw new IncorrectRegisterDataException("Login already exists");
         }
         User user = new User();
-        user.setLogin(userDTO.getLogin());
-        String hashedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
+        user.setLogin(userRequest.getLogin());
+        String hashedPassword = BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
-        user.setEmail(userDTO.getEmail());
-        user.setPhone(userDTO.getPhone());
+        user.setEmail(userRequest.getEmail());
+        user.setPhone(userRequest.getPhone());
         user.setAdd_date(new Date());
 
         userRepository.save(user);
     }
 
-    public UserDTO loginUser(User user) {
-        this.userValidator.validateLogin(user);
+    public UserResponse loginUser(UserRequest userRequest) {
+        this.userValidator.validateLogin(userRequest);
 
-        if(userRepository.existsByLogin(user.getLogin().trim())) {
-            User dbuser = userRepository.findByLogin(user.getLogin());
-            if(BCrypt.checkpw(user.getPassword(), dbuser.getPassword().trim())) {
-                return new UserDTO(dbuser.getId(),
+        if(userRepository.existsByLogin(userRequest.getLogin().trim())) {
+            User dbuser = userRepository.findByLogin(userRequest.getLogin());
+            if(BCrypt.checkpw(userRequest.getPassword(), dbuser.getPassword().trim())) {
+                return new UserResponse(dbuser.getId(),
                         dbuser.getLogin(), dbuser.getEmail(),
                         dbuser.getPhone(), dbuser.getAdd_date());
             } else throw new IncorrectLoginDataException("Wrong password");
@@ -57,9 +58,19 @@ public class UserService {
     }
 
     public User getLoggedUser(HttpSession session) {
-        UserDTO userDTO = (UserDTO) session.getAttribute("user");
-        if(userDTO == null) throw new UserNotLoggedInException("User not logged in");
+        UserResponse userResponse = (UserResponse) session.getAttribute("user");
+        if(userResponse == null) throw new UserNotLoggedInException("User not logged in");
 
-        return this.userRepository.findById(userDTO.getId()).orElseThrow(() -> new NoSuchElementException("User with such id does not exist"));
+        return this.userRepository.findById(userResponse.getId()).orElseThrow(() -> new NoSuchElementException("User with such id does not exist"));
+    }
+
+    public UserResponse convertUserToResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getLogin(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAdd_date()
+        );
     }
 }
