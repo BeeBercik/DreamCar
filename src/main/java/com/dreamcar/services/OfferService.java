@@ -3,14 +3,10 @@ package com.dreamcar.services;
 import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
-import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -139,7 +135,7 @@ public class OfferService {
                 offer.getMileage(),
                 offer.getYear(),
                 offer.getPrice(),
-                offer.getAdd_date(),
+                offer.getAddDate(),
                 this.userService.convertUserToResponse(offer.getUser()),
                 offer.getFuel(),
                 offer.getBrand(),
@@ -168,4 +164,12 @@ public class OfferService {
                 .collect(Collectors.toList());
     }
 
+    public List<Offer> getSortedOffers(String sortBy) {
+        return switch(sortBy) {
+            case "recently_added" -> this.offerRepository.findAllByOrderByAddDateDesc();
+            case "price_asc" -> this.offerRepository.findAllByOrderByPriceAsc();
+            case "price_desc" -> this.offerRepository.findAllByOrderByPriceDesc();
+            default -> this.offerRepository.findAllByOrderByAddDateDesc();
+        };
+    }
 }

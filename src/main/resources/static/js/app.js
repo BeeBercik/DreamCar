@@ -28,6 +28,7 @@ async function navigateTo(page, flag = false, message = '') {
 
                 loadAllOffers();
                 document.getElementById('filter-form').addEventListener('submit', initApplyFilters);
+                document.getElementById('sort-button').addEventListener('click', sortOffers);
                 break;
             case 'register':
                 document.getElementById("register-form").addEventListener('submit', initUserRegister);
@@ -256,6 +257,15 @@ async function initApplyFilters(event) {
 
         await ApiService.applyFilters(filters);
     } catch(error) {
+        UI.displayCriticalAppError();
+        console.log(error);
+    }
+}
+
+async function sortOffers() {
+    try {
+        await ApiService.sortOffers(document.getElementById('sort').value);
+    } catch (error) {
         UI.displayCriticalAppError();
         console.log(error);
     } 

@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @Setter @Getter
-//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "offers")
 @ToString
@@ -24,7 +23,9 @@ public class Offer {
     private Integer mileage;
     private Integer year;
     private Integer price;
-    private Date add_date;
+
+    @Column(name = "add_date")
+    private Date addDate; // aby latwo generowac metody w JPA (camel case wymagany)
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -53,7 +54,7 @@ public class Offer {
         this.mileage = mileage;
         this.year = year;
         this.price = price;
-        this.add_date = add_date;
+        this.addDate = add_date;
         this.user = user;
         this.fuel = fuel;
         this.brand = brand;

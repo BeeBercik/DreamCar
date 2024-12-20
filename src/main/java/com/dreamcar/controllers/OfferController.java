@@ -33,7 +33,7 @@ public class OfferController {
 
     @GetMapping("/allOffers")
     public List<OfferResponse> getAllOffers() {
-        return this.offerRepository.findAll().stream()
+        return this.offerRepository.findAllByOrderByAddDateDesc().stream()
                 .map(this.offerService::convertOfferToResponse)
                 .toList();
     }
@@ -169,5 +169,12 @@ public class OfferController {
     @PostMapping("/applyFilters")
     public ResponseEntity<?> applyFilters(@RequestBody FilterRequest filterRequest) {
         return ResponseEntity.ok(this.offerService.getFilteredOffers(filterRequest));
+    }
+
+    @GetMapping("/sortOffers")
+    public ResponseEntity<?> getSortedOffers(@RequestParam(name = "sortBy", defaultValue = "recently_added") String sortBy) {
+        return ResponseEntity.ok(this.offerService.getSortedOffers(sortBy).stream()
+                .map(this.offerService::convertOfferToResponse)
+                .toList());
     }
 }
