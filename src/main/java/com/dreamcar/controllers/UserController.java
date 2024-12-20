@@ -1,21 +1,15 @@
 package com.dreamcar.controllers;
 
 import com.dreamcar.dto.UserRequest;
-import com.dreamcar.dto.UserResponse;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
-import com.dreamcar.model.Offer;
-import com.dreamcar.model.User;
-import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -37,9 +31,7 @@ public class UserController {
     @PostMapping("/loginUser")
     public ResponseEntity<?> loginUser(@RequestBody UserRequest userRequest, HttpSession session) {
         try {
-            UserResponse userResponse = this.userService.loginUser(userRequest);
-            session.setAttribute("user", userResponse);
-
+            session.setAttribute("user", this.userService.loginUser(userRequest));
             return ResponseEntity.ok("User logged in");
         } catch(IncorrectLoginDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -54,15 +46,13 @@ public class UserController {
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
         return ResponseEntity.ok("User logged out");
     }
 
     @GetMapping("/getLoggedUser")
     public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
         try {
-           User user = this.userService.getLoggedUser(session);
-           return ResponseEntity.ok(user);
+           return ResponseEntity.ok(this.userService.getLoggedUser(session));
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

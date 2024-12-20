@@ -6,7 +6,6 @@ import com.dreamcar.dto.OfferResponse;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
-import com.dreamcar.model.User;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
 import com.dreamcar.services.UserService;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -33,19 +31,13 @@ public class OfferController {
 
     @GetMapping("/allOffers")
     public List<OfferResponse> getAllOffers() {
-        return this.offerRepository.findAllByOrderByAddDateDesc().stream()
-                .map(this.offerService::convertOfferToResponse)
-                .toList();
+        return this.offerService.getAllOffers();
     }
 
     @GetMapping("/getUserOffers")
     public ResponseEntity<?> getUserOffers(HttpSession session) {
         try {
-            User user = this.userService.getLoggedUser(session);
-
-            return ResponseEntity.ok(user.getOffers().stream()
-                            .map(offerService::convertOfferToResponse)
-                            .collect(Collectors.toList()));
+            return ResponseEntity.ok(this.offerService.getUserOffers(session));
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -54,9 +46,7 @@ public class OfferController {
     @GetMapping("/offerDetails/{id}")
     public ResponseEntity<?> getOfferDetails(@PathVariable("id") int offerId) {
         try {
-            Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-
-            return ResponseEntity.ok(this.offerService.convertOfferToResponse(offer));
+            return ResponseEntity.ok(this.offerService.getOfferDetails(offerId));
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -167,14 +157,12 @@ public class OfferController {
     }
 
     @PostMapping("/applyFilters")
-    public ResponseEntity<?> applyFilters(@RequestBody FilterRequest filterRequest) {
+    public ResponseEntity<List<OfferResponse>> applyFilters(@RequestBody FilterRequest filterRequest) {
         return ResponseEntity.ok(this.offerService.getFilteredOffers(filterRequest));
     }
 
     @GetMapping("/sortOffers")
-    public ResponseEntity<?> getSortedOffers(@RequestParam(name = "sortBy", defaultValue = "recently_added") String sortBy) {
-        return ResponseEntity.ok(this.offerService.getSortedOffers(sortBy).stream()
-                .map(this.offerService::convertOfferToResponse)
-                .toList());
+    public ResponseEntity<List<OfferResponse>> getSortedOffers(@RequestParam(name = "sortBy", defaultValue = "recently_added") String sortBy) {
+        return ResponseEntity.ok(this.offerService.getSortedOffers(sortBy));
     }
 }

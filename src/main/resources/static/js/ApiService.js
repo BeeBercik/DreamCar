@@ -177,7 +177,7 @@ class ApiService {
 
     static async sortOffers(sortBy) {
         const response = await fetch("/api/sortOffers?sortBy=" + sortBy)
-
+        
         if(!response.ok) throw new error(await response.text());
         UI.displayAllOffers(await response.json());
     }

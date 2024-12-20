@@ -32,6 +32,12 @@ public class OfferService {
     @Autowired
     GearboxRepository gearboxRepository;
 
+    public List<OfferResponse> getAllOffers() {
+        return this.offerRepository.findAllByOrderByAddDateDesc().stream()
+                .map(this::convertOfferToResponse)
+                .toList();
+    }
+
     public void addNewOffer(OfferRequest offerRequest, HttpSession session) {
         User user = this.userService.getLoggedUser(session);
         OfferValidator.validateOffer(offerRequest);
@@ -48,6 +54,12 @@ public class OfferService {
                 this.brandRepository.findById(offerRequest.getBrand()).orElseThrow(() -> new NoSuchElementException("No brand with such id")),
                 this.gearboxRepository.findById(offerRequest.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id"))
         ));
+    }
+
+    public List<OfferResponse> getUserOffers(HttpSession session) {
+        return this.userService.getLoggedUser(session).getOffers().stream()
+                .map(this::convertOfferToResponse)
+                .collect(Collectors.toList());
     }
 
     public void editUserOffer(int offerId, OfferRequest offerRequest, HttpSession session) {
@@ -83,6 +95,12 @@ public class OfferService {
         }
 
         this.offerRepository.delete(offer);
+    }
+
+    public OfferResponse getOfferDetails(int offerId) {
+        Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+
+        return this.convertOfferToResponse(offer);
     }
 
     public Set<OfferResponse> getUserFavouriteOffers(HttpSession session) {
@@ -164,12 +182,14 @@ public class OfferService {
                 .collect(Collectors.toList());
     }
 
-    public List<Offer> getSortedOffers(String sortBy) {
-        return switch(sortBy) {
+    public List<OfferResponse> getSortedOffers(String sortBy) {
+        List<Offer> offers = switch(sortBy) {
             case "recently_added" -> this.offerRepository.findAllByOrderByAddDateDesc();
             case "price_asc" -> this.offerRepository.findAllByOrderByPriceAsc();
             case "price_desc" -> this.offerRepository.findAllByOrderByPriceDesc();
             default -> this.offerRepository.findAllByOrderByAddDateDesc();
         };
+
+        return offers.stream().map(this::convertOfferToResponse).collect(Collectors.toList());
     }
 }
