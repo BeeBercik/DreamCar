@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.util.Date;
 
+/**
+ * Dto class represents server response with user data, without such information as password
+ */
 @Getter
 @Setter
 @AllArgsConstructor
