@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Class represents car gearbox type in the app
+ */
 @Entity
 @Setter @Getter
 @NoArgsConstructor

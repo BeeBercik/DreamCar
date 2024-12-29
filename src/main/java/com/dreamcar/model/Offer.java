@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class represents offer in the app
+ */
 @Entity
 @Setter @Getter
 @NoArgsConstructor
@@ -25,7 +28,7 @@ public class Offer {
     private Integer price;
 
     @Column(name = "add_date")
-    private Date addDate; // aby latwo generowac metody w JPA (camel case wymagany)
+    private Date addDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -43,11 +46,28 @@ public class Offer {
     @JoinColumn(name = "gearbox_id")
     private Gearbox gearbox;
 
+    /**
+     * Set of users who added the offer to favourite list
+     */
     @ManyToMany(mappedBy = "favourites")
     @JsonIgnore
     @ToString.Exclude
     private Set<User> favourite_by_users = new HashSet<>();
 
+    /**
+     * Constructor creating offer object
+     *
+     * @param title  title of the offer
+     * @param description description of the offer
+     * @param mileage mileage of the car in km
+     * @param year year of car production
+     * @param price price of the car in pln
+     * @param add_date date when offer was added
+     * @param user user who created the offer
+     * @param fuel fuel type of the car
+     * @param brand brand of the car
+     * @param gearbox gearbox type of the car
+     */
     public Offer(String title, String description, Integer mileage, Integer year, Integer price, Date add_date, User user, Fuel fuel, Brand brand, Gearbox gearbox) {
         this.title = title;
         this.description = description;
