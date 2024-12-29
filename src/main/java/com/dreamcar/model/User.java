@@ -41,7 +41,7 @@ public class User {
 
     @JsonIgnore
     @ToString.Exclude
-    private Set<Offer> favourites = new HashSet<>();
+    private List<Offer> favourites = new LinkedList<>();
 
     public User(String login, String password, String email, String phone, Date add_date) {
         this.login = login;

@@ -33,7 +33,10 @@ public class OfferService {
     GearboxRepository gearboxRepository;
 
     public List<OfferResponse> getAllOffers() {
-        return this.offerRepository.findAllByOrderByAddDateDesc().stream()
+        List<Offer> offers = offerRepository.findAll();
+        offers.sort((o1, o2) -> -o1.getAddDate().compareTo(o2.getAddDate()));
+
+        return offers.stream()
                 .map(this::convertOfferToResponse)
                 .toList();
     }
@@ -57,7 +60,10 @@ public class OfferService {
     }
 
     public List<OfferResponse> getUserOffers(HttpSession session) {
-        return this.userService.getLoggedUser(session).getOffers().stream()
+        List<Offer> userOffers = this.userService.getLoggedUser(session).getOffers();
+        userOffers.sort((o1, o2) -> -o1.getAddDate().compareTo(o2.getAddDate()));
+
+        return userOffers.stream()
                 .map(this::convertOfferToResponse)
                 .collect(Collectors.toList());
     }
@@ -103,11 +109,14 @@ public class OfferService {
         return this.convertOfferToResponse(offer);
     }
 
-    public Set<OfferResponse> getUserFavouriteOffers(HttpSession session) {
+    public List<OfferResponse> getUserFavouriteOffers(HttpSession session) {
             User user = this.userService.getLoggedUser(session);
-            return user.getFavourites().stream()
+            List<Offer> userFavourites = user.getFavourites();
+            userFavourites.sort((o1, o2) -> -o1.getAddDate().compareTo(o2.getAddDate()));
+
+            return userFavourites.stream()
                     .map(this::convertOfferToResponse)
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
     }
 
     public void addToFavourites(int offerId, HttpSession session) {
@@ -183,12 +192,18 @@ public class OfferService {
     }
 
     public List<OfferResponse> getSortedOffers(String sortBy) {
-        List<Offer> offers = switch(sortBy) {
-            case "recently_added" -> this.offerRepository.findAllByOrderByAddDateDesc();
-            case "price_asc" -> this.offerRepository.findAllByOrderByPriceAsc();
-            case "price_desc" -> this.offerRepository.findAllByOrderByPriceDesc();
-            default -> this.offerRepository.findAllByOrderByAddDateDesc();
-        };
+        List<Offer> offers = this.offerRepository.findAll();
+        switch(sortBy) {
+            case "price_asc":
+                offers.sort((o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
+                break;
+            case "price_desc":
+                offers.sort((o1, o2) -> o2.getPrice().compareTo(o1.getPrice()));
+                break;
+            default:
+                offers.sort((o1, o2) -> -o1.getAddDate().compareTo(o2.getAddDate()));
+                break;
+        }
 
         return offers.stream().map(this::convertOfferToResponse).collect(Collectors.toList());
     }
