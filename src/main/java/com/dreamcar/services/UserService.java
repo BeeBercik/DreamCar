@@ -11,11 +11,15 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-@Component
+/**
+ * Service responsible for logic operations with users
+ */
+@Service
 public class UserService {
 
     @Autowired
@@ -24,6 +28,12 @@ public class UserService {
     @Autowired
     UserValidator userValidator;
 
+    /**
+     *  Registers user to the app
+     *
+     * @param userRequest provided user data from html registration form
+     * @throws IncorrectRegisterDataException if any of the condition is not met
+     */
     public void registerUser(UserRequest userRequest) {
         userValidator.validateUserRegistration(userRequest);
 
@@ -43,6 +53,14 @@ public class UserService {
         ));
     }
 
+    /**
+     * Logins user to the app
+     *
+     * @param userRequest provided user data from login html form
+     * @return dto user class object without password field
+     * @throws IncorrectLoginDataException if user provided wrong password
+     * @throws IncorrectLoginDataException if user login does not exist in database
+     */
     public UserResponse loginUser(UserRequest userRequest) {
         this.userValidator.validateLogin(userRequest);
 
@@ -59,6 +77,14 @@ public class UserService {
         } else throw new IncorrectLoginDataException("Login does not exist");
     }
 
+    /**
+     * Method looks for logged user in session
+     *
+     * @param session stores logged user
+     * @return user object with its favourite list etc.
+     * @throws UserNotLoggedInException if user does not exist in session
+     * @throws NoSuchElementException if user stored in session does not exist in database
+     */
     public User getLoggedUser(HttpSession session) {
         UserResponse userResponse = (UserResponse) session.getAttribute("user");
         if(userResponse == null) throw new UserNotLoggedInException("User not logged in");
@@ -66,6 +92,12 @@ public class UserService {
         return this.userRepository.findById(userResponse.getId()).orElseThrow(() -> new NoSuchElementException("User with such id does not exist"));
     }
 
+    /**
+     * Coverts user entity object to safe user dto class
+     *
+     * @param user given user entity object
+     * @return safe user dto class without password
+     */
     public UserResponse convertUserToResponse(User user) {
         return new UserResponse(
                 user.getId(),

@@ -5,9 +5,18 @@ import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class which validates user registration and login data
+ */
 @Service
 public class UserValidator {
 
+    /**
+     * Method validates user registration data with specific requirements
+     *
+     * @param userRequest passed data from html form
+     * @throws IncorrectRegisterDataException if any of the condition is not met
+     */
     public void validateUserRegistration(UserRequest userRequest) {
         if(userRequest.getLogin() == null || userRequest.getLogin().trim().isEmpty() ||
                 userRequest.getPassword() == null || userRequest.getPassword().trim().isEmpty() ||
@@ -30,6 +39,12 @@ public class UserValidator {
         }
     }
 
+    /**
+     * Validates user login data
+     *
+     * @param userRequest passed data from html form
+     * @throws IncorrectLoginDataException if any of the condition is not met
+     */
     public void validateLogin(UserRequest userRequest) {
         if(userRequest.getLogin() == null || userRequest.getLogin().trim().isEmpty() ||
                 userRequest.getPassword() == null || userRequest.getPassword().trim().isEmpty())

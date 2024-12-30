@@ -149,9 +149,9 @@ public class OfferController {
     }
 
     @GetMapping("/{getWhat}")
-    public ResponseEntity<?> getOptions(@PathVariable("getWhat") String getWhat, HttpSession session) {
+    public ResponseEntity<?> getOptions(@PathVariable("getWhat") String getWhat) {
         try {
-            return ResponseEntity.ok(this.offerService.getOptions(getWhat, session));
+            return ResponseEntity.ok(this.offerService.getOptions(getWhat));
         } catch(NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

@@ -3,7 +3,16 @@ package com.dreamcar.services;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
 
+/**
+ * Class responsible for validate given offer data
+ */
 public class OfferValidator {
+    /**
+     * Validates provided by user data with specific requirements
+     *
+     * @param offerRequest offer data provided from html form
+     * @throws IncorrectOfferDataException if any of the condition is not met
+     */
     static void validateOffer(OfferRequest offerRequest) {
         if(offerRequest.getTitle() == null || offerRequest.getTitle().trim().isEmpty() ||
         offerRequest.getDescription() == null || offerRequest.getDescription().trim().isEmpty() ||
