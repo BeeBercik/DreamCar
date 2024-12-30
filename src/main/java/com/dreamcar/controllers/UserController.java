@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Rest controller responsible for handling requests related to users from frontend and generating response from backend
+ */
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -18,6 +21,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * Endpoint for registering new user.
+     *
+     * @param userRequest user data provided from frontend
+     * @return response object with message with 200 status code if user was successfully registered or 400 if there was an error
+     */
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
         try {
@@ -28,6 +37,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint for logging user
+     *
+     * @param userRequest user data provided from frontend
+     * @param session used to store the logged user
+     * @return  response object with message with 200 status code if user was logged in successfully or 400 if there was an error
+     */
     @PostMapping("/loginUser")
     public ResponseEntity<?> loginUser(@RequestBody UserRequest userRequest, HttpSession session) {
         try {
@@ -38,6 +54,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint responsible for log out user.
+     *
+     * @param session used to log out user
+     * @return  response object with message with 200 status code if user was logged out successfully or 400 if there was an error
+     */
     @PostMapping("/logoutUser")
     public ResponseEntity<?> logoutUser(HttpSession session) {
         try {
@@ -49,6 +71,12 @@ public class UserController {
         return ResponseEntity.ok("User logged out");
     }
 
+    /**
+     * Endpoint for getting already logged user
+     *
+     * @param session used to get logged user stored in that object
+     * @return response object with user data with 200 status code if user was logged in or 401 if user was not logged in
+     */
     @GetMapping("/getLoggedUser")
     public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
         try {
