@@ -7,6 +7,7 @@ import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
+import com.dreamcar.services.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -19,7 +20,7 @@ import java.util.NoSuchElementException;
  * Service responsible for logic operations with users
  */
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     @Autowired
     UserRepository userRepository;

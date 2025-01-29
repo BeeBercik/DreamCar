@@ -5,6 +5,7 @@ import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
 import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
+import com.dreamcar.services.IOfferService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
  * Service responsible for business logic related to offers
  */
 @Service
-public class OfferService {
+public class OfferService implements IOfferService {
     @Autowired
     UserRepository userRepository;
 

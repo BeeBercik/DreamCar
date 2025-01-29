@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.dreamcar.controllers.IOfferController;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-public class IOfferController implements com.dreamcar.controllers.IOfferController {
+public class OfferController implements IOfferController {
 
     @Autowired
     OfferRepository offerRepository;
