@@ -1,19 +1,22 @@
-package com.dreamcar.services;
+package com.dreamcar.services.impl;
 
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.exceptions.IncorrectOfferDataException;
+import com.dreamcar.services.IOfferValidator;
+import org.springframework.stereotype.Service;
 
 /**
  * Class responsible for validate given offer data
  */
-public class OfferValidator {
+@Service
+public class OfferValidator implements IOfferValidator {
     /**
      * Validates provided by user data with specific requirements
      *
      * @param offerRequest offer data provided from html form
      * @throws IncorrectOfferDataException if any of the condition is not met
      */
-    static void validateOffer(OfferRequest offerRequest) {
+     public void validateOffer(OfferRequest offerRequest) {
         if(offerRequest.getTitle() == null || offerRequest.getTitle().trim().isEmpty() ||
         offerRequest.getDescription() == null || offerRequest.getDescription().trim().isEmpty() ||
         offerRequest.getBrand() == null || offerRequest.getMileage()  == null || offerRequest.getYear() == null ||

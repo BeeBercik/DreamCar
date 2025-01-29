@@ -1,4 +1,4 @@
-package com.dreamcar.services;
+package com.dreamcar.services.impl;
 
 import com.dreamcar.dto.UserRequest;
 import com.dreamcar.dto.UserResponse;
@@ -10,7 +10,6 @@ import com.dreamcar.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

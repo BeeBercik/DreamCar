@@ -1,4 +1,4 @@
-package com.dreamcar.controllers;
+package com.dreamcar.controllers.impl;
 
 import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
@@ -7,7 +7,7 @@ import com.dreamcar.exceptions.IncorrectOfferDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
-import com.dreamcar.services.OfferService;
+import com.dreamcar.services.impl.OfferService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-public class OfferController {
+public class IOfferController implements com.dreamcar.controllers.IOfferController {
 
     @Autowired
     OfferRepository offerRepository;

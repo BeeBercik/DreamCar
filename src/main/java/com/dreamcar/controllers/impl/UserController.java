@@ -1,10 +1,11 @@
-package com.dreamcar.controllers;
+package com.dreamcar.controllers.impl;
 
+import com.dreamcar.controllers.IUserController;
 import com.dreamcar.dto.UserRequest;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
 import com.dreamcar.exceptions.UserNotLoggedInException;
-import com.dreamcar.services.UserService;
+import com.dreamcar.services.impl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class UserController implements IUserController {
 
     @Autowired
     UserService userService;

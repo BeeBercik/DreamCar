@@ -1,15 +1,16 @@
-package com.dreamcar.services;
+package com.dreamcar.services.impl;
 
 import com.dreamcar.dto.UserRequest;
 import com.dreamcar.exceptions.IncorrectLoginDataException;
 import com.dreamcar.exceptions.IncorrectRegisterDataException;
+import com.dreamcar.services.IUserValidator;
 import org.springframework.stereotype.Service;
 
 /**
  * Class which validates user registration and login data
  */
 @Service
-public class UserValidator {
+public class UserValidator implements IUserValidator {
 
     /**
      * Method validates user registration data with specific requirements

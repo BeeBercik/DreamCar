@@ -1,9 +1,8 @@
-package com.dreamcar.services;
+package com.dreamcar.services.impl;
 
 import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
-import com.dreamcar.dto.UserResponse;
 import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +25,9 @@ public class OfferService {
 
     @Autowired
     OfferRepository offerRepository;
+
+    @Autowired
+    OfferValidator offerValidator;
 
     @Autowired
     FuelRepository fuelRepository;
@@ -59,7 +61,7 @@ public class OfferService {
      */
     public void addNewOffer(OfferRequest offerRequest, HttpSession session) {
         User user = this.userService.getLoggedUser(session);
-        OfferValidator.validateOffer(offerRequest);
+        this.offerValidator.validateOffer(offerRequest);
 
         this.offerRepository.save(new Offer(
                 offerRequest.getTitle(),
@@ -100,7 +102,7 @@ public class OfferService {
      */
     public void editUserOffer(int offerId, OfferRequest offerRequest, HttpSession session) {
         User user = this.userService.getLoggedUser(session);
-        OfferValidator.validateOffer(offerRequest);
+        this.offerValidator.validateOffer(offerRequest);
 
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("No offer with such id"));
         offer.setTitle(offerRequest.getTitle());
