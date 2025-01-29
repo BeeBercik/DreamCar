@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("/getLoggedUser")
     public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
         try {
-           return ResponseEntity.ok(this.userService.getLoggedUser(session));
+           return ResponseEntity.ok(this.userService.convertUserToResponse(this.userService.getLoggedUser(session)));
         } catch (UserNotLoggedInException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

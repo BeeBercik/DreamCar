@@ -3,6 +3,7 @@ package com.dreamcar.services;
 import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
+import com.dreamcar.dto.UserResponse;
 import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import jakarta.servlet.http.HttpSession;
@@ -125,7 +126,7 @@ public class OfferService {
      * @throws NoSuchElementException if offer with such id does not exist
      */
     public void deleteUserOffer(int offerId, HttpSession session) {
-        User user = this.userService.getLoggedUser(session);
+        this.userService.getLoggedUser(session);
         Offer offer = this.offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         // warunek uwzglednia 0 niespleniony nieprzepuszcza ALE gdy spelniony to tez

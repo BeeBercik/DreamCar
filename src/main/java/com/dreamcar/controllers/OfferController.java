@@ -8,7 +8,6 @@ import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.OfferService;
-import com.dreamcar.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,6 @@ public class OfferController {
 
     @Autowired
     OfferService offerService;
-
-    @Autowired
-    UserService userService;
 
     /**
      * Endpoint which return all existing offers
@@ -174,7 +170,7 @@ public class OfferController {
      *
      * @param offerId id of the offer to remove
      * @param session used to to verify if user is logged in
-     * @return @return response object with 200 status if added successfully, otherwise 401 if user was not logged in or 404 if offer with such id was not found`
+     * @return @return response object with 200 status if added successfully, otherwise 401 if user was not logged in or 404 if offer with such id was not found
      */
     @DeleteMapping("/removeFromFavourites/{id}")
     public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
