@@ -3,21 +3,29 @@
 
 ---
 
-Web car search engine that allows users searching and filtering car offers. It also includes user registration functionality. Logged-in users can save offers to their favourite list, create, edit or delete own car offers.
+Web car search engine that allows users searching and filtering car offers. It also includes user registration functionality. Logged-in users can save offers to their favourite list, create, edit or delete own car offers.<br>
+This application automatically initialize the database with data when the application starts. This ensures that the service is ready to use from the moment it is deployed.
 
 ---
 
 ### 👨‍💻 Set up application
 
-To run this application you need installed Docker.
+To run this application you need to have installed Docker.
 
 1. Clone this repository
-    - `git clone https://github.com/BeeBercik/DreamCar.git`
+   ```
+   git clone https://github.com/BeeBercik/DreamCar.git
+   ```
 
-2. Navigate to the project directory
+3. Navigate to the project directory
+   ```
+   cd DreamCar
+   ```
 
-3. Build and run application using Docker Compose
-   - `docker-compose up -d --build`
+5. Build and run application using Docker Compose
+   ```
+   docker-compose up -d --build
+   ```
 
 Visit http://localhost:8080 in your browser to access the app.
 
