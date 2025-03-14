@@ -2,13 +2,9 @@ package com.dreamcar.controllers.impl;
 
 import com.dreamcar.controllers.IUserController;
 import com.dreamcar.dto.UserRequest;
-import com.dreamcar.exceptions.IncorrectLoginDataException;
-import com.dreamcar.exceptions.IncorrectRegisterDataException;
-import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.services.impl.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +26,8 @@ public class UserController implements IUserController {
      */
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
-        try {
-            this.userService.registerUser(userRequest);
-            return ResponseEntity.ok("User registered successfully");
-        } catch (IncorrectRegisterDataException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.userService.registerUser(userRequest);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     /**
@@ -47,12 +39,8 @@ public class UserController implements IUserController {
      */
     @PostMapping("/loginUser")
     public ResponseEntity<?> loginUser(@RequestBody UserRequest userRequest, HttpSession session) {
-        try {
-            session.setAttribute("user", this.userService.loginUser(userRequest));
-            return ResponseEntity.ok("User logged in");
-        } catch(IncorrectLoginDataException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        session.setAttribute("user", this.userService.loginUser(userRequest));
+        return ResponseEntity.ok("User logged in");
     }
 
     /**
@@ -63,12 +51,8 @@ public class UserController implements IUserController {
      */
     @PostMapping("/logoutUser")
     public ResponseEntity<?> logoutUser(HttpSession session) {
-        try {
-            this.userService.getLoggedUser(session);
-            session.invalidate();
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.userService.getLoggedUser(session);
+        session.invalidate();
         return ResponseEntity.ok("User logged out");
     }
 
@@ -80,10 +64,6 @@ public class UserController implements IUserController {
      */
     @GetMapping("/getLoggedUser")
     public ResponseEntity<?> isUserLoggedIn(HttpSession session) {
-        try {
-           return ResponseEntity.ok(this.userService.convertUserToResponse(this.userService.getLoggedUser(session)));
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+       return ResponseEntity.ok(this.userService.convertUserToResponse(this.userService.getLoggedUser(session)));
     }
 }

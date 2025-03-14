@@ -3,8 +3,6 @@ package com.dreamcar.controllers.impl;
 import com.dreamcar.dto.FilterRequest;
 import com.dreamcar.dto.OfferRequest;
 import com.dreamcar.dto.OfferResponse;
-import com.dreamcar.exceptions.IncorrectOfferDataException;
-import com.dreamcar.exceptions.UserNotLoggedInException;
 import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.impl.OfferService;
@@ -48,11 +46,7 @@ public class OfferController implements IOfferController {
      */
     @GetMapping("/getUserOffers")
     public ResponseEntity<?> getUserOffers(HttpSession session) {
-        try {
-            return ResponseEntity.ok(this.offerService.getUserOffers(session));
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(this.offerService.getUserOffers(session));
     }
 
     /**
@@ -63,11 +57,7 @@ public class OfferController implements IOfferController {
      */
     @GetMapping("/offerDetails/{id}")
     public ResponseEntity<?> getOfferDetails(@PathVariable("id") int offerId) {
-        try {
-            return ResponseEntity.ok(this.offerService.getOfferDetails(offerId));
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return ResponseEntity.ok(this.offerService.getOfferDetails(offerId));
     }
 
     /**
@@ -79,16 +69,8 @@ public class OfferController implements IOfferController {
      */
     @PostMapping("/addNewOffer")
     public ResponseEntity<?> addNewOffer(@RequestBody OfferRequest offerRequest, HttpSession session) {
-        try {
-            this.offerService.addNewOffer(offerRequest, session);
-            return ResponseEntity.ok("New offer added");
-        } catch(UserNotLoggedInException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch(IncorrectOfferDataException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.offerService.addNewOffer(offerRequest, session);
+        return ResponseEntity.ok("New offer added");
     }
 
     /**
@@ -101,16 +83,8 @@ public class OfferController implements IOfferController {
      */
     @PutMapping("/editUserOffer/{id}")
     public ResponseEntity<?> editUserOffer(@PathVariable("id") int offerId, @RequestBody OfferRequest offerRequest, HttpSession session) {
-        try {
-            this.offerService.editUserOffer(offerId, offerRequest, session);
-            return ResponseEntity.ok("Offer edited");
-        } catch(UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch(IncorrectOfferDataException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.offerService.editUserOffer(offerId, offerRequest, session);
+        return ResponseEntity.ok("Offer edited");
     }
 
     /**
@@ -137,14 +111,8 @@ public class OfferController implements IOfferController {
      */
     @DeleteMapping("/deleteOffer/{id}")
     public ResponseEntity<?> deleteOffer(@PathVariable("id") int offerId, HttpSession session) {
-        try {
-            this.offerService.deleteUserOffer(offerId, session);
-            return ResponseEntity.ok("Offer deleted");
-        } catch(UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.offerService.deleteUserOffer(offerId, session);
+        return ResponseEntity.ok("Offer deleted");
     }
 
     /**
@@ -156,14 +124,8 @@ public class OfferController implements IOfferController {
      */
     @PutMapping("addToFavourites/{id}")
     public ResponseEntity<?> addToFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        try {
-            this.offerService.addToFavourites(offerId, session);
-            return ResponseEntity.ok("Added to the favourites");
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        this.offerService.addToFavourites(offerId, session);
+        return ResponseEntity.ok("Added to the favourites");
     }
 
     /**
@@ -175,14 +137,8 @@ public class OfferController implements IOfferController {
      */
     @DeleteMapping("/removeFromFavourites/{id}")
     public ResponseEntity<?> removeFromFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        try {
-            this.offerService.removeFromFavourites(offerId, session);
-            return ResponseEntity.ok("Removed from the favourites");
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        this.offerService.removeFromFavourites(offerId, session);
+        return ResponseEntity.ok("Removed from the favourites");
     }
 
     /**
@@ -193,11 +149,7 @@ public class OfferController implements IOfferController {
      */
     @GetMapping("/getFavouriteUserOffers")
     public ResponseEntity<?> getFavourites(HttpSession session) {
-        try {
-            return ResponseEntity.ok(this.offerService.getUserFavouriteOffers(session));
-        } catch(UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+        return ResponseEntity.ok(this.offerService.getUserFavouriteOffers(session));
     }
 
     /**
@@ -209,15 +161,10 @@ public class OfferController implements IOfferController {
      */
     @GetMapping("/isOfferInFavourites/{id}")
     public ResponseEntity<?> isOfferInFavourites(@PathVariable("id") int offerId, HttpSession session) {
-        try {
-            if(this.offerService.checkIfOfferIsInFavourites(offerId, session))
-                return ResponseEntity.ok(true);
-            else throw new NoSuchElementException("Offer is not in favourites");
-        } catch (UserNotLoggedInException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        if(this.offerService.checkIfOfferIsInFavourites(offerId, session))
+            return ResponseEntity.ok(true);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Offer is not in favourites");
     }
 
     /**
@@ -228,11 +175,7 @@ public class OfferController implements IOfferController {
      */
     @GetMapping("/{getWhat}")
     public ResponseEntity<?> getOptions(@PathVariable("getWhat") String getWhat) {
-        try {
-            return ResponseEntity.ok(this.offerService.getOptions(getWhat));
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return ResponseEntity.ok(this.offerService.getOptions(getWhat));
     }
 
     /**
