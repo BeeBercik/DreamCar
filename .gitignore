@@ -31,5 +31,8 @@ build/
 ### VS Code ###
 .vscode/
 
-/target/*
-!target/DreamCar-0.0.1-SNAPSHOT.jar
+### Git ###
+.gitattributes
+
+### target ###
+target/

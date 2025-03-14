@@ -1,9 +1,11 @@
 FROM openjdk:22
 
-WORKDIR /app/
+WORKDIR app
 
-COPY ./target/DreamCar-0.0.1-SNAPSHOT.jar app.jar
+COPY . .
+
+RUN ./mvnw clean package -DskipTests
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "target/DreamCar-0.0.1-SNAPSHOT.jar"]

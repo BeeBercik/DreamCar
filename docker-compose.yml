@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: dreamcar-application
     container_name: dreamcar-app
     ports:
       - "8080:8080"
@@ -14,7 +15,7 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: dreamcar-db
     ports:
       - "5432:5432"
     environment:
