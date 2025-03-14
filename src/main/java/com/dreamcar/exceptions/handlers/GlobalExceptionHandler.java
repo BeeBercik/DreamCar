@@ -1,9 +1,6 @@
-package com.dreamcar.exceptions.impl;
+package com.dreamcar.exceptions.handlers;
 
-import com.dreamcar.exceptions.IncorrectLoginDataException;
-import com.dreamcar.exceptions.IncorrectOfferDataException;
-import com.dreamcar.exceptions.IncorrectRegisterDataException;
-import com.dreamcar.exceptions.UserNotLoggedInException;
+import com.dreamcar.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler implements IGlobalExceptionHandler {
 
     @ExceptionHandler(IncorrectRegisterDataException.class)
     public ResponseEntity<?> handleIncorrectRegisterDataException(IncorrectRegisterDataException e) {

@@ -4,7 +4,7 @@ import com.dreamcar.controllers.IUserController;
 import com.dreamcar.dto.UserRequest;
 import com.dreamcar.services.impl.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
  * Rest controller responsible for handling requests related to users from frontend and generating response from backend
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class UserController implements IUserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     /**
      * Endpoint for registering new user.

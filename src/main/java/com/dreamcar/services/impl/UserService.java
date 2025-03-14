@@ -9,6 +9,7 @@ import com.dreamcar.model.User;
 import com.dreamcar.repositories.UserRepository;
 import com.dreamcar.services.IUserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,12 @@ import java.util.NoSuchElementException;
 /**
  * Service responsible for logic operations with users
  */
+@RequiredArgsConstructor
 @Service
 public class UserService implements IUserService {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    UserValidator userValidator;
+    private final UserRepository userRepository;
+    private final UserValidator userValidator;
 
     /**
      *  Registers user to the app

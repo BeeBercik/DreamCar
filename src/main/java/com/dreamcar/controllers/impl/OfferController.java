@@ -7,6 +7,7 @@ import com.dreamcar.model.Offer;
 import com.dreamcar.repositories.OfferRepository;
 import com.dreamcar.services.impl.OfferService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,12 @@ import java.util.*;
  * Rest controller that handles requests related to offers from frontend and generates responses
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class OfferController implements IOfferController {
 
-    @Autowired
-    OfferRepository offerRepository;
-
-    @Autowired
-    OfferService offerService;
+    private final OfferRepository offerRepository;
+    private final OfferService offerService;
 
     /**
      * Endpoint which return all existing offers

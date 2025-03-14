@@ -7,7 +7,7 @@ import com.dreamcar.model.*;
 import com.dreamcar.repositories.*;
 import com.dreamcar.services.IOfferService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,28 +16,17 @@ import java.util.stream.Collectors;
 /**
  * Service responsible for business logic related to offers
  */
+@RequiredArgsConstructor
 @Service
 public class OfferService implements IOfferService {
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    OfferRepository offerRepository;
-
-    @Autowired
-    OfferValidator offerValidator;
-
-    @Autowired
-    FuelRepository fuelRepository;
-
-    @Autowired
-    BrandRepository brandRepository;
-
-    @Autowired
-    GearboxRepository gearboxRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final OfferRepository offerRepository;
+    private final OfferValidator offerValidator;
+    private final FuelRepository fuelRepository;
+    private final BrandRepository brandRepository;
+    private final GearboxRepository gearboxRepository;
 
     /**
      * Method look for all existing offers in repository
@@ -115,7 +104,7 @@ public class OfferService implements IOfferService {
         offer.setUser(user);
         offer.setFuel(this.fuelRepository.findById(offerRequest.getFuel()).orElseThrow(() -> new NoSuchElementException("No fuel with such id")));
         offer.setBrand(this.brandRepository.findById(offerRequest.getBrand()).orElseThrow(() -> new NoSuchElementException("No brand with such id")));
-        offer.setGearbox(this.gearboxRepository.findById(offerRequest.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id")));;
+        offer.setGearbox(this.gearboxRepository.findById(offerRequest.getGearbox()).orElseThrow(() -> new NoSuchElementException("No gearbox with such id")));
 
         this.offerRepository.save(offer);
     }
@@ -260,7 +249,7 @@ public class OfferService implements IOfferService {
     /**
      * Method filters offers using given filterRequest with data from html form
      *
-     * @param filterRequest
+     * @param filterRequest sent request with user filters
      * @return filtered list off dto offer objects
      */
     public List<OfferResponse> getFilteredOffers(FilterRequest filterRequest) {
